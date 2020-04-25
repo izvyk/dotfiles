@@ -1,3 +1,13 @@
+# _                  _
+#(_)______   ___   _| | __
+#| |_  /\ \ / / | | | |/ /
+#| |/ /  \ V /| |_| |   <
+#|_/___|  \_/  \__, |_|\_\
+#              |___/
+#
+# ~/.zshrc
+#
+
 export TERM="xterm-256color"
 
 # Path to your oh-my-zsh installation.
