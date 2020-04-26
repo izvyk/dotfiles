@@ -103,7 +103,8 @@ font:
   # Normal (roman) font face
   normal:
     # Font family
-    family: Anonymous Pro for Powerline
+    #family: Anonymous Pro for Powerline
+    family: Hack Nerd Font
     style: Regular
 
   # Bold font face
@@ -154,8 +155,8 @@ font:
   # the default being at the bottom. Increasing `x` moves the glyph to the right,
   # increasing `y` moves the glyph upwards.
   #glyph_offset:
-  #  x: 0
-  #  y: 0
+    #x: -1
+    #y: -1
 
   # Thin stroke font rendering (macOS only)
   #
