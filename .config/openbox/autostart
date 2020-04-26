@@ -1,2 +1,5 @@
 nitrogen --set-scaled --random &
 
+ID=$(xinput list | awk -F ' |=|\t' '{ if($7=="Touchpad"){print $19} }')
+xinput set-prop $ID 323 1
+xinput set-prop $ID 305 1
