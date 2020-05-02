@@ -140,7 +140,7 @@
 
    If GLava is minimized or completely obscured, it will not
    render regardless of this option. */
-#request setfullscreencheck true
+#request setfullscreencheck false
 
 /* Enable/disable printing framerate every second. 'FPS' stands
    for 'Frames Per Second', and 'UPS' stands for 'Updates Per
