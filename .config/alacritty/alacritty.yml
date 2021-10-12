@@ -22,7 +22,7 @@
   # available, otherwise `xterm-256color` is used.
   #TERM: alacritty
 
-#window:
+window:
   # Window dimensions (changes require restart)
   #
   # Specified in number of columns/lines, not pixels.
@@ -44,8 +44,8 @@
   # Blank space added around the window in pixels. This padding is scaled
   # by DPI and the specified value is always added at both opposing sides.
   #padding:
-  #  x: 0
-  #  y: 0
+  #  x: 2
+  #  y: 2
 
   # Spread additional padding evenly around the terminal content.
   #dynamic_padding: false
@@ -59,7 +59,7 @@
   # Values for `decorations` (macOS only):
   #     - transparent: Title bar, transparent background and title bar buttons
   #     - buttonless: Title bar, transparent background, but no title bar buttons
-  #decorations: none
+  decorations: none
 
   # Startup Mode (changes require restart)
   #
@@ -70,7 +70,7 @@
   #
   # Values for `startup_mode` (macOS only):
   #   - SimpleFullscreen
-  #startup_mode: Windowed
+  startup_mode: Maximized
 
   # Window title
   #title: Alacritty
@@ -102,30 +102,37 @@ font:
   # Normal (roman) font face
   normal:
     # Font family
-    #family: Anonymous Pro for Powerline
-    family: Hack Nerd Font
+    family: Hack Nerd Font Mono
+    #family: Source Code Pro
+    #family: FiraCode Nerd Font Mono
     style: Regular
 
   # Bold font face
   bold:
     # Font family
-    family: Hack Nerd Font
+    family: Hack Nerd Font Mono
+    #family: Source Code Pro
+    #family: FiraCode Nerd Font Mono
     style: Bold
 
   # Italic font face
   italic:
     # Font family
-    family: Hack Nerd Font
+    family: Hack Nerd Font Mono
+    #family: Source Code Pro
+    #family: FiraCode Nerd Font Mono
     style: Italic
 
   # Bold italic font face
   bold_italic:
     # Font family
-    family: Hack Nerd Font
+    family: Hack Nerd Font Mono
+    #family: Source Code Pro
+    #family: FiraCode Nerd Font Mono
     style: Bold Italic
 
   # Point size
-  #size: 11.0
+  size: 15.5
 
   # Offset is the extra space around each character. `offset.y` can be thought of
   # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
@@ -210,6 +217,7 @@ colors:
   # Colors which should be used to draw the terminal cursor. If these are unset,
   # the cursor color will be the inverse of the cell color.
   #cursor:
+  #  style:    
   #  text: '#000000'
   #  cursor: '#ffffff'
 
@@ -298,7 +306,7 @@ colors:
 #
 # Window opacity as a floating point number from `0.0` to `1.0`.
 # The value `0.0` is completely transparent and `1.0` is opaque.
-background_opacity: 0.87
+background_opacity: 0.9
 
 #selection:
   #semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
@@ -370,7 +378,7 @@ mouse:
   # If this is `true`, the cursor is temporarily hidden when typing.
   hide_when_typing: true
 
-  #url:
+  hints:
     # URL launcher
     #
     # This program is executed when clicking on a text which is recognized as a URL.
@@ -382,9 +390,9 @@ mouse:
     #   - (macOS) open
     #   - (Linux/BSD) xdg-open
     #   - (Windows) explorer
-    #launcher:
-    #  program: xdg-open
-    #  args: []
+    launcher:
+      program: xdg-open
+      args: [url]
 
     # URL modifiers
     #
@@ -520,7 +528,7 @@ mouse:
 #
 # If the same trigger is assigned to multiple actions, all of them are executed
 # at once.
-#key_bindings:
+key_bindings:
   # (Windows, Linux, and BSD only)
   #- { key: V,        mods: Control|Shift, action: Paste            }
   #- { key: C,        mods: Control|Shift, action: Copy             }
@@ -557,6 +565,7 @@ mouse:
   #- { key: PageDown,  mods: Shift,   action: ScrollPageDown, mode: ~Alt       }
   #- { key: Home,      mods: Shift,   action: ScrollToTop,    mode: ~Alt       }
   #- { key: End,       mods: Shift,   action: ScrollToBottom, mode: ~Alt       }
+   - { key: F11, action: ToggleFullscreen }
 
 #debug:
   # Display the time it takes to redraw each frame.
