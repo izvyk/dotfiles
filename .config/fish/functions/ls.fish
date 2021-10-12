@@ -38,5 +38,5 @@
 #end
 
 function ls --description "List contents of directory"
-    lsd -h --group-dirs=first $argv
+    exa --color-scale --color=auto --icons --group-directories-first $argv
 end
