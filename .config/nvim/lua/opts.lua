@@ -53,8 +53,16 @@ o.shortmess = 'flmnrxtToOF'
 
 -- Undo
 o.undofile = true
-
+-- o.undodir = '~/.local/share/nvim/undo/'
 
 -- tabs and spaces view
 -- o.list = true
 -- o.listchars
+--
+
+
+-- keyboard layouts
+cmd 'setlocal spell spelllang=ru_yo,en_us'
+o.keymap = 'russian-jcukenwin'
+o.iminsert = 0
+o.imsearch = 0
