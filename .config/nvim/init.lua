@@ -14,7 +14,6 @@
 require('opts')
 require('mappings')
 require('plugins')
-require('config')
 
 -- require('completion')
 -- require('debugger')

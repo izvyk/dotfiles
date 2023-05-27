@@ -1,10 +1,5 @@
-local status_ok, nvim_lsp = pcall(require, 'lspconfig')
-if not status_ok then
-    vim.api.nvim_err_writeln('nvim-lspconfig not found')
-    return
-end
-
-local servers = { 'pyright', 'clangd', 'sumneko_lua', 'pasls', 'ltex' }
+local lspconfig = require'lspconfig'
+local servers = { 'pyright', 'lua_ls', 'clangd', 'ltex' }
 
 -- Use an on_attach function to only map the following keys after
 -- the language server attaches to the current buffer
@@ -38,19 +33,23 @@ local on_attach = function(client, bufnr)
     client.resolved_capabilities.document_range_formatting = true
 end
 
-for _, lsp in ipairs(servers) do
+for _, server in ipairs(servers) do
     -- applying special settings ONLY for nvim config files
     local full_file_path = vim.fn.expand('%:p') -- vim.loop.cwd() .. '/' .. vim.fn.expand('%')
     local nvim_config_path = vim.o.runtimepath:match('[^,]+') -- '/home/' .. os.getenv('USERNAME') .. '/.config/nvim/'
-    if lsp == 'sumneko_lua' and string.find(full_file_path, nvim_config_path) ~= nil then
-        nvim_lsp[lsp].setup {
-            cmd = { 'lua-language-server', '--preview' },
+    if server == 'lua_ls' and string.find(full_file_path, nvim_config_path) ~= nil then
+        lspconfig[server].setup {
+            -- cmd = { 'lua-language-server', '--preview' },
             on_attach = on_attach,
             -- root_dir = function() return nvim_config_path end, -- nvim_config_path, -- vim.loop.cwd,
             settings = {
                 Lua = {
+                    runtime = {
+                        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+                        version = 'LuaJIT',
+                    },
                     diagnostics = {
-                        globals = { 'vim' },
+                        globals = { 'vim', 'use' },
                     },
                     workspace = {
                         -- maxPreload = 2000,
@@ -59,16 +58,20 @@ for _, lsp in ipairs(servers) do
                             library = vim.api.nvim_get_runtime_file('', true),
                         },
                     },
+                    -- Do not send telemetry data containing a randomized but unique identifier
+                   telemetry = {
+                       enable = false,
+                   }
                 }
             }
         }
     else
-    nvim_lsp[lsp].setup {
-        an_attach = on_attach
-    }
+        lspconfig[server].setup {
+            an_attach = on_attach
+        }
+    end
 end
-end
-   
+
 vim.diagnostic.config({
     --update_in_insert = true,
     virtual_text = {
