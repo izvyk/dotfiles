@@ -13,6 +13,7 @@ o.showmode = false
 -- cmd 'filetype plugin indent on'
 o.mouse = 'a' -- Enable mouse in all modes
 o.number = true -- Show row numbers
+o.relativenumber = true
 o.scrolloff = 5 -- Cursor is always 5 lines below and above the edge of the screen
 o.cursorline = true -- Highlight cursor line
 o.colorcolumn = '80' -- Highlight 80th column
@@ -22,16 +23,13 @@ laststatus = 3 -- global statusline
 -- Search
 o.ignorecase = true -- Case-insensitive search
 o.incsearch = true -- Search before 'Enter' hit
-o.smartcase = true -- Search is case-insensitive only if search string is all lowercase
+o.smartcase = true -- Search case-sensitive if uppercase exists
 o.wrapscan = true -- Make search cyclic
 
---vim.g.gruvbox_contrast_dark = 'soft'
 vim.opt.termguicolors = true
-vim.o.guifont = 'Iosevka:h16'
-o.background = 'dark'
+vim.o.guifont = 'Iosevka:h16, Hack:h16'
 
 -- encoding
--- o.encoding = 'utf-8'
 o.fileencodings = 'utf-8,cp1251,koi8-r,cp866'
 
 -- tabs
@@ -46,20 +44,19 @@ o.smartindent = true
 -- linebreaks
 o.linebreak = true
 o.breakindent = true
-o.showbreak = '﬌ '--'﬋ '
+o.showbreak = '﬌ ' --'﬋ '
 
 o.shortmess = 'flmnrxtToOF'
---o.wildignore = {'.DS_Store','*.pyc','.git','node_modules','*.obj','*.o','*.a','__pycache__'}
 
--- tabs and spaces view
+-- [empty] tabs and spaces view
 -- o.list = true
 -- o.listchars
 
--- keyboard layouts
-cmd 'setlocal spell spelllang=ru_yo,en_us'
-o.keymap = 'russian-jcukenwin'
-o.iminsert = 0
-o.imsearch = 0
+-- TODO: keyboard layouts
+-- cmd 'setlocal spell spelllang=ru_yo,en_us'
+-- o.keymap = 'russian-jcukenwin'
+-- o.iminsert = 0
+-- o.imsearch = 0
 
 -- clipboard
 o.clipboard = 'unnamedplus' -- Use system`s clipboard instead of vim`s buffer
