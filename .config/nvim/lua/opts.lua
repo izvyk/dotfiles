@@ -17,6 +17,7 @@ o.scrolloff = 5 -- Cursor is always 5 lines below and above the edge of the scre
 o.cursorline = true -- Highlight cursor line
 o.colorcolumn = '80' -- Highlight 80th column
 o.history = 3000 -- Instead of default 10000
+laststatus = 3 -- global statusline
 
 -- Search
 o.ignorecase = true -- Case-insensitive search
@@ -50,10 +51,6 @@ o.showbreak = '﬌ '--'﬋ '
 o.shortmess = 'flmnrxtToOF'
 --o.wildignore = {'.DS_Store','*.pyc','.git','node_modules','*.obj','*.o','*.a','__pycache__'}
 
--- Undo
-o.undofile = true
--- o.undodir = '~/.local/share/nvim/undo/'
-
 -- tabs and spaces view
 -- o.list = true
 -- o.listchars
@@ -66,7 +63,7 @@ o.imsearch = 0
 
 -- clipboard
 o.clipboard = 'unnamedplus' -- Use system`s clipboard instead of vim`s buffer
-if (vim.fn.systemlist 'uname -a'[1]:find'icrosoft') then
+if (vim.fn.systemlist 'uname -a'[1]:find'icrosoft') then -- WSL clipboard fix
     vim.g.clipboard = {
         name = 'WslClipboard',
         copy = {
