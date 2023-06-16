@@ -1,0 +1,7 @@
+#!/usr/bin/bash
+
+busctl --user call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d 0.01
+if [[ "$(busctl --user get-property rs.wl-gammarelay / rs.wl.gammarelay Brightness)" == "d 1" ]]; then
+	brightnessctl -q s 1%+
+fi
+#busctl --user call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d 0.01; if [[ "$(busctl --user get-property rs.wl-gammarelay / rs.wl.gammarelay Brightness)" == "d 1" ]]; then brightnessctl -q s 1%+; fi
