@@ -1,0 +1,19 @@
+[Unit]
+Description=Swaylock screenlocker on lock dbus event (using systemd-lock-handler)
+# if swaylock exists cleanly, unlock this session
+OnSuccess=unlock.target
+# When lock.target is stopped, stop this too
+PartOf=lock.target
+# Delay lock.target until this service is ready
+After=lock.target
+
+[Service]
+# systemd will consider this service started when swaylock forks
+# which swaylock will only do after it has locked the screen
+Type=forking
+ExecStart=/usr/bin/bash -c 'lock_cmd="/usr/bin/swaylock -C /home/$USER/.config/swaylock/config -f --layout-text-color $(/home/$USER/.config/swaylock/layout_color.sh)"; if $(/home/$USER/.config/swaylock/is_private.sh); then $lock_cmd --effect-pixelate 60; elif [[ "$(/usr/bin/systemctl --user is-active sleep.target)" == "active" ]]; then $lock_cmd; else $lock_cmd --grace 15; fi'
+Restart=on-failure
+RestartSec=0
+
+[Install]
+WantedBy=lock.target
