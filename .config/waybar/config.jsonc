@@ -1,0 +1,159 @@
+{
+    "layer": "top",
+    "position": "top",
+    "mod": "dock",
+    "exclusive": true,
+    "passthrough": false,
+    "gtk-layer-shell": true,
+    "height": 30,
+    "modules-left": ["custom/powerprofile","tray","mpris"],
+    "modules-center": ["clock"],
+    "modules-right": ["backlight","custom/notifications","custom/coffee","battery","pulseaudio","pulseaudio#microphone", "network", "bluetooth"],
+
+    "custom/notifications": {
+	"interval": 9999,
+	"format": "{}",
+	"return-type": "json",
+	"exec": "sleep 0.1; ~/.config/waybar/scripts/notifications.sh",
+	"on-click": "dunstctl set-paused toggle"
+    },
+    "custom/powerprofile": {
+		"interval": 9999,
+		"format": "{}",
+		"return-type": "json",
+		"exec": "sleep 0.1; ~/.config/waybar/scripts/power-profile-get.sh",
+		"on-click": "~/.config/waybar/scripts/power-profile-cycle.sh"
+    },
+
+	"custom/coffee": {
+		"interval": 9999,
+		"format": "{}",
+		"return-type": "json",
+		"exec": "sleep 0.1; ~/.config/waybar/scripts/coffee-status.sh",
+		"on-click": "[[ '$(pidof swayidle)' ]] && killall swayidle || swayidle -w"
+	},
+
+    //"custom/weather" : {
+        //shows the current weather and forecast
+        // "tooltip" : true,
+        //"format" : "{}",
+        //"interval" : 30,
+        //"exec" : "~/.config/waybar/scripts/waybar-wttr.py",
+        //"return-type" : "json"
+    //},
+
+    "tray": {
+        "icon-size": 15,
+        "spacing": 10
+    },
+
+    "mpris": {
+		"format": "{player_icon} {title}",
+		"format-paused": "{status_icon} <i>{title}</i>",
+		"player-icons": {
+			"default": "⏸"
+			//"mpv": "🎵"
+		},
+		"status-icons": {
+			"paused": "▶"
+		},
+		"max-length": 30
+		// "ignored-players": ["firefox"]
+    },
+
+    "clock": {
+		"interval": 1,
+        "format": " {:%H:%M:%S  %a, %b %e} ",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
+    },
+
+    "backlight": {
+        "format": "{icon} {percent}%",
+        "format-icons": ["󰃞 ", "󰃟 ", "󰃠 "],
+        "on-scroll-down": "~/.config/hypr/scripts/brightness-up", //"brightnessctl set 1+ -q",
+        "on-scroll-up": "~/.config/hypr/scripts/brightness-down", //"brightnessctl set 1- -q",
+		"on-click": "bash -c '[[ \"$(pgrep wl-temp)\" ]] && exit || if [[ \"$(busctl --user get-property rs.wl-gammarelay / rs.wl.gammarelay Temperature)\" == \"q 4000\" ]]; then ~/.config/hypr/scripts/wl-temp +; else ~/.config/hypr/scripts/wl-temp -; fi'",
+        "min-length": 7,
+		"tooltip": false
+    },
+
+    "battery": {
+        "states": {
+	    "full": 100,
+            "warning": 35,
+            "critical": 20
+        },
+        "format": "{icon} {capacity}%",
+        "format-charging": "󰚥 {capacity}%",
+        "format-plugged": "󰚥 {capacity}%",
+        "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+	"tooltip": false,
+	"min-length": 7
+    },
+
+    "pulseaudio": {
+        "format": "{icon}  {volume}%",
+        "tooltip": false,
+        "format-muted": "󰸈  {volume}%",
+        "on-click-right": "bash -c 'pactl set-default-sink \"$(pactl list short sinks | grep -v \"$(pactl get-default-sink)\" | tail -n 1)\"'",
+        "on-click": "amixer set Master toggle -q",
+        "on-scroll-up": "amixer set Master 1%- unmute -q",
+        "on-scroll-down": "amixer set Master 1%+ unmute -q",
+        //"scroll-step": 1,
+        "format-icons": {
+            "headphone": "",
+			"headset": "󰗾",
+			"hdmi": "",
+            "hands-free": "󰏳",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["󰕿", "󰖀", "󰕾"]
+        },
+		"min-length": 7
+    },
+
+    "pulseaudio#microphone": {
+	"align": 0.5,
+        "format": "{format_source}",
+        "format-source": "",
+        "format-source-muted": "",
+        "on-click": "amixer set Capture toggle -q",
+        //"on-scroll-up": "amixer set Capture 1%- unmute -q",
+        //"on-scroll-down": "amixer set Capture 1%+ unmute -q",
+		"tooltip": false
+		//"min-length": 6
+        //"scroll-step": 5
+    },
+    
+    "network": {
+        // "interface": "wlp2*", // (Optional) To force the use of this interface
+		"interval": 2,
+        "format-wifi": "{icon}",
+		"format-icons": {
+			"wifi": ["󰤯 ", "󰤟 ", "󰤢 ", "󰤥 ", "󰤨 "]
+		},
+        "format-ethernet": "󰈀  Wired",
+        //"tooltip-format": "{essid} - {ifname} via {gwaddr} ",
+		"tooltip-format": "{essid}",
+        "format-linked": "{ifname} (No IP)",
+        "format-disconnected": "󰪎",
+        "format-disabled": "󰪎",
+        "format": "{status}",
+        //"format-alt": "{ifname}: {ipaddr}/{cidr}"
+        //"on-click": "bash -c 'nmcli device status | grep ^wlp1s0.*connected -q && nmcli device down wlp1s0 || nmcli device up wlp1s0'",
+		"on-click": "bash -c 'rfkill | grep \"wlan.* blocked .*\" -q && rfkill unblock wlan || rfkill block wlan'",
+		"max-length": 10
+    },
+
+    "bluetooth": {
+		"format": "",
+		"format-disabled": "󰂲",
+		"format-off": "󰂲",
+		"format-connected": "󰂱",
+		"tooltip-format": "{device_alias}",
+		"tooltip-format-connected": " {device_enumerate}",
+		"tooltip-format-enumerate-connected": "{device_alias}",
+        "on-click": "bash -c 'rfkill | grep \"bluetooth.* blocked .*\" -q && rfkill unblock bluetooth || rfkill block bluetooth'"
+    }
+}
