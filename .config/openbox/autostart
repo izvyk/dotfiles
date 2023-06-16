@@ -1,4 +1,0 @@
-nitrogen --set-scaled --random &
-tint2 &
-picom -b -d :0
-glava --desktop &
