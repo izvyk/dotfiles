@@ -1,0 +1,8 @@
+[Unit]
+Description=wl-gammarelay-rs (to change screen temperature)
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/bash -c 'for _ in {1..50}; do busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n -50; sleep 0.1; done'
+ExecStop=/usr/bin/bash -c 'for _ in {1..50}; do busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n +50; sleep 0.1; done'

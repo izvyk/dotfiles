@@ -72,7 +72,8 @@
         "format-icons": ["󰃞 ", "󰃟 ", "󰃠 "],
         "on-scroll-down": "~/.config/hypr/scripts/brightness-up", //"brightnessctl set 1+ -q",
         "on-scroll-up": "~/.config/hypr/scripts/brightness-down", //"brightnessctl set 1- -q",
-		"on-click": "bash -c '[[ \"$(pgrep wl-temp)\" ]] && exit || if [[ \"$(busctl --user get-property rs.wl-gammarelay / rs.wl.gammarelay Temperature)\" == \"q 4000\" ]]; then ~/.config/hypr/scripts/wl-temp +; else ~/.config/hypr/scripts/wl-temp -; fi'",
+		"on-click": "bash -c 'if $(systemctl --user is-active wl-gammarelay-rs.service -q); then systemctl --user stop wl-gammarelay-rs.service -q; else systemctl --user start wl-gammarelay-rs.service -q; fi'",
+		//"on-click": "bash -c '[[ \"$(pgrep wl-temp)\" ]] && exit || if [[ \"$(busctl --user get-property rs.wl-gammarelay / rs.wl.gammarelay Temperature)\" == \"q 4000\" ]]; then ~/.config/hypr/scripts/wl-temp +; else ~/.config/hypr/scripts/wl-temp -; fi'",
         "min-length": 7,
 		"tooltip": false
     },

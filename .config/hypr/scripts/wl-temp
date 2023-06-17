@@ -1,6 +1,3 @@
 #!/usr/bin/bash
 # The first argument must be '+' or '-'
-for _ in {1..50}; do
-	busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n "$1"50
-	sleep 0.1
-done
+for _ in {1..50}; do busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n "$1"50; sleep 0.1; done
