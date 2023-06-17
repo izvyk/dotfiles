@@ -1,8 +1,21 @@
 #!/usr/bin/bash
 
-#hyprctl clients | grep 'Firefox Private Browsing' -q && echo 1 || echo 0
-if ! $(hyprctl clients | grep 'Firefox Private Browsing\|KeePassXC' -q)
-then
-	exit -1
+current_workspace_id="$(hyprctl activeworkspace -j | jq -r '.id')"
+clients="$(hyprctl -j clients)"
+current_workspace_clients="$(echo "$clients" | jq -r ".[] | select(.workspace.id == $current_workspace_id)")"
+
+if $(echo "$current_workspace_clients" | jq -r "select(.class == \"firefox\").title" | grep -iq 'Firefox Private Browsing'); then
+	exit 0
 fi
-exit 0
+
+if [[ -n "$(echo "$current_workspace_clients" | jq -r "select(.initialTitle == \"Picture-in-Picture\")")" ]]; then
+	if $(echo "$clients" | jq -r ".[] | select(.class == \"firefox\").title" | grep -iq 'Firefox Private Browsing'); then
+		exit 0
+	fi
+fi
+
+if $(echo "$current_workspace_clients" | jq -r ".class" | grep -iq keepassxc); then
+	exit 0
+fi
+
+exit 1
