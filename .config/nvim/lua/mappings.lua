@@ -25,23 +25,12 @@ map('n', '<C-k>', '<C-w>k', opts)
 map('n', '<C-l>', '<C-w>l', opts)
 --map('n', '<A-x>', ':set keymap=russian-jcukenwin', opts)
 
-map('n', '<leader>t', ':NvimTreeToggle<CR>', opts)
+-- map('n', '<leader>t', ':NvimTreeToggle<CR>', opts)
 -- map('n', '<leader>/', '
 
-map('n', '<F5>', ':lua (vim.bo.filetype == \'NvimTree\') and (\'NvimTreeRefresh\') or (print(\'test\'))', opts)
+-- map('n', '<F5>', ':lua if (vim.bo.filetype == \'NvimTree\') then (\'NvimTreeRefresh\') else (print(\'test\'))', opts)
 map('t', '<Esc>', '<C-\\><C-n>', opts)
 map('i', '<A-j>', '<C-^>', opts)
 
 -- cmd [[:tnoremap <Esc> <C-\><C-n>]]
 cmd 'cabbrev vb vert sb'
-
-M = {
-    mappings = {
-        nvim_tree = {
-            tree_toggle = '<leader>tt',
-            find_files_toggle = '<leader>tf',
-            tree_refresh = '<F5>'
-        }
-    }
-}
-

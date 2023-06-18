@@ -5,8 +5,8 @@ end
 
 packer.startup(function()
     use 'wbthomason/packer.nvim'
-    -- use 'karb94/neoscroll.nvim'
-    --use 'ellisonleao/gruvbox.nvim'
+--    use 'karb94/neoscroll.nvim'
+--    use 'ellisonleao/gruvbox.nvim'
 --    use { 'wittyjudge/gruvbox-material.nvim', disabled = true }
 --    use { 'navarasu/onedark.nvim', disabled = false }
 --    use { 'projekt0n/github-nvim-theme', disabled = true }
@@ -27,7 +27,7 @@ packer.startup(function()
        },
        config = function() require'nvim-tree'.setup {} end,
    }
-   use { 'nvim-telescope/telescope.nvim',
+    use { 'nvim-telescope/telescope.nvim',
        disabled = true,
        requires = {
            'nvim-lua/plenary.nvim',
@@ -35,10 +35,10 @@ packer.startup(function()
        },
        config = function() require('config.telescope') end,
    }
---    use { 'akinsho/bufferline.nvim',
---        requires = 'kyazdani42/nvim-web-devicons',
---    }
-    -- !!!
+   use {
+        "folke/which-key.nvim",
+        config = function() require('config.which-key') end,
+    }
 --    use { 'lukas-reineke/lsp-format.nvim' }
     use { 'numToStr/Comment.nvim',
         config = function() require('config.comment') end,
