@@ -86,6 +86,8 @@ tooltip {
 #network.wifi {
 	background: #b8bb26; /* lite */
 	background: #98971a; /* dark */
+	padding-right: 9px;
+	padding-left: 9px;
 }
 
 #bluetooth {
@@ -105,7 +107,7 @@ tooltip {
 }
 
 #bluetooth.connected {
-	background: #b8bb26;
+	background: #98971a;
 	padding-left: 9px;
 	padding-right: 14px;
 }
