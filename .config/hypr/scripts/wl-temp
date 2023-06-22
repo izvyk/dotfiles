@@ -1,3 +1,9 @@
 #!/usr/bin/bash
 # The first argument must be '+' or '-'
-for _ in {1..50}; do busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n "$1"50; sleep 0.1; done
+#for _ in {1..50}; do busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateTemperature n "$1"50; sleep 0.1; done
+currenttime="$(date +%H:%M)"
+if [[ "$currenttime" > "21:00" ]] || [[ "$currenttime" < "08:00" ]]; then
+    systemctl --user start wl-gammarelay-rs.service -q
+else
+    systemctl --user stop wl-gammarelay-rs.service -q
+fi
