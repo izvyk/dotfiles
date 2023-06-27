@@ -12,7 +12,7 @@ datestr=%A, %d %b
 #show-keyboard-layout
 screenshots
 font=Iosevka Nerd Font
-effect-blur=10x3
+effect-pixelate=60
 
 bs-hl-color=d65d0e
 inside-color=1d2021
