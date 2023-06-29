@@ -8,7 +8,7 @@
     "height": 30,
     "modules-left": ["custom/powerprofile","tray","mpris"],
     "modules-center": ["clock"],
-    "modules-right": ["backlight","custom/notifications","custom/coffee","battery","pulseaudio","pulseaudio#microphone", "network", "bluetooth"],
+    "modules-right": ["backlight","custom/notifications","custom/coffee","battery","pulseaudio","pulseaudio#microphone", "custom/vpn", "network", "bluetooth"],
 
     "custom/notifications": {
 	"interval": 9999,
@@ -16,6 +16,13 @@
 	"return-type": "json",
 	"exec": "sleep 0.1; ~/.config/waybar/scripts/notifications.sh",
 	"on-click": "dunstctl set-paused toggle"
+    },
+    "custom/vpn": {
+		"interval": 9999,
+		"format": "{}",
+		"return-type": "json",
+		"exec": "sleep 0.3; ~/.config/waybar/scripts/vpn-status.sh",
+		"on-click": "~/.config/waybar/scripts/vpn-toggle.sh"
     },
     "custom/powerprofile": {
 		"interval": 9999,
