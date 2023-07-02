@@ -151,6 +151,7 @@
         //"format-alt": "{ifname}: {ipaddr}/{cidr}"
         //"on-click": "bash -c 'nmcli device status | grep ^wlp1s0.*connected -q && nmcli device down wlp1s0 || nmcli device up wlp1s0'",
 		"on-click": "bash -c 'rfkill | grep \"wlan.* blocked .*\" -q && rfkill unblock wlan || rfkill block wlan'",
+        "on-click-right": "footclient -T nmtui -W 75x25 nmtui",
 		"max-length": 10
     },
 
@@ -162,6 +163,7 @@
 		"tooltip-format": "{device_alias}",
 		"tooltip-format-connected": " {device_enumerate}",
 		"tooltip-format-enumerate-connected": "{device_alias}",
-        "on-click": "bash -c 'rfkill | grep \"bluetooth.* blocked .*\" -q && rfkill unblock bluetooth || rfkill block bluetooth'"
+        "on-click": "bash -c 'rfkill | grep \"bluetooth.* blocked .*\" -q && rfkill unblock bluetooth || rfkill block bluetooth'",
+        "on-click-right": "footclient -T bluetoothmenu bluetuith"
     }
 }
