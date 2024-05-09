@@ -164,6 +164,6 @@
 		"tooltip-format-connected": " {device_enumerate}",
 		"tooltip-format-enumerate-connected": "{device_alias}",
         "on-click": "bash -c 'rfkill | grep \"bluetooth.* blocked .*\" -q && rfkill unblock bluetooth || rfkill block bluetooth'",
-        "on-click-right": "footclient -T bluetoothmenu bluetuith"
+        "on-click-right": "rofi-bluetooth"
     }
 }
