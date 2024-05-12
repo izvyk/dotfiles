@@ -1,0 +1,7 @@
+[Unit]
+Description=updates cached weather
+
+[Service]
+Type=oneshot
+RemainAfterExit=no
+ExecStart=/usr/bin/sh -c '/home/$USER/.local/bin/weather > /home/$USER/.cache/weather'
