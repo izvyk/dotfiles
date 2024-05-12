@@ -37,7 +37,7 @@
 		"format": "{}",
 		"return-type": "json",
 		"exec": "sleep 0.1; ~/.config/waybar/scripts/coffee-status.sh",
-		"on-click": "[[ '$(pidof swayidle)' ]] && killall swayidle || swayidle -w"
+		"on-click": "$(systemctl --user is-active inhibitor-lock@coffee.service -q) && systemctl --user stop inhibitor-lock@coffee.service -q || systemctl --user start inhibitor-lock@coffee.service -q"
 	},
 
     //"custom/weather" : {
