@@ -1,0 +1,4 @@
+[Unit]
+Description=unlock the current session
+#Requires=graphical-session.target
+Conflicts=lock.target
