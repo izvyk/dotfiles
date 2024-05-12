@@ -1,0 +1,20 @@
+[Unit]
+Description=systemd inhibitor lock for %I
+# if swaylock exists cleanly, unlock this session
+#OnSuccess=unlock.target
+# When lock.target is stopped, stop this too
+#PartOf=lock.target
+# Delay lock.target until this service is ready
+#After=lock.target
+
+[Service]
+# systemd will consider this service started when swaylock forks
+# which swaylock will only do after it has locked the screen
+Type=simple
+ExecStart=/usr/bin/systemd-inhibit --what="idle:sleep" --why=%I /usr/bin/sleep infinity
+
+#Restart=on-failure
+#RestartSec=0
+
+#[Install]
+#WantedBy=lock.target
