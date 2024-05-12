@@ -1,2 +1,0 @@
-timeout 300 '~/.local/bin/lock.sh'
-timeout 600 'systemctl suspend'
