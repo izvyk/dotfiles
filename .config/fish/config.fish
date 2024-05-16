@@ -12,6 +12,7 @@ if status is-interactive
     
     fish_ssh_agent
     set -x GPG_TTY $(tty)
+    set -x MANPAGER "bat -l man -p"
 
     zoxide init --cmd cd fish | source
 
