@@ -58,11 +58,11 @@ configuration {
 /*	xserver-i300-workaround: false;*/
 /*	completer-mode: "recursivebrowser";*/
 /*	pid: "/run/user/1000/rofi.pid";*/
-/*	display-window: ;*/
-/*	display-run: ;*/
-/*	display-ssh: ;*/
-/*	display-drun: ;*/
-/*	display-combi: ;*/
+    display-window: "Window";
+    display-run: "CMD";
+    display-ssh: "SSH";
+    display-drun: "App";
+    display-combi: "";
 /*	display-keys: ;*/
 /*	display-filebrowser: ;*/
 /*	display-recursivebrowser: ;*/
@@ -161,6 +161,10 @@ configuration {
   }
   icon {
       theme: "Tela-circle";
+  }
+  run,ssh {
+    //fallback-icon: "application-x-shellscript";
+    fallback-icon: "terminal";
   }
 }
 @theme "rounded-blue-dark"
