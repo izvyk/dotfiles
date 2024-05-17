@@ -32,7 +32,7 @@ configuration {
 /*	auto-select: false;*/
 /*	parse-hosts: false;*/
 /*	parse-known-hosts: true;*/
-/*	combi-modes: "window,drun,ssh";*/
+  	combi-modes: "drun,run";
   	matching: "fuzzy";
 /*	tokenize: true;*/
 /*	m: "-5";*/
@@ -44,7 +44,7 @@ configuration {
 /*	click-to-exit: true;*/
 /*	global-kb: false;*/
 /*	max-history-size: 25;*/
-/*	combi-hide-mode-prefix: false;*/
+  	combi-hide-mode-prefix: true;  
 /*	combi-display-format: "{mode} {text}";*/
 /*	matching-negate-char: '-' /* unsupported */;*/
 /*	cache-dir: ;*/
@@ -154,7 +154,7 @@ configuration {
       sorting-method:    "name";
   }
   combi {
-      modi: "window,drun,ssh";
+      modi: "drun,run";
   }
   scroll {
       method: 1;
