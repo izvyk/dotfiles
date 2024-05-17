@@ -1,18 +1,12 @@
 [Unit]
-Description=hyprlock screenlocker on dbus lock event (using systemd-lock-handler)
-# if swaylock exists cleanly, unlock this session
+Description=hyprlock screenlocker on logind lock event
 OnSuccess=unlock.target
-# When lock.target is stopped, stop this too
 PartOf=lock.target
-# Delay lock.target until this service is ready
-After=lock.target
+Before=lock.target
 
 [Service]
-# systemd will consider this service started when swaylock forks
-# which swaylock will only do after it has locked the screen
-Type=forking
-ExecStart=/usr/bin/bash -c 'lock_cmd="/usr/bin/hyprlock"; lock_private_cmd="$lock_cmd --immediate -c /home/$USER/.config/hypr/hyprlock-private.conf"; gracefile="/home/$USER/.cache/lock-with-grace"; if ! $(/home/$USER/.local/bin/lock-is-private.sh); then $lock_private_cmd; elif [ -f "$gracefile" ]; then rm $gracefile && $lock_cmd; else $lock_cmd --immediate; fi'
-
+Type=exec
+ExecStart=bash -c 'lock_cmd="hyprlock"; lock_private_cmd="$lock_cmd --immediate -c /home/$USER/.config/hypr/hyprlock-private.conf"; gracefile="/home/$USER/.cache/lock-with-grace"; if ! $(/home/$USER/.local/bin/lock-is-private.sh); then $lock_private_cmd; elif [ -f "$gracefile" ]; then rm $gracefile && $lock_cmd; else $lock_cmd --immediate; fi'
 Restart=on-failure
 RestartSec=0
 

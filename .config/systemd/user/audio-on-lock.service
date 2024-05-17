@@ -1,12 +1,13 @@
 [Unit]
 Description=Mute audio on logind lock event
 PartOf=lock.target
+Before=sleep.target
 
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/bin/bash -c 'if [[ -n "$(/usr/bin/amixer get Master | grep -o [[]on[]])" ]]; then /usr/bin/touch /home/$USER/.cache/amixer-master-unmuted-before-lock; fi; /usr/bin/amixer set Master mute -q; export DBUS_SESSION_BUS_ADDRESS=$(/usr/bin/grep -z DBUS_SESSION_BUS_ADDRESS /proc/$(/usr/bin/pidof Hyprland)/environ|/usr/bin/cut -d= -f2-); /usr/bin/playerctl -sa pause; if [[ -n "$(/usr/bin/amixer get Capture | grep -o [[]on[]])" ]]; then /usr/bin/touch /home/$USER/.cache/amixer-capture-unmuted-before-lock; fi; /usr/bin/amixer set Capture nocap -q'
-ExecStop=/usr/bin/bash -c "if [[ -f /home/$USER/.cache/amixer-master-unmuted-before-lock ]]; then /usr/bin/rm /home/$USER/.cache/amixer-master-unmuted-before-lock; /usr/bin/amixer set Master unmute -q; fi; if [[ -f /home/$USER/.cache/amixer-capture-unmuted-before-lock ]]; then /usr/bin/rm /home/$USER/.cache/amixer-capture-unmuted-before-lock; /usr/bin/amixer set Capture cap -q; fi"
+ExecStart=bash -c 'if [[ -n "$(amixer get Master | grep -o [[]on[]])" ]]; then touch /home/$USER/.cache/amixer-master-unmuted-before-lock; fi; amixer set Master mute -q; export DBUS_SESSION_BUS_ADDRESS=$(grep -z DBUS_SESSION_BUS_ADDRESS /proc/$(pidof Hyprland)/environ|cut -d= -f2-); playerctl -sa pause; if [[ -n "$(amixer get Capture | grep -o [[]on[]])" ]]; then touch /home/$USER/.cache/amixer-capture-unmuted-before-lock; fi; amixer set Capture nocap -q'
+ExecStop=bash -c 'if [[ -f /home/$USER/.cache/amixer-master-unmuted-before-lock ]]; then rm /home/$USER/.cache/amixer-master-unmuted-before-lock; amixer set Master unmute -q; fi; if [[ -f /home/$USER/.cache/amixer-capture-unmuted-before-lock ]]; then rm /home/$USER/.cache/amixer-capture-unmuted-before-lock; amixer set Capture cap -q; fi'
 
 [Install]
 WantedBy=lock.target

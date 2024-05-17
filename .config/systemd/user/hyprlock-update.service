@@ -3,4 +3,4 @@ Description=updates hyprlock information
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/pkill -USR2 hyprlock
+ExecStart=pkill -USR2 hyprlock

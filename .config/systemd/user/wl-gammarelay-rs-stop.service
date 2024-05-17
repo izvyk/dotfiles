@@ -3,4 +3,4 @@ Description=stop wl-gammarelay-rs (to change screen temperature)
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/systemctl --user stop wl-gammarelay-rs.service
+ExecStart=systemctl --user stop wl-gammarelay-rs.service

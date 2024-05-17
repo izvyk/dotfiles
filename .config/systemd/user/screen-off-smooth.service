@@ -1,0 +1,10 @@
+[Unit]
+Description=reduces the brightness smoothly and turns off the screen
+PartOf=sleep.target
+Before=sleep.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=brillo -O ; brillo -q -u 200000 -S 0 ; hyprctl dispatch dpms off
+ExecStop=hyprctl dispatch dpms on ; brillo -q -u 500000 -I

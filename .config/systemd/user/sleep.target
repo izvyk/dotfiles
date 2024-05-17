@@ -1,0 +1,5 @@
+[Unit]
+Description=User-level sleep
+Wants=screen-off-smooth.service
+Wants=lock.target
+After=lock.target

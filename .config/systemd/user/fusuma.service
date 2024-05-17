@@ -1,0 +1,10 @@
+[Unit]
+Description=fusuma (multitouch gesture recognizer)
+
+[Service]
+Type=exec
+ExecStart=fusuma
+
+[Install]
+WantedBy=default.target
+#WantedBy=graphical-session.target
