@@ -1,5 +1,7 @@
 #!/usr/bin/bash
 
-if [[ "$(brightnessctl -m s 1%- | cut -d',' -f4)" == "0%" ]]; then
+flock -n sh -c 'brillo -qU 5 -u 200000'
+
+if [ "$(brillo | tr -d '.')" -lt "100" ]; then
 	busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d -0.01
 fi
