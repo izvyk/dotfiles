@@ -1,6 +1,11 @@
 [Unit]
-Description=update cached weather
+Description=cached weather update
+Wants=hyprlock-update.service
+Before=hyprlock-update.service
 
 [Service]
 Type=oneshot
 ExecStart=sh -c '/home/$USER/.local/bin/weather > /home/$USER/.cache/weather'
+
+[Install]
+WantedBy=lock.target

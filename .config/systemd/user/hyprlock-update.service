@@ -1,5 +1,6 @@
 [Unit]
-Description=updates hyprlock information
+Description=hyprlock information update
+After=hyprlock.service
 
 [Service]
 Type=oneshot

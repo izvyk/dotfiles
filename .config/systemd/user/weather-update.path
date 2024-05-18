@@ -1,9 +1,0 @@
-[Unit]
-Description=to monitor cached weather changes
-
-[Path]
-PathModified=/home/$USER/.cache/weather
-Unit=hyprlock-update.service
-
-[Install]
-WantedBy=lock.target
