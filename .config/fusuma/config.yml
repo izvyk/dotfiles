@@ -29,6 +29,8 @@ swipe:
 hold:
   3:
     command: 'ydotool key 164:1 164:0' # KEY_PLAYPAUSE
+  4:
+    command: 'swaync-client -t -sw'
 
 threshold:
   swipe: 0.3

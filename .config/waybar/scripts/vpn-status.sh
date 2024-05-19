@@ -7,4 +7,7 @@ else
 	ICON="󱙱"
 	CLASS="disabled"
 fi
-printf '{"text": "%s", "class": "%s"}\n' "$ICON" "$CLASS"
+
+CONNECTION_NAME="$(nmcli con show --active | grep -e 'vpn\|wireguard' | cut -d' ' -f1)"
+
+printf '{"text": "%s", "class": "%s", "tooltip": "%s"}\n' "$ICON" "$CLASS" "$CONNECTION_NAME"

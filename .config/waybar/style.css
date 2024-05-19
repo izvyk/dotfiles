@@ -43,7 +43,7 @@ tooltip {
 
 #custom-vpn,
 #custom-backlight,
-#custom-coffee,
+#idle_inhibitor,
 #custom-notifications,
 #custom-powerprofile,
 #window,
@@ -61,12 +61,15 @@ tooltip {
     margin-right: 5px;
     border-radius: 10px 10px 0 0;
 }
-
+/* #clock */
 #tray,
-#custom-powerprofile,
-#clock {
+#custom-powerprofile {
 	border: solid #ebdbb2;
 	border-width: 1px 1px 0 1px;
+}
+
+#clock {
+    margin-bottom: -2px;
 }
 
 #network:not(.disabled) {
@@ -83,13 +86,26 @@ tooltip {
 	padding-right: 16px;
 }
 
-#network.ethernet,
 #network.wifi {
 	background: #b8bb26; /* lite */
 	background: #98971a; /* dark */
 	padding-right: 9px;
 	padding-left: 9px;
 }
+
+#network.ethernet {
+	background: #b8bb26; /* lite */
+	background: #98971a; /* dark */
+    padding-left: 10px;
+    padding-right: 8px;
+}
+
+#network.linked {
+	background: #b8bb26; /* lite */
+	background: #98971a; /* dark */
+    padding-left: 8px;
+}
+
 
 #bluetooth {
 	padding-right: 13px;
@@ -124,12 +140,12 @@ tooltip {
 	background: #458588;
 	color: #1d2021;
 
-	padding-right: 12px;
+	padding-right: 11px;
 }
 
 #pulseaudio.microphone.source-muted {
-	padding-left: 9px;
-	padding-right: 13px;
+	padding-left: 6px;
+	padding-right: 15px;
 }
 
 #battery {
@@ -156,12 +172,12 @@ tooltip {
 	background: #458588;
 }
 
-#custom-coffee {
-	padding-left: 8;
+#idle_inhibitor {
+	padding-left: 8px;
 	padding-right: 13px;
 }
 
-#custom-coffee.enabled {
+#idle_inhibitor.activated {
     background: #fe8019;
     background: #d65d0e;
     color: #1d2021;
@@ -169,30 +185,30 @@ tooltip {
 }
 
 #custom-vpn {
-	padding-left: 8;
+	padding-left: 8px;
 	padding-right: 14px;
 }
 
 #custom-vpn.enabled {
 	background: #458588;
     color: #1d2021;
-	padding-left: 10;
+	padding-left: 10px;
     padding-right: 12px;
 }
 
-#custom-notifications.enabled {
-	padding-left: 9px;
-	padding-right: 13px;
-}
+/* #custom-notifications.enabled { */
+/* 	padding-left: 9px; */
+/* 	padding-right: 13px; */
+/* } */
+/**/
+/* #custom-notifications.disabled { */
+/*     background: #d65d0e; */
+/*     color: #1d2021; */
+/*     padding-left: 8px; */
+/*     padding-right: 14px; */
+/* } */
 
-#custom-notifications.disabled {
-    background: #d65d0e;
-    color: #1d2021;
-    padding-left: 8px;
-    padding-right: 14px;
-}
-
-#mpris {
-	/*background: #d65d0e;
-	color: #1d2021;*/
-}
+/* #mpris { */
+/* 	background: #d65d0e; */
+/* 	color: #1d2021; */
+/* } */
