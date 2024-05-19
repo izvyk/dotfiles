@@ -41,6 +41,7 @@ tooltip {
     background: #11111b;
 }
 
+#systemd-failed-units,
 #custom-vpn,
 #custom-backlight,
 #idle_inhibitor,
@@ -66,6 +67,14 @@ tooltip {
 #custom-powerprofile {
 	border: solid #ebdbb2;
 	border-width: 1px 1px 0 1px;
+}
+
+#systemd-failed-units.ok {
+    background-color: #98971a;
+}
+
+#systemd-failed-units.degraded {
+    background-color: #cc241d;
 }
 
 #clock {

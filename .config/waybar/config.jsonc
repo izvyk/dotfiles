@@ -6,9 +6,12 @@
     "passthrough": false,
     "gtk-layer-shell": true,
     "height": 30,
-    "modules-left": ["custom/powerprofile","tray","mpris"],
+    "modules-left": ["custom/powerprofile","tray","systemd-failed-units","mpris"],
     "modules-center": ["clock"],
     "modules-right": ["backlight","idle_inhibitor","battery","pulseaudio","pulseaudio#microphone", "custom/vpn", "network", "bluetooth","custom/notifications"],
+    "systemd-failed-units": {
+        "format": "󰒓 {nr_failed_system} ! 󰀄 {nr_failed_user}",
+    },
     "custom/notifications": {
         "tooltip": false,
         "format": "{} {icon}",
