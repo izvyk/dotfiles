@@ -30,7 +30,7 @@
     height = 200
 
     # Position the notification in the top right corner
-    origin = top-right
+    origin = bottom-right
 
     # Offset from the origin
     offset = 3x3
@@ -73,7 +73,7 @@
     # The transparency of the window.  Range: [0; 100].
     # This option will only work if a compositing window manager is
     # present (e.g. xcompmgr, compiz, etc.). (X11 only)
-    transparency = 0
+    #transparency = 0
 
     # Draw a line of "separator_height" pixel height between two
     # notifications.
@@ -163,6 +163,7 @@
     #   %n  progress value if set without any extra characters
     #   %%  Literal %
     # Markup is allowed
+    #format = "<b><i>%a</i></b>\n<b>%s</b> %p\n%b"
     format = "<b>%s</b> %p\n%b"
 
     # Alignment of message text.
@@ -201,7 +202,8 @@
     enable_recursive_icon_lookup = true
 
     # Set icon theme (only used for recursive icon lookup)
-    icon_theme = Adwaita
+    #icon_theme = Adwaita
+    icon_theme = Tela-circle
     # You can also set multiple icon themes, with the leftmost one being used first.
     # icon_theme = "Adwaita, breeze"
 
