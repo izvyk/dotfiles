@@ -4,4 +4,5 @@ After=hyprlock.service
 
 [Service]
 Type=oneshot
+ExecCondition=pidof hyprlock
 ExecStart=pkill -USR2 hyprlock
