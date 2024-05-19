@@ -1,14 +1,29 @@
 {
     "layer": "top",
     "position": "bottom",
-    "mod": "dock",
     "exclusive": true,
     "passthrough": false,
-    "gtk-layer-shell": true,
     "height": 30,
-    "modules-left": ["custom/powerprofile","tray","systemd-failed-units","mpris"],
-    "modules-center": ["clock"],
-    "modules-right": ["backlight","idle_inhibitor","battery","pulseaudio","pulseaudio#microphone", "custom/vpn", "network", "bluetooth","custom/notifications"],
+    "modules-left": [
+        "custom/powerprofile",
+        "tray",
+        "systemd-failed-units",
+        "mpris",
+    ],
+    "modules-center": [
+        "clock",
+    ],
+    "modules-right": [
+        "backlight",
+        "idle_inhibitor",
+        "battery",
+        "pulseaudio",
+        "pulseaudio#microphone",
+        "custom/vpn",
+        "network",
+        "bluetooth",
+        "custom/notifications",
+    ],
     "systemd-failed-units": {
         "format": "󰒓 {nr_failed_system} ! 󰀄 {nr_failed_user}",
     },
@@ -23,14 +38,14 @@
             "inhibited-notification": "<span foreground='red'><sup></sup></span>",
             "inhibited-none": "",
             "dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
-            "dnd-inhibited-none": ""
+            "dnd-inhibited-none": "",
         },
         "return-type": "json",
         "exec-if": "which swaync-client",
         "exec": "swaync-client -swb",
         "on-click": "swaync-client -t -sw",
         "on-click-right": "swaync-client -d -sw",
-        "escape": true
+        "escape": true,
     },
     "custom/vpn": {
 		"interval": "once",
@@ -41,14 +56,14 @@
         "max-length": 1,
 		"return-type": "json",
 		"exec": "~/.config/waybar/scripts/vpn-status.sh",
-		"on-click": "~/.config/waybar/scripts/vpn-toggle.sh"
+		"on-click": "~/.config/waybar/scripts/vpn-toggle.sh",
     },
     "custom/powerprofile": {
 		"interval": "once",
 		"format": "{}",
 		"return-type": "json",
 		"exec": "~/.config/waybar/scripts/power-profile-get.sh",
-		"on-click": "~/.config/waybar/scripts/power-profile-cycle.sh"
+		"on-click": "~/.config/waybar/scripts/power-profile-cycle.sh",
     },
 
 	// "custom/coffee": {
@@ -56,78 +71,94 @@
 	// 	"format": "{}",
 	// 	"return-type": "json",
 	// 	"exec": "sleep 0.1; ~/.config/waybar/scripts/coffee-status.sh",
-	// 	"on-click": "systemctl --user is-active inhibitor-lock@coffee.service -q && systemctl --user stop inhibitor-lock@coffee.service -q || systemctl --user start inhibitor-lock@coffee.service -q"
+	// 	"on-click": "systemctl --user is-active inhibitor-lock@coffee.service -q && systemctl --user stop inhibitor-lock@coffee.service -q || systemctl --user start inhibitor-lock@coffee.service -q",
 	// },
     "idle_inhibitor": {
         "format": "{icon}",
         "format-icons": {
             "activated": "󰅶",
-            "deactivated": "󰾪"
+            "deactivated": "󰾪",
         },
-        "tooltip": false
+        "tooltip": false,
     },
     //"custom/weather" : {
         //shows the current weather and forecast
         // "tooltip" : true,
         //"format" : "{}"        //"interval" : 30,
         //"exec" : "~/.config/waybar/scripts/waybar-wttr.py",
-        //"return-type" : "json"
+        //"return-type" : "json",
     //},
 
     "tray": {
         "icon-size": 15,
-        "spacing": 10
+        "spacing": 10,
     },
 
     "mpris": {
 		"format": "{player_icon} {title}",
 		"format-paused": "{status_icon} <i>{title}</i>",
 		"player-icons": {
-			"default": "⏸"
-			//"mpv": "🎵"
+			"default": "⏸",
+			//"mpv": "🎵",
 		},
 		"status-icons": {
-			"paused": "▶"
+			"paused": "▶",
 		},
-		"max-length": 30
+		"max-length": 30,
 		// "ignored-players": ["firefox"]
     },
 
     "clock": {
 		"interval": 1,
-        "format": " {:%H:%M  %a, %b %e} ",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
+        "format": "{:%H:%M<small>:%S</small>  %a, %e<small>th</small>}",
+        "tooltip-format": "{calendar}",
+        "calendar": {
+            "weeks-pos": "left",
+            "format": {
+                "months": "<big><span color='#ffead3'><b>{}</b></span></big>",
+                "days": "<span color='#fbf1c7'><b>{}</b></span>",
+                "weeks": "<span color='#8ec07c'><b>W{} </b></span>",
+                "weekdays": "<span color='#fabd2f'><b>{}</b></span>",
+                "today": "<span color='#fe8019'><b><u>{}</u></b></span>",
+            },
+        },
+        "actions": {
+            "on-click-right": "shift_down",
+            "on-click": "shift_up",
+            "on-click-middle": "shift_reset",
+        },
     },
 
     "backlight": {
-        "format": "{icon} {percent}%",
+        "format": "<b>{icon} {percent}</b><small>%</small>",
         "format-icons": ["󰃞 ", "󰃟 ", "󰃠 "],
         "scroll-step": 0.1,
         "on-scroll-down": "~/.local/bin/brightness-up",
         "on-scroll-up": "~/.local/bin/brightness-down",
 		"on-click": "systemctl --user is-active wl-gammarelay-rs.service -q && systemctl --user stop wl-gammarelay-rs.service -q || systemctl --user start wl-gammarelay-rs.service -q",
         "min-length": 7,
-		"tooltip": false
+		"tooltip": false,
     },
 
     "battery": {
         "states": {
 	    "full": 100,
             "warning": 35,
-            "critical": 20
+            "critical": 20,
         },
-        "format": "{icon} {capacity}%",
-        "format-charging": "󰚥 {capacity}%",
-        "format-plugged": "󰚥 {capacity}%",
+        "format": "<b>{icon} {capacity}</b><small>%</small>",
+        "format-charging": "󰚥 <b>{capacity}</b><small>%</small>",
+        "format-plugged": "󰚥 <b>{capacity}</b><small>%</small>",
         "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
-        "tooltip": false,
-        "min-length": 7
+        //"tooltip": false,
+        "tooltip-format": "Cycles: {cycles}\nHealth: {health}%",
+        "min-length": 7,
     },
 
     "pulseaudio": {
-        "format": "{icon}  {volume}%",
+        "format": "<b>{icon}  {volume}</b><small>%</small>",
         "tooltip": false,
-        "format-muted": "󰸈  {volume}%",
+        "format-muted": "󰸈  {volume}<small>%</small>",
         "on-click-right": "bash -c 'pactl set-default-sink \"$(pactl list short sinks | grep -v \"$(pactl get-default-sink)\" | tail -n 1)\"'",
         "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
         //"on-scroll-up": "flock -n sh -c 'amixer set Master 1%- unmute -q'",
@@ -143,9 +174,9 @@
             "phone": "",
             "portable": "",
             "car": "",
-            "default": ["󰕿", "󰖀", "󰕾"]
+            "default": ["󰕿", "󰖀", "󰕾"],
         },
-		"min-length": 7
+		"min-length": 7,
     },
 
     "pulseaudio#microphone": {
@@ -156,7 +187,7 @@
         "on-click": "amixer set Capture toggle -q",
         //"on-scroll-up": "amixer set Capture 1%- unmute -q",
         //"on-scroll-down": "amixer set Capture 1%+ unmute -q",
-		"tooltip": false
+		"tooltip": false,
 		//"min-length": 6
         //"scroll-step": 5
     },
@@ -165,11 +196,11 @@
 		"interval": 10,
         "format-wifi": "{icon}",
 		"format-icons": {
-			"wifi": ["󰤯 ", "󰤟 ", "󰤢 ", "󰤥 ", "󰤨 "]
+			"wifi": ["󰤯 ", "󰤟 ", "󰤢 ", "󰤥 ", "󰤨 "],
 		},
         "format-ethernet": "󰈀 ",
         "tooltip-format": "{}",
-        "tooltip-format-wifi": "Name: {essid}\nIP:   {ipaddr}\nFreq: {frequency}Ghz",
+        "tooltip-format-wifi": "<span color='#fbf1c7'>Name: {essid}\nIP:   {ipaddr}\nFreq: {frequency}Ghz</span>",
         "format-linked": "{ifname} (No IP)",
         "format-disconnected": "󰪎",
         "format-disabled": "󰪎",
@@ -179,7 +210,7 @@
 		"on-click": "~/.config/waybar/scripts/network-onclick.sh",
         // update vpn module
         "on-click-right": "~/.config/waybar/scripts/network-onclick-right.sh",
-		"max-length": 2
+		"max-length": 2,
     },
 
     "bluetooth": {
@@ -188,9 +219,10 @@
 		"format-off": "󰂲",
 		"format-connected": "󰂱",
 		"tooltip-format": "{device_alias}",
-		"tooltip-format-connected": " {device_enumerate}",
-		"tooltip-format-enumerate-connected": "{device_alias}",
+		"tooltip-format-connected": "{device_enumerate}",
+		"tooltip-format-enumerate-connected": " {device_alias}",
+        "tooltip-format-enumerate-connected-battery": " {device_alias}  ->  󰁹 {device_battery_percentage}%",
         "on-click": "bash -c 'rfkill | grep \"bluetooth.* blocked .*\" -q && rfkill unblock bluetooth || rfkill block bluetooth'",
-        "on-click-right": "rofi-bluetooth"
+        "on-click-right": "rofi-bluetooth",
     }
 }
