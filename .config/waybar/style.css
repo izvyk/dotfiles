@@ -97,6 +97,13 @@ tooltip {
 
 #systemd-failed-units.degraded {
     background-color: #cc241d;
+    animation: emergencyblinking 2s ease infinite;
+}
+
+@keyframes emergencyblinking {
+  5% {
+    background-color: #fb4934;
+  }
 }
 
 #network:not(.disabled) {
