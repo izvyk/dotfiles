@@ -3,7 +3,7 @@
     "position": "bottom",
     "exclusive": true,
     "passthrough": false,
-    "height": 30,
+    "height": 35,
     "modules-left": [
         "custom/powerprofile",
         "tray",
@@ -31,13 +31,15 @@
         "tooltip": false,
         "format": "{} {icon}",
         "format-icons": {
-            "notification": "<span foreground='red'><sup></sup></span>",
+            // 
+            // 
+            "notification": "<span foreground='#CC241D'><sup></sup></span>",
             "none": "",
-            "dnd-notification": "<span foreground='red'><sup></sup></span>",
+            "dnd-notification": "<span foreground='#CC241D'><sup></sup></span>",
             "dnd-none": "",
-            "inhibited-notification": "<span foreground='red'><sup></sup></span>",
+            "inhibited-notification": "<span foreground='#CC241D'><sup></sup></span>",
             "inhibited-none": "",
-            "dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
+            "dnd-inhibited-notification": "<span foreground='#CC241D'><sup></sup></span>",
             "dnd-inhibited-none": "",
         },
         "return-type": "json",
@@ -62,7 +64,7 @@
 		"interval": "once",
 		"format": "{}",
 		"return-type": "json",
-		"exec": "~/.config/waybar/scripts/power-profile-get.sh",
+		"exec": "sleep 0.1 && ~/.config/waybar/scripts/power-profile-get.sh",
 		"on-click": "~/.config/waybar/scripts/power-profile-cycle.sh",
     },
 
@@ -96,7 +98,7 @@
 
     "mpris": {
 		"format": "{player_icon} {title}",
-		"format-paused": "{status_icon} <i>{title}</i>",
+		"format-paused": "{status_icon} {title}",
 		"player-icons": {
 			"default": "⏸",
 			//"mpv": "🎵",
@@ -111,6 +113,7 @@
     "clock": {
 		"interval": 1,
         "format": "{:%H:%M<small>:%S</small>  %a, %e<small>th</small>}",
+        // "format": "{:%H:%M<small>:%S</small>  <b>%a, %e</b><small>th</small>}",
         "tooltip-format": "{calendar}",
         "calendar": {
             "weeks-pos": "left",
