@@ -14,8 +14,6 @@ def get_current_layout_index() -> str:
     return 0 if os.system('hyprctl devices -j | gojq -r \'.keyboards | map(select(.name == "at-translated-set-2-keyboard")) | .[0] | .active_keymap\' | rg -iq "en"') == 0 else 1
 
 def convert(layout_from:str, layout_to:str) -> str:
-    if layout_to == layouts[1]:
-        print('?', end='') # dirty hack to make wtype work with cyrillic letters properly
     for symbol in sys.stdin.read():
         if (index := layout_from.find(symbol)) > -1:
             print(layout_to[index], end='')
