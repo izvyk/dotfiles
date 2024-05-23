@@ -95,21 +95,21 @@ sunset_time = html_data("div[data-testid='SunsetValue'] p").text()
 moon_phase = html_data("div[data-testid='wxData']").eq(7).text()
 match moon_phase:
     case "Full Moon":
-        moon_icon = "󰽢" # 
+        moon_icon = "" # 󰽢
     case "Waning Gibbous":
-        moon_icon = "󰽦" # 
+        moon_icon = "" # 󰽦
     case "Third Quarter": #Last Quarter
-        moon_icon = "󰽣" # 
+        moon_icon = "" # 󰽣
     case "Waning Crescent":
-        moon_icon = "󰽥" # 
+        moon_icon = "" # 󰽥
     case "New Moon":
-        moon_icon = "󰽤" # 
+        moon_icon = "" # 󰽤
     case "Waxing Crescent":
-        moon_icon = "󰽧" # 
+        moon_icon = "" # 󰽧
     case "First Quarter":
-        moon_icon = "󰽡" # 
+        moon_icon = "" # 󰽡
     case "Waxing Gibbous":
-        moon_icon = "󰽨" # 
+        moon_icon = "" # 󰽨
     case _:
         moon_icon = "FIX NEEDED"
 
