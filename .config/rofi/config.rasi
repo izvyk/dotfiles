@@ -24,7 +24,7 @@ configuration {
 /*	ignored-prefixes: "";*/
   	sort: true;
   	sorting-method: "fzf";
-/*	case-sensitive: false;*/
+  	case-sensitive: false;
 /*	cycle: true;*/
 /*	sidebar-mode: false;*/
 /*	hover-select: false;*/
