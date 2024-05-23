@@ -1,5 +1,5 @@
 [Unit]
-Description=Mute audio on logind lock event
+Description=to mute audio on logind lock event
 PartOf=lock.target
 Before=sleep.target
 

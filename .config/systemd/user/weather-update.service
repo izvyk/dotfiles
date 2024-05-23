@@ -1,6 +1,6 @@
 [Unit]
 Description=cached weather update
-Wants=hyprlock-update.service
+OnSuccess=hyprlock-update.service
 Before=hyprlock-update.service
 
 [Service]

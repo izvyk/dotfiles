@@ -1,10 +1,9 @@
 [Unit]
 Description=timer to update cached weather
-PartOf=lock.target
 
 [Timer]
-OnCalendar=*:0/10
+OnCalendar=*:0/15
 RemainAfterElapse=false
 
 [Install]
-WantedBy=lock.target
+WantedBy=timers.target
