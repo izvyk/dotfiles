@@ -94,7 +94,7 @@ sunset_time = html_data("div[data-testid='SunsetValue'] p").text()
 
 moon_phase = html_data("div[data-testid='wxData']").eq(7).text()
 match moon_phase:
-    case "Full Moon":
+    case "Full":
         moon_icon = "" # 󰽢
     case "Waning Gibbous":
         moon_icon = "" # 󰽦
