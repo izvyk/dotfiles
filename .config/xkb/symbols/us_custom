@@ -1,0 +1,25 @@
+default partial alphanumeric_keys modifier_keys
+xkb_symbols "us_custom" {
+
+    include "us(basic)"
+    name[Group1]= "English (DE, AltGr)";
+
+    key <AE03>	{[           3,  numbersign,       numerosign,         section  ]}; // 3 # № §
+    key <AE05>	{[           5,     percent,         permille                   ]}; // 5 % ‰
+    key <AE08>	{[           8,    asterisk,            U2022                   ]}; // 8 * •
+    key <AE11>	{[       minus,  underscore,           endash                   ]}; // - _ –
+
+    key <AD03>	{[           e,           E,         EuroSign                   ]}; // e E €
+    key <AD04>	{[           r,           R,            U20BD                   ]}; // r R ₽
+    key <AD07>	{[           u,           U,       udiaeresis,      Udiaeresis  ]}; // u U ü Ü
+    key <AD09>	{[           o,           O,       odiaeresis,      Odiaeresis  ]}; // o O ö Ö
+
+    key <AC01>	{[           a,           A,       adiaeresis,      Adiaeresis  ]}; // a A ä Ä
+    key <AC02>	{[           s,           S,            U1E9E,      U1E9E       ]}; // s S ẞ ẞ
+
+    key <AB08>	{[       comma,        less,    guillemotleft                   ]}; // , < «
+    key <AB09>	{[         dot,     greater,   guillemotright                   ]}; // . > »
+
+    include "level3(ralt_switch_multikey)"
+};
+
