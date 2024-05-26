@@ -1,0 +1,54 @@
+xkb_symbols "vim_hjkl" {
+    key <AC06>  {[    NoSymbol,    NoSymbol,             Left,            Home  ]}; // H as Left
+    key <AC07>  {[    NoSymbol,    NoSymbol,             Down,            Next  ]}; // J as Down
+    key <AC08>  {[    NoSymbol,    NoSymbol,               Up,           Prior  ]}; // K as Up
+    key <AC09>  {[    NoSymbol,    NoSymbol,            Right,             End  ]}; // L as Right
+};
+
+xkb_symbols "arrows" {
+    key <LEFT>  {[    NoSymbol,    NoSymbol,             Home,        NoSymbol  ]};
+    key <RGHT>  {[    NoSymbol,    NoSymbol,              End,        NoSymbol  ]};
+    key <UP>    {[    NoSymbol,    NoSymbol,            Prior,        NoSymbol  ]};
+    key <DOWN>  {[    NoSymbol,    NoSymbol,             Next,        NoSymbol  ]};
+};
+
+xkb_symbols "ralt_level3_latch_lock" {
+    key <RALT> {
+        [ ISO_Level3_Latch, ISO_Level3_Latch, ISO_Level3_Lock ],
+        type[group1]="TWO_LEVEL"
+    };
+};
+
+xkb_symbols "guillemets" {
+    key <AB08>	{[    NoSymbol,    NoSymbol,    guillemotleft,        NoSymbol  ]}; // , < «
+    key <AB09>	{[    NoSymbol,    NoSymbol,   guillemotright,           U21D2  ]}; // . > » ⇒
+};
+
+
+xkb_symbols "euro_on_e" {
+    key <AD03>	{[    NoSymbol,    NoSymbol,         EuroSign,        NoSymbol  ]}; // e E €
+};
+
+xkb_symbols "rouble_on_r" {
+    key <AD04>	{[    NoSymbol,    NoSymbol,            U20BD,        NoSymbol  ]}; // r R ₽
+};
+
+xkb_symbols "bullet_point_on_8" {
+    key <AE08>	{[    NoSymbol,    NoSymbol,            U2022,        NoSymbol  ]}; // 8 * •
+};
+
+xkb_symbols "almost_equals_on_equals" {
+    key <AE12>	{[    NoSymbol,    NoSymbol,            U2248,        NoSymbol  ]}; // = + ≈
+};
+
+xkb_symbols "check_mark_on_v" {
+    key <AB04>	{[    NoSymbol,    NoSymbol,            U2713,        NoSymbol  ]}; // v V ✓
+};
+
+xkb_symbols "cross_mark_on_x" {
+    key <AB02>	{[    NoSymbol,    NoSymbol,            U2715,        NoSymbol  ]}; // x X ✕
+};
+
+xkb_symbols "per_mille_on_5" {
+    key <AE05>	{[    NoSymbol,    NoSymbol,         permille,        NoSymbol  ]}; // 5 % ‰
+};

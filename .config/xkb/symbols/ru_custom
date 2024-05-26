@@ -5,16 +5,25 @@ xkb_symbols "ru_custom" {
     name[Group1]= "Russian (AltGr)";
 
     key <AE03>	{[           3,  numerosign,       numbersign,         section  ]}; // 3 № # §
-    key <AE05>	{[           5,     percent,         permille                   ]}; // 5 % ‰
-    key <AE08>	{[           8,    asterisk,            U2022                   ]}; // 8 * •
     key <AE11>	{[       minus,  underscore,           emdash                   ]}; // - _ —
 
-    key <AD03>	{[  Cyrillic_u,  Cyrillic_U,         EuroSign                   ]}; // у У €
-    key <AD04>	{[ Cyrillic_ka, Cyrillic_KA,            U20BD                   ]}; // к К ₽
+    include "custom(per_mille_on_5)"
 
-    key <AB08>	{[ Cyrillic_be, Cyrillic_BE,    guillemotleft                   ]}; // б Б «
-    key <AB09>	{[ Cyrillic_yu, Cyrillic_YU,   guillemotright                   ]}; // ю Ю »
+    include "custom(bullet_point_on_8)"
 
-    include "level3(ralt_switch_multikey)"
+    include "custom(check_mark_on_v)"
+    include "custom(cross_mark_on_x)"
+
+    include "custom(almost_equals_on_equals)"
+
+    include "custom(euro_on_e)"
+    include "custom(rouble_on_r)"
+
+    include "custom(guillemets)"
+
+    include "custom(arrows)"
+    include "custom(vim_hjkl)"
+
+    include "custom(ralt_level3_latch_lock)"
 };
 

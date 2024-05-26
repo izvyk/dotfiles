@@ -5,21 +5,31 @@ xkb_symbols "us_custom" {
     name[Group1]= "English (DE, AltGr)";
 
     key <AE03>	{[           3,  numbersign,       numerosign,         section  ]}; // 3 # № §
-    key <AE05>	{[           5,     percent,         permille                   ]}; // 5 % ‰
-    key <AE08>	{[           8,    asterisk,            U2022                   ]}; // 8 * •
     key <AE11>	{[       minus,  underscore,           endash                   ]}; // - _ –
 
-    key <AD03>	{[           e,           E,         EuroSign                   ]}; // e E €
-    key <AD04>	{[           r,           R,            U20BD                   ]}; // r R ₽
     key <AD07>	{[           u,           U,       udiaeresis,      Udiaeresis  ]}; // u U ü Ü
     key <AD09>	{[           o,           O,       odiaeresis,      Odiaeresis  ]}; // o O ö Ö
 
     key <AC01>	{[           a,           A,       adiaeresis,      Adiaeresis  ]}; // a A ä Ä
-    key <AC02>	{[           s,           S,            U1E9E,      U1E9E       ]}; // s S ẞ ẞ
+    key <AC02>	{[           s,           S,            U1E9E,           U1E9E  ]}; // s S ẞ ẞ
 
-    key <AB08>	{[       comma,        less,    guillemotleft                   ]}; // , < «
-    key <AB09>	{[         dot,     greater,   guillemotright                   ]}; // . > »
+    include "custom(per_mille_on_5)"
 
-    include "level3(ralt_switch_multikey)"
+    include "custom(bullet_point_on_8)"
+
+    include "custom(check_mark_on_v)"
+    include "custom(cross_mark_on_x)"
+
+    include "custom(almost_equals_on_equals)"
+
+    include "custom(euro_on_e)"
+    include "custom(rouble_on_r)"
+
+    include "custom(guillemets)"
+
+    include "custom(arrows)"
+    include "custom(vim_hjkl)"
+
+    include "custom(ralt_level3_latch_lock)"
 };
 
