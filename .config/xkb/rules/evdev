@@ -1,0 +1,13 @@
+! option = symbols
+  custom:vim_hjkl = +custom(vim_hjkl)
+  custom:arrows = +custom(arrows)
+  custom:guillemets = +custom(guillemets)
+  custom:rouble_on_r = +custom(rouble_on_r)
+  custom:bullet_point_on_8 = +custom(bullet_point_on_8)
+  custom:almost_equals_on_equals = +custom(almost_equals_on_equals)
+  custom:check_mark_on_v = +custom(check_mark_on_v)
+  custom:cross_mark_on_x = +custom(cross_mark_on_x)
+  custom:per_mille_on_5 = +custom(per_mille_on_5)
+
+// Include the system 'evdev' file
+! include %S/evdev

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xkbConfigRegistry SYSTEM "xkb.dtd">
+<xkbConfigRegistry version="1.1">
+    <layout>
+      <configItem>
+        <name>us</name>
+        <!-- Keyboard indicator for English layouts -->
+        <shortDescription>en</shortDescription>
+        <description>English (US)</description>
+        <countryList>
+          <iso3166Id>US</iso3166Id>
+        </countryList>
+        <languageList>
+          <iso639Id>eng</iso639Id>
+        </languageList>
+      </configItem>
+      <variantList>
+        <variant>
+          <configItem>
+            <name>izvyk</name>
+            <description>English (US, with German letters, AltGr, izvyk's custom layout)</description>
+          </configItem>
+        </variant>
+      </variantList>
+    </layout>
+    <layout>
+      <configItem>
+        <name>ru</name>
+        <!-- Keyboard indicator for Russian layouts -->
+        <shortDescription>ru</shortDescription>
+        <description>Russian</description>
+        <countryList>
+          <iso3166Id>RU</iso3166Id>
+        </countryList>
+        <languageList>
+          <iso639Id>rus</iso639Id>
+        </languageList>
+      </configItem>
+      <variantList>
+        <variant>
+          <configItem>
+            <name>izvyk</name>
+            <description>Russian (AltGr, izvyk's custom layout)</description>
+          </configItem>
+        </variant>
+      </variantList>
+    </layout>
+  </layoutList>
+  <optionList>
+    <group allowMultipleSelection="true">
+      <configItem>
+        <name>custom</name>
+        <description>custom options</description>
+      </configItem>
+      <option>
+        <configItem>
+          <name>custom:vim_hjkl</name>
+          <description>HJKL keys binded to arrows on level 3. Home, PgDown, PgUp, End with Shift respectively.</description>
+        </configItem>
+      </option>
+      <option>
+        <configItem>
+          <name>custom:arrows</name>
+          <description>Arrows keys act as Home, End, PgUp, and PgDown on the third level.</description>
+        </configItem>
+      </option>
+      <option>
+        <configItem>
+          <name>custom:guillemets</name>
+          <description>Adds guillemets to &lt; and &gt; on the third level</description>
+        </configItem>
+      </option>
+      <option>
+        <configItem>
+          <name>custom:rouble_on_r</name>
+          <description>Adds Rouble sign to the third level of R key.</description>
+        </configItem>
+      </option>
+      <option>
+        <configItem>
+          <name>custom:bullet_point_on_8</name>
+          <description>Adds bullet point sign to the third level of key 8.</description>
+        </configItem>
+      </option>
+      <option>
+        <configItem>
+          <name>custom:almost_equals_on_equals</name>
+          <description>Adds almost equals sign to the third level of key equals.</description>
+        </configItem>
+      </option>
+      <option>
+        <configItem>
+          <name>custom:check_mark_on_v</name>
+          <description>Adds check mark sign to the third level of V key.</description>
+        </configItem>
+      </option>
+      <option>
+        <configItem>
+          <name>custom:cross_mark_on_x</name>
+          <description>Adds cross sign sign to the third level of X key.</description>
+        </configItem>
+      </option>
+      <option>
+        <configItem>
+          <name>custom:per_mille_on_5</name>
+          <description>Adds per mille sign to the third level of key 5.</description>
+        </configItem>
+      </option>
+    </group>
+  </optionList>
+</xkbConfigRegistry>

@@ -1,8 +1,8 @@
-default partial alphanumeric_keys modifier_keys
-xkb_symbols "us_custom" {
+partial alphanumeric_keys
+xkb_symbols "izvyk" {
 
     include "us(basic)"
-    name[Group1]= "English (DE, AltGr)";
+    name[Group1]= "English (US, with German letters, AltGr, izvyk's custom layout)";
 
     key <AE03>	{[           3,  numbersign,       numerosign,         section  ]}; // 3 # № §
     key <AE11>	{[       minus,  underscore,           endash                   ]}; // - _ –
@@ -14,22 +14,16 @@ xkb_symbols "us_custom" {
     key <AC02>	{[           s,           S,            U1E9E,           U1E9E  ]}; // s S ẞ ẞ
 
     include "custom(per_mille_on_5)"
-
     include "custom(bullet_point_on_8)"
-
     include "custom(check_mark_on_v)"
     include "custom(cross_mark_on_x)"
-
     include "custom(almost_equals_on_equals)"
-
-    include "custom(euro_on_e)"
     include "custom(rouble_on_r)"
-
     include "custom(guillemets)"
-
     include "custom(arrows)"
     include "custom(vim_hjkl)"
 
-    include "custom(ralt_level3_latch_lock)"
-};
+    include "eurosign(e)"
 
+    include "level3(ralt_latch_switch)"
+};

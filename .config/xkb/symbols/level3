@@ -1,0 +1,15 @@
+// Press for the third layer (sticky)
+// Press twice and hold for the next layout (while pressed)
+partial modifier_keys
+xkb_symbols "ralt_latch_switch" {
+  key <RALT> {[  ISO_Level3_Latch,  ISO_Level3_Latch,       Mode_switch  ],
+                 type[group1]="THREE_LEVEL" };
+};
+
+// Press for the third layer (sticky)
+// Press twice and hold for Alr_R
+partial modifier_keys
+xkb_symbols "ralt_latch_ralt" {
+  key <RALT> {[  ISO_Level3_Latch,  ISO_Level3_Latch,             Alt_R  ],
+                 type[group1]="THREE_LEVEL" };
+};
