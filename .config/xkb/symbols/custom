@@ -8,10 +8,10 @@ xkb_symbols "vim_hjkl" {
 
 partial
 xkb_symbols "arrows" {
-    key <LEFT>  {[    NoSymbol,    NoSymbol,             Home,        NoSymbol  ]};
-    key <RGHT>  {[    NoSymbol,    NoSymbol,              End,        NoSymbol  ]};
-    key <UP>    {[    NoSymbol,    NoSymbol,            Prior,        NoSymbol  ]};
-    key <DOWN>  {[    NoSymbol,    NoSymbol,             Next,        NoSymbol  ]};
+    key <LEFT>  {[    NoSymbol,        Left,             Home,        NoSymbol  ]};
+    key <RGHT>  {[    NoSymbol,       Right,              End,        NoSymbol  ]};
+    key <UP>    {[    NoSymbol,          Up,            Prior,        NoSymbol  ]};
+    key <DOWN>  {[    NoSymbol,        Down,             Next,        NoSymbol  ]};
 };
 
 partial
