@@ -4,8 +4,8 @@ import subprocess
 import sys
 
 layouts = [
-    '`qwertyuiop[]asdfghjkl;\'zxcvbnm,./~@#$^&QWERTYUIOP{}|ASDFGHJKL:"ZXCVBNM<>?',
-    'ёйцукенгшщзхъфывапролджэячсмитьбю.Ё"№;:?ЙЦУКЕНГШЩЗХЪ/ФЫВАПРОЛДЖЭЯЧСМИТЬБЮ,',
+    '`qwertyuiop[]asdfghjkl;\'zxcvbnm,./~@#$^&QWERTYUIOP{}|ASDFGHJKL:"ZXCVBNM<>?№',
+    'ёйцукенгшщзхъфывапролджэячсмитьбю.Ё"№;:?ЙЦУКЕНГШЩЗХЪ/ФЫВАПРОЛДЖЭЯЧСМИТЬБЮ#,',
 ]
 
 keyboard_name = subprocess.run('hyprctl devices -j | gojq -jc ".keyboards | map(select(.main == true)) | .[0] | .name"', capture_output=True, text=True, shell=True).stdout
