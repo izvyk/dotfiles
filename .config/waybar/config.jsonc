@@ -166,8 +166,8 @@
         "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
         //"on-scroll-up": "flock -n sh -c 'amixer set Master 1%- unmute -q'",
         //"on-scroll-down": "flock -n sh -c 'amixer set Master 1%+ unmute -q'",
-        "on-scroll-up": "~/.local/bin/volume-down",
-        "on-scroll-down": "~/.local/bin/volume-up",
+        "on-scroll-up": "~/.local/bin/volume-down 0.5",
+        "on-scroll-down": "~/.local/bin/volume-up 0.5",
         //"scroll-step": 1,
         "format-icons": {
             "headphone": "",

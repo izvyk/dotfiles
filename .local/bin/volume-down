@@ -1,0 +1,6 @@
+#!/usr/bin/bash
+
+# pactl set-sink-mute @DEFAULT_SINK@ 0
+# flock -n sh -c "pactl set-sink-volume @DEFAULT_SINK@ -${1:-2.5}dB"
+wpctl set-mute @DEFAULT_AUDIO_SINK@ 0
+wpctl set-volume @DEFAULT_AUDIO_SINK@ "${1:-2}"%-
