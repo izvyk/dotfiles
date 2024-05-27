@@ -8,10 +8,10 @@ xkb_symbols "vim_hjkl" {
 
 partial
 xkb_symbols "arrows" {
-    key <LEFT>  {[    NoSymbol,        Left,             Home,        NoSymbol  ]};
-    key <RGHT>  {[    NoSymbol,       Right,              End,        NoSymbol  ]};
-    key <UP>    {[    NoSymbol,          Up,            Prior,        NoSymbol  ]};
-    key <DOWN>  {[    NoSymbol,        Down,             Next,        NoSymbol  ]};
+    key <LEFT>  {[        Left,        Left,             Home  ], type[group1]="THREE_LEVEL"};
+    key <RGHT>  {[       Right,       Right,              End  ], type[group1]="THREE_LEVEL"};
+    key <UP>    {[          Up,          Up,            Prior  ], type[group1]="THREE_LEVEL"};
+    key <DOWN>  {[        Down,        Down,             Next  ], type[group1]="THREE_LEVEL"};
 };
 
 partial
@@ -31,7 +31,7 @@ xkb_symbols "bullet_point_on_8" {
 };
 
 partial
-xkb_symbols "almost_equals_on_equals" {
+xkb_symbols "almost_equal_on_equal" {
     key <AE12>	{[    NoSymbol,    NoSymbol,            U2248,        NoSymbol  ]}; // = + ≈
 };
 

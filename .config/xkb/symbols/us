@@ -11,13 +11,13 @@ xkb_symbols "izvyk" {
     key <AD09>	{[           o,           O,       odiaeresis,      Odiaeresis  ]}; // o O ö Ö
 
     key <AC01>	{[           a,           A,       adiaeresis,      Adiaeresis  ]}; // a A ä Ä
-    key <AC02>	{[           s,           S,            U1E9E,           U1E9E  ]}; // s S ẞ ẞ
+    key <AC02>	{[           s,           S,            U00DF,           U1E9E  ]}; // s S ß ẞ
 
     include "custom(per_mille_on_5)"
     include "custom(bullet_point_on_8)"
     include "custom(check_mark_on_v)"
     include "custom(cross_mark_on_x)"
-    include "custom(almost_equals_on_equals)"
+    include "custom(almost_equal_on_equal)"
     include "custom(rouble_on_r)"
     include "custom(guillemets)"
     include "custom(arrows)"
@@ -27,3 +27,20 @@ xkb_symbols "izvyk" {
 
     include "level3(ralt_latch_switch)"
 };
+
+// ┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┲━━━━━━━━━┓
+// │ ~   │ !   │ @   │ # № │ $   │ % ‰ │ ^   │ &   │ * • │ (   │ )   │ _ – │ + ≈ ┃   BCSP  ┃
+// │ `   │ 1   │ 2   │ 3 § │ 4   │ 5   │ 6   │ 7   │ 8   │ 9   │ 0   │ -   │ =   ┃         ┃
+// ┢━━━━━┷━┱───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┺━┯━━━━━━━┫
+// ┃ TAB   ┃ Q   │ W   │ E € │ R ₽ │ T   │ Y   │ U ü │ I   │ O ö │ P   │ {   │ }   │ |     ┃
+// ┃       ┃ q   │ w   │ e   │ r   │ t   │ y   │ u Ü │ i   │ o Ö │ p   │ [   │ ]   │ \     ┃
+// ┣━━━━━━━┻┱────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┲━━━━┷━━━━━━━┫
+// ┃ CAPS   ┃ A ä │ S ß │ D   │ F   │ G   │ H   │ J   │ K   │ L   │ :   │ "   ┃     ENTER  ┃
+// ┃        ┃ a Ä │ s ẞ │ d   │ f   │ g   │ h   │ j   │ k   │ l   │ ;   │ '   ┃            ┃
+// ┣━━━━━━━━┻━━━━┱┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┲┻━━━━━━━━━━━━┫
+// ┃ SHIFT       ┃ Z   │ X ✕ │ С   │ V ✓ │ B   │ N   │ M   │ < « │ > » │ ?   ┃      SHIFT  ┃
+// ┃             ┃ z   │ x   │ с   │ v   │ b   │ n   │ m   │ ,   │ . ⇒ │ /   ┃             ┃
+// ┣━━━━━━┳━━━━━━╋━━━━━╈━━━━━╅─────┴─────┴─────┴─────┴─────╆━━━━━╈━━━━━╈━━━━━╋━━━━━━┳━━━━━━┫
+// ┃ ALT  ┃ FN   ┃ WIN ┃ CTRL┃                             ┃ ALT ┃ CTRL┃LEFT ┃ UP   ┃ RIGHT┃
+// ┃      ┃      ┃     ┃     ┃                             ┃     ┃     ┃     ┃ DOWN ┃      ┃
+// ┗━━━━━━┻━━━━━━┻━━━━━┻━━━━━┹─────────────────────────────┺━━━━━┻━━━━━┻━━━━━┻━━━━━━┻━━━━━━┛
