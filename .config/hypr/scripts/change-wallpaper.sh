@@ -16,4 +16,5 @@ print(int(x * scale), int(height - y * scale), sep=",")
 CURRENT_WALLPAPER_PATH="$(swww query | cut -c 59-)"
 NEW_WALLPAPER_PATH="$(find /home/$USER/.local/share/wallpapers/ -maxdepth 1 -type f ! -path "$CURRENT_WALLPAPER_PATH" | shuf -n1)"
 
+ln -sf "$NEW_WALLPAPER_PATH" ~/.cache/wallpaper
 swww img -t grow "$NEW_WALLPAPER_PATH" --transition-pos "$SWWW_POSITION" --transition-fps 60
