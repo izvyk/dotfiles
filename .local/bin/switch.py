@@ -1,17 +1,17 @@
 #!/usr/bin/python
 
-import os
+import subprocess
 import sys
-
-keyboard_name = "at-translated-set-2-keyboard"
 
 layouts = [
     '`qwertyuiop[]asdfghjkl;\'zxcvbnm,./~@#$^&QWERTYUIOP{}|ASDFGHJKL:"ZXCVBNM<>?',
     'ёйцукенгшщзхъфывапролджэячсмитьбю.Ё"№;:?ЙЦУКЕНГШЩЗХЪ/ФЫВАПРОЛДЖЭЯЧСМИТЬБЮ,',
 ]
 
+keyboard_name = subprocess.run('hyprctl devices -j | gojq -jc ".keyboards | map(select(.main == true)) | .[0] | .name"', capture_output=True, text=True, shell=True).stdout
+
 def get_current_layout_index() -> str:
-    return 0 if os.system('hyprctl devices -j | gojq -r \'.keyboards | map(select(.name == "at-translated-set-2-keyboard")) | .[0] | .active_keymap\' | rg -iq "en"') == 0 else 1
+    return 0 if subprocess.run(f'hyprctl devices -j | gojq -r \'.keyboards | map(select(.name == "{keyboard_name}")) | .[0] | .active_keymap\' | rg -iq "en"', shell=True).returncode == 0 else 1
 
 def convert(layout_from:str, layout_to:str) -> str:
     for symbol in sys.stdin.read():
@@ -21,7 +21,7 @@ def convert(layout_from:str, layout_to:str) -> str:
             print(symbol, end='')
 
 def switch_layout_next() -> None:
-    os.system(f"hyprctl switchxkblayout {keyboard_name} next > /dev/null")
+    subprocess.run(['hyprctl', 'switchxkblayout', keyboard_name, 'next'], stdout=subprocess.DEVNULL)
 
 def main():
     layout_current_index = get_current_layout_index()
