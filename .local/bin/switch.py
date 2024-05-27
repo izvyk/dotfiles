@@ -9,7 +9,8 @@ layouts = [
 ]
 
 def get_keyboard_name():
-    return subprocess.run('hyprctl devices -j | gojq -jc ".keyboards | map(select(.main == true)) | .[0] | .name"', capture_output=True, text=True, shell=True).stdout
+    return 'at-translated-set-2-keyboard'
+    # return subprocess.run('hyprctl devices -j | gojq -jc ".keyboards | map(select(.main == true)) | .[0] | .name"', capture_output=True, text=True, shell=True).stdout
 
 def get_current_layout_index(keyboard_name) -> str:
     return 0 if subprocess.run(f'hyprctl devices -j | gojq -r \'.keyboards | map(select(.name == "{keyboard_name}")) | .[0] | .active_keymap\' | rg -iq "english"', shell=True).returncode == 0 else 1
