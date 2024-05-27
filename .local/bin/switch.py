@@ -8,10 +8,11 @@ layouts = [
     'ёйцукенгшщзхъфывапролджэячсмитьбю.Ё"№;:?ЙЦУКЕНГШЩЗХЪ/ФЫВАПРОЛДЖЭЯЧСМИТЬБЮ#,',
 ]
 
-keyboard_name = subprocess.run('hyprctl devices -j | gojq -jc ".keyboards | map(select(.main == true)) | .[0] | .name"', capture_output=True, text=True, shell=True).stdout
+def get_keyboard_name():
+    return subprocess.run('hyprctl devices -j | gojq -jc ".keyboards | map(select(.main == true)) | .[0] | .name"', capture_output=True, text=True, shell=True).stdout
 
-def get_current_layout_index() -> str:
-    return 0 if subprocess.run(f'hyprctl devices -j | gojq -r \'.keyboards | map(select(.name == "{keyboard_name}")) | .[0] | .active_keymap\' | rg -iq "en"', shell=True).returncode == 0 else 1
+def get_current_layout_index(keyboard_name) -> str:
+    return 0 if subprocess.run(f'hyprctl devices -j | gojq -r \'.keyboards | map(select(.name == "{keyboard_name}")) | .[0] | .active_keymap\' | rg -iq "english"', shell=True).returncode == 0 else 1
 
 def convert(layout_from:str, layout_to:str) -> str:
     for symbol in sys.stdin.read():
@@ -20,16 +21,16 @@ def convert(layout_from:str, layout_to:str) -> str:
         else:
             print(symbol, end='')
 
-def switch_layout_next() -> None:
+def switch_layout_next(keyboard_name) -> None:
     subprocess.run(['hyprctl', 'switchxkblayout', keyboard_name, 'next'], stdout=subprocess.DEVNULL)
 
 def main():
-    layout_current_index = get_current_layout_index()
+    keyboard_name = get_keyboard_name()
+    layout_current_index = get_current_layout_index(keyboard_name)
     layout_target_index = 1 - layout_current_index
 
     convert(layouts[layout_current_index], layouts[layout_target_index])
-    switch_layout_next()
-    pass
+    switch_layout_next(keyboard_name)
 
 if __name__ == '__main__':
     main()
