@@ -1,23 +1,33 @@
 #!/usr/bin/bash
 
-# Source https://stackoverflow.com/a/14939373
-# Test for network conection
-for interface in $(ls /sys/class/net/ | grep -v lo); do
-  [[ "$(cat /sys/class/net/$interface/carrier)" = 1 ]] && OnLine=1
-done
+SCRIPT_PATH="$(dirname "$0")"
 
-if ! [ $OnLine ]; then
-    notify-send -u critical "Unable to turn VPN on" "Network is disconnected" -i .local/share/icons/Tela-circle/symbolic/emblems/emblem-system-symbolic.svg
-    exit
-fi
+# If a VPN is enabled, network is up and no further check is needed
+# Otherwise, check if network is up and exit if it's not
+"$SCRIPT_PATH"/vpn-status-check.sh || "$SCRIPT_PATH"/vpn-check-network.sh || exit 1
 
-CONNECTION_NAME="$(nmcli -f NAME,TIMESTAMP,TYPE con show | grep -e 'vpn\|wireguard' | sort -nk 2 | tail -n 1 | cut -d ' ' -f 1)"
+# List of all VPNs in the MRU order
+CONNECTIONS="$(nmcli -t -f NAME,TIMESTAMP,TYPE con show | rg -e 'vpn|wireguard' | sort -nk 2 | cut -d ':' -f 1)"
 
-#if $(nmcli con show --active | grep wireguard -q); then
-if [[ -n "$(nmcli -g GENERAL.STATE c s ${CONNECTION_NAME})" ]]; then
-    nmcli con down "$CONNECTION_NAME"
+# Use Rofi if such a flag provided or use the most recently used one
+if [ "$1" = "--interactive" ]; then
+    CONNECTION_NAME="$(echo "$CONNECTIONS" | rofi -dmenu -p 'VPN')"
+
+    # Exit if Rofi was closed without choosing an entry
+    [ -z "$CONNECTION_NAME" ] && exit
 else
-    nmcli con up "$CONNECTION_NAME"
+    CONNECTION_NAME="$(echo "$CONNECTIONS" | tail -n 1)"
 fi
+
+# Remember the status of the chosen connection
+CONNECTION_STATUS="$(nmcli -g GENERAL.STATE c s "$CONNECTION_NAME")"
+
+# Turn off every VPN connection. We don't want multiple VPNs at once
+while IFS= read -r CON; do
+    nmcli con down "$CON" 2>/dev/null
+done <<< "$CONNECTIONS"
+
+# Turn it on if it was off originally
+[ -z "$CONNECTION_STATUS" ] && nmcli con up "$CONNECTION_NAME"
 
 pkill -RTMIN+8 waybar

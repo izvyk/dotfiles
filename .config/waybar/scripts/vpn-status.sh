@@ -1,6 +1,8 @@
 #!/usr/bin/bash
 
-if $(nmcli con show --active | grep -e "vpn\|wireguard" -q); then
+SCRIPT_PATH="$(dirname "$0")"
+
+if $("$SCRIPT_PATH"/vpn-status-check.sh); then
 	ICON="󰌾"
 	CLASS="enabled"
 else
