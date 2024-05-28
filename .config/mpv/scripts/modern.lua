@@ -28,7 +28,8 @@ local user_opts = {
     iamaprogrammer = false,     -- use native mpv values and disable OSC
                                 -- internal track list management (and some
                                 -- functions that depend on it)
-    font = 'mpv-osd-symbols',    -- default osc font
+    -- font = 'mpv-osd-symbols',    -- default osc font
+    font = 'Roboto',
     seekrange = true,            -- show seekrange overlay
     seekrangealpha = 128,          -- transparency of seekranges
     seekbarkeyframes = true,    -- use keyframes when dragging the seekbar
@@ -38,9 +39,9 @@ local user_opts = {
     timetotal = true,              -- display total time instead of remaining time?
     timems = false,             -- display timecodes with milliseconds
     visibility = 'auto',        -- only used at init to set visibility_mode(...)
-    windowcontrols = 'auto',    -- whether to show window controls
-    volumecontrol = true,       -- whether to show mute button and volumne slider
-    processvolume = true,		-- volue slider show processd volume
+    windowcontrols = 'no',    -- whether to show window controls
+    volumecontrol = true,       -- whether to show mute button and volume slider
+    processvolume = true,		-- volume slider show processed volume
     language = 'eng',            -- eng=English, chs=Chinese
 }
 
