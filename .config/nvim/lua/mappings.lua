@@ -34,3 +34,9 @@ map('i', '<A-j>', '<C-^>', opts)
 
 -- cmd [[:tnoremap <Esc> <C-\><C-n>]]
 cmd 'cabbrev vb vert sb'
+
+-- Layout switching fix
+map('i', '<D-Space>', '<Nop>', opts)
+map('n', '<D-Space>', '<Nop>', opts)
+map('v', '<D-Space>', '<Nop>', opts)
+map('t', '<D-Space>', '<Nop>', opts)
