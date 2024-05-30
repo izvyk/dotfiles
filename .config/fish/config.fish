@@ -22,7 +22,9 @@ if status is-interactive
 
     zoxide init --hook pwd --cmd cd fish | source
 
-    bind $argv \ch __fish_man_page
+    bind $argv \em __fish_man_page          # Alt + M = manpage
+    bind $argv \el nextd-or-forward-word    # Alt + L = next visited directory
+    bind $argv \eh prevd-or-backward-word   # Alt + H = previous visited directory
 
 end
 
