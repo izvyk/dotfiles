@@ -14,9 +14,11 @@ if status is-interactive
     set -x GPG_TTY $(tty)
 
     # Manpages with bat
-    set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
-    set -x MANROFFOPT '-c' # Fix escape sequences in bat
-    # set -x MANPAGER "sh -c \"sed -e 's/\x1b\[[0-9;]*m//g' | bat -l man -p\"" # Aternative fix
+    if which bat >/dev/null 2>&1;
+        set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
+        set -x MANROFFOPT '-c' # Fix escape sequences in bat
+        # set -x MANPAGER "sh -c \"sed -e 's/\x1b\[[0-9;]*m//g' | bat -l man -p\"" # Aternative fix
+    end
 
     zoxide init --hook pwd --cmd cd fish | source
 
