@@ -12,7 +12,11 @@ if status is-interactive
     
     fish_ssh_agent
     set -x GPG_TTY $(tty)
-    set -x MANPAGER "bat -l man -p"
+
+    # Manpages with bat
+    set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
+    set -x MANROFFOPT '-c' # Fix escape sequences in bat
+    # set -x MANPAGER "sh -c \"sed -e 's/\x1b\[[0-9;]*m//g' | bat -l man -p\"" # Aternative fix
 
     zoxide init --hook pwd --cmd cd fish | source
 
