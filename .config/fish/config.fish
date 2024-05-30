@@ -16,5 +16,7 @@ if status is-interactive
 
     zoxide init --hook pwd --cmd cd fish | source
 
+    bind $argv \ch __fish_man_page
+
 end
 
