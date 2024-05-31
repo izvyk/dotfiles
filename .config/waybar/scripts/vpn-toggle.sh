@@ -1,17 +1,23 @@
 #!/usr/bin/bash
 
 SCRIPT_PATH="$(dirname "$0")"
+VPN_REGEX="vpn|wireguard"
 
 # If a VPN is enabled, network is up and no further check is needed
 # Otherwise, check if network is up and exit if it's not
 "$SCRIPT_PATH"/vpn-status-check.sh || "$SCRIPT_PATH"/vpn-check-network.sh || exit 1
 
 # List of all VPNs in the MRU order
-CONNECTIONS="$(nmcli -t -f NAME,TIMESTAMP,TYPE con show | rg -e 'vpn|wireguard' | sort -nk 2 | cut -d ':' -f 1)"
+CONNECTIONS="$(nmcli -t -f NAME,TIMESTAMP,TYPE con show | rg -e "$VPN_REGEX" | sort -nk 2 | cut -d ':' -f 1)"
 
 # Use Rofi if such a flag provided or use the most recently used one
 if [ "$1" = "--interactive" ]; then
-    CONNECTION_NAME="$(echo "$CONNECTIONS" | rofi -dmenu -p 'VPN')"
+    ROFI_CMD="rofi -dmenu -p \"VPN\""
+
+    ACTIVE="$(nmcli -t con show --active | rg -e "$VPN_REGEX")"
+    [ "$?" = 0 ] && ROFI_CMD="$ROFI_CMD -mesg \"Active: ${ACTIVE%%:*}\""
+
+    CONNECTION_NAME="$(echo "$CONNECTIONS" | eval "$ROFI_CMD")"
 
     # Exit if Rofi was closed without choosing an entry
     [ -z "$CONNECTION_NAME" ] && exit
