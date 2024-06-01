@@ -1,0 +1,19 @@
+\set AUTOCOMMIT off
+-- \timing on
+-- EXPLAIN ANALYZE
+
+-- Two-line red + blue
+\set PROMPT1 '%[%033[0;1;34m%]%/%[%033[0;1;31m%] %x%[%033[0m%]\n%R%# '
+\set PROMPT2 '%R%# '
+
+-- Colored default. Green + red
+-- \set PROMPT1 '%[%033[0;1;32m%]%/%[%033[0m%]%R%[%033[0;1;31m%]%x%[%033[0m%]%# '
+
+-- Colored default. Bold blue + bold red
+-- \set PROMPT1 '%[%033[0;1;34m%]%/%[%033[0m%]%R%[%033[0;1;31m%]%x%[%033[0m%]%# '
+
+-- Colored default. All bold blue + red
+-- \set PROMPT1 '%[%033[0;1;34m%]%/%[%033[0;1m%]%R%[%033[0;1;31m%]%x%[%033[0;1m%]%#%[%033[0m%] '
+
+-- Hide database name for multiline queries
+-- \set PROMPT2 '%[%033[0;8m%]%/%[%033[0;1m%]%R%[%033[0;1;31m%]%x%[%033[0;1m%]%#%[%033[0m%] '
