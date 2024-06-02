@@ -230,6 +230,10 @@ tooltip {
     padding-right: 12px;
 }
 
+#custom-notifications {
+    padding-right: 4px;
+}
+
 /* #custom-notifications.enabled { */
 /* 	padding-left: 9px; */
 /* 	padding-right: 13px; */
