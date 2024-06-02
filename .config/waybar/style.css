@@ -1,9 +1,3 @@
-window#waybar * {
-    font-family: "Iosevka Nerd Font";
-    font-size: 16px;
-    transition: color 0.3s, background-color 0.3s;
-}
-
 window#waybar {
     /* background: rgba(21, 18, 27, 0.01); */
     /* background: rgba(1, 1, 1, 0.01); */
@@ -23,6 +17,10 @@ tooltip {
     border-width: 2px;
     border-style: solid;
     border-color: #d5c4a1;
+
+    font-family: "Iosevka Nerd Font";
+    font-size: 16px;
+    transition: color 0.3s, background-color 0.3s;
 }
 
 /* #workspaces button { */
@@ -66,12 +64,33 @@ tooltip {
     padding: 2px 10px;
     margin: 4px 3px 0px;
     border-radius: 20px;
+
+    font-family: "Iosevka Nerd Font";
+    font-size: 16px;
+    transition: color 0.3s, background-color 0.3s;
 }
 
-#tray * {
-    font-family: "Open Sans";
+#tray menu {
+	/* background-color: #fbf1c7; */
+	font-family: "Open Sans";
     font-size: 14px;
     transition: none;
+
+	border-width: 2px;
+	border-style: solid;
+	border-color: #282828;
+}
+
+#tray menu menuitem {
+	border-width: 0 2px;
+	border-style: solid;
+	border-color: #282828;
+}
+
+#tray menu menuitem:hover {
+	background-color: #ebdbb2;
+	background-color: #458588;
+    /* color: #fbf1c7; */
 }
 
 #custom-powerprofile {
