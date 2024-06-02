@@ -123,7 +123,7 @@
                 "days": "<span color='#fbf1c7'><b>{}</b></span>",
                 "weeks": "<span color='#8ec07c'><b>W{} </b></span>",
                 "weekdays": "<span color='#fabd2f'><b>{}</b></span>",
-                "today": "<span color='#fe8019'><b><u>{}</u></b></span>",
+                "today": "<span color='#fe8019'><b>{}</b></span>",
             },
         },
         "actions": {
