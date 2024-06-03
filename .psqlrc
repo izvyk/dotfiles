@@ -29,3 +29,6 @@
 
 -- Colored default. Partial powerline, blue + red
 \set PROMPT1 '%[%033[0;1;48;5;24m%] %/ %[%033[0;38;5;24m%]%[%033[0;1m%] %R%[%033[0;1;38;5;196m%]%x%[%033[0;1m%]%#%[%033[0m%] '
+
+-- Colored default. Similar, but withour powerline glyths, blue + red
+-- \set PROMPT1 '%[%033[0;1;48;5;24m%] %/ %[%033[0;38;5;24m%]|%[%033[0;1m%]%R%[%033[0;1;38;5;196m%]%x%[%033[0;1m%]%#%[%033[0m%] '
