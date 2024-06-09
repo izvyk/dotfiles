@@ -76,15 +76,15 @@ run_cmd() {
 	selected="$(confirm_exit)"
 	if [[ "$selected" == "$yes" ]]; then
 		if [[ $1 == '--shutdown' ]]; then
-			systemctl --no-ask-password poweroff || notify-send -u critical "Sleep request rejected" "Lock is inhibited" -i .local/share/icons/Tela-circle/symbolic/emblems/emblem-system-symbolic.svg
+			systemctl --no-ask-password poweroff || notify-send -u critical "Shutdown request rejected" "Inhibitor is active" -i .local/share/icons/Tela-circle/symbolic/emblems/emblem-system-symbolic.svg
 		elif [[ $1 == '--hibernate' ]]; then
-            systemctl --no-ask-password hibernate || notify-send -u critical "Sleep request rejected" "Lock is inhibited" -i .local/share/icons/Tela-circle/symbolic/emblems/emblem-system-symbolic.svg
+            systemctl --no-ask-password hibernate || notify-send -u critical "Hibernation request rejected" "Inhibitor is active" -i .local/share/icons/Tela-circle/symbolic/emblems/emblem-system-symbolic.svg
 		elif [[ $1 == '--reboot_arch' ]]; then
-            efibootmgr-set-bootnext-current && systemctl --no-ask-password reboot || notify-send -u critical "Sleep request rejected" "Lock is inhibited" -i .local/share/icons/Tela-circle/symbolic/emblems/emblem-system-symbolic.svg
+            efibootmgr-set-bootnext-current && systemctl --no-ask-password reboot || notify-send -u critical "Reboot request rejected" "Inhibitor is active" -i .local/share/icons/Tela-circle/symbolic/emblems/emblem-system-symbolic.svg
 		elif [[ $1 == '--reboot_windows' ]]; then
-            efibootmgr-set-bootnext-windows && systemctl --no-ask-password reboot || notify-send -u critical "Sleep request rejected" "Lock is inhibited" -i .local/share/icons/Tela-circle/symbolic/emblems/emblem-system-symbolic.svg
+            efibootmgr-set-bootnext-windows && systemctl --no-ask-password reboot || notify-send -u critical "Reboot request rejected" "Inhibitor is active" -i .local/share/icons/Tela-circle/symbolic/emblems/emblem-system-symbolic.svg
 		elif [[ $1 == '--suspend' ]]; then
-			systemctl --no-ask-password suspend-then-hibernate || notify-send -u critical "sleep request rejected" "lock is inhibited" -i .local/share/icons/tela-circle/symbolic/emblems/emblem-system-symbolic.svg
+			systemctl --no-ask-password suspend-then-hibernate || notify-send -u critical "Sleep request rejected" "Inhibitor is active" -i .local/share/icons/tela-circle/symbolic/emblems/emblem-system-symbolic.svg
 		elif [[ $1 == '--logout' ]]; then
             hyprctl dispatch exit
 		elif [[ $1 == '--lock' ]]; then
