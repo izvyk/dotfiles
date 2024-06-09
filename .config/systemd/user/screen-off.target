@@ -1,0 +1,4 @@
+[Unit]
+Description=turn off the screen
+#Requires=graphical-session.target
+Conflicts=wakeup.target

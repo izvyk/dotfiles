@@ -1,0 +1,5 @@
+[Unit]
+Description=stop sleep.target
+#Requires=graphical-session.target
+Conflicts=sleep.target
+Conflicts=screen-off.target

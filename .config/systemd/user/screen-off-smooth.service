@@ -2,12 +2,16 @@
 Description=to reduce brightness smoothly and to turn off the screen
 PartOf=sleep.target
 Before=sleep.target
+PartOf=screen-off.target
+Before=screen-off.target
 
 [Service]
 Type=oneshot
 RemainAfterExit=yes
+StandardOutput=null
 ExecStart=brillo -O ; brillo -q -u 200000 -S 0 ; hyprctl dispatch dpms off
 ExecStop=hyprctl dispatch dpms on ; brillo -q -u 500000 -I
 
 [Install]
 WantedBy=sleep.target
+WantedBy=screen-off.target

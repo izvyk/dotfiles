@@ -2,3 +2,5 @@
 Description=User-level sleep
 Wants=lock.target
 After=lock.target
+Conflicts=wakeup.target
+OnSuccess=wakeup.target
