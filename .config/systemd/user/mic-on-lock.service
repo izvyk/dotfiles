@@ -6,7 +6,7 @@ Before=sleep.target
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecCondition=sh -c 'amixer get Capture | rg -q "\[on\]"'
+ExecCondition=sh -c 'amixer get Capture | rg -q "\\[on\\]"'
 ExecStart=amixer set Capture nocap -q
 ExecStop=amixer set Capture cap -q
 
