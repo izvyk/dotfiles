@@ -1,13 +1,14 @@
 [Unit]
-Description=to mute audio and mic
+Description=to mute audio
 PartOf=lock.target
 Before=sleep.target
 
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=bash -c 'if [[ -n "$(amixer get Master | grep -o [[]on[]])" ]]; then touch /home/$USER/.cache/amixer-master-unmuted-before-lock; amixer set Master mute -q; fi; if [[ -n "$(amixer get Capture | grep -o [[]on[]])" ]]; then touch /home/$USER/.cache/amixer-capture-unmuted-before-lock; amixer set Capture nocap -q; fi'
-ExecStop=bash -c 'if [[ -f /home/$USER/.cache/amixer-master-unmuted-before-lock ]]; then rm /home/$USER/.cache/amixer-master-unmuted-before-lock; amixer set Master unmute -q; fi; if [[ -f /home/$USER/.cache/amixer-capture-unmuted-before-lock ]]; then rm /home/$USER/.cache/amixer-capture-unmuted-before-lock; amixer set Capture cap -q; fi'
+ExecCondition=sh -c 'amixer get Master | rg -q [on]'
+ExecStart=amixer set Master mute -q
+ExecStop=amixer set Master unmute -q
 
 [Install]
 WantedBy=lock.target
