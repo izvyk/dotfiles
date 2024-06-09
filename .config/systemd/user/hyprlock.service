@@ -6,7 +6,7 @@ Before=lock.target
 
 [Service]
 Type=exec
-ExecStart=bash -c 'lock_cmd="hyprlock"; lock_private_cmd="$lock_cmd --immediate -c /home/$USER/.config/hypr/hyprlock-private.conf"; gracefile="/home/$USER/.cache/lock-with-grace"; if ! $(/home/$USER/.local/bin/lock-is-private.sh); then $lock_private_cmd; elif [ -f "$gracefile" ]; then rm $gracefile && $lock_cmd; else $lock_cmd --immediate; fi'
+ExecStart=bash -c 'lock_cmd="hyprlock -c /home/$USER/.config/hypr/hyprlock-non-private.conf"; lock_private_cmd="hyprlock --immediate -c /home/$USER/.config/hypr/hyprlock-private.conf"; gracefile="/home/$USER/.cache/lock-with-grace"; if ! $(/home/$USER/.local/bin/lock-is-private.sh); then $lock_private_cmd; elif [ -f "$gracefile" ]; then rm $gracefile && $lock_cmd; else $lock_cmd --immediate; fi'
 Restart=on-failure
 RestartSec=0
 
