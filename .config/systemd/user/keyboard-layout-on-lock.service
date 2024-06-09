@@ -6,8 +6,9 @@ Before=sleep.target
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=bash -c 'if hyprctl devices -j | jq -r \'.keyboards | map(select(.name == "'"at-translated-set-2-keyboard"'")) | .[0] | .active_keymap\' | rg -iq ru; then touch /home/$USER/.cache/layout-switched-before-lock; hyprctl switchxkblayout at-translated-set-2-keyboard next; fi'
-ExecStop=bash -c "if [[ -f /home/$USER/.cache/layout-switched-before-lock ]]; then rm /home/$USER/.cache/layout-switched-before-lock; hyprctl switchxkblayout at-translated-set-2-keyboard next; fi"
+ExecCondition=sh -c 'hyprctl devices -j | jq -r \'.keyboards | map(select(.name == "'"at-translated-set-2-keyboard"'")) | .[0] | .active_keymap\' | rg -iqv ^english'
+ExecStart=hyprctl switchxkblayout at-translated-set-2-keyboard next
+ExecStop=hyprctl switchxkblayout at-translated-set-2-keyboard next
 
 [Install]
 WantedBy=lock.target
