@@ -1,6 +1,0 @@
-[Unit]
-Description=systemd inhibitor lock for %I
-
-[Service]
-Type=exec
-ExecStart=/usr/bin/systemd-inhibit --what="idle:sleep" --why=%I /usr/bin/sleep infinity
