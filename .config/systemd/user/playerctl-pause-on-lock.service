@@ -4,7 +4,11 @@ Before=sleep.target
 
 [Service]
 Type=oneshot
-ExecStart=playerctl -sa pause
+Environment=IGNORED_PLAYERS=kdeconnect
+# A bit cleaner then SuccessExitStatus but with 3 redundant calls. Much slower
+# ExecCondition=sh -c 'playerctl status -si $IGNORED_PLAYERS | rg -qi playing'
+ExecStart=playerctl -sa pause -i $IGNORED_PLAYERS
+SuccessExitStatus=1
 
 [Install]
 WantedBy=lock.target
