@@ -2,7 +2,6 @@
 Description=reducing brightness smoothly and turning off the screen
 PartOf=sleep.target
 Before=sleep.target
-After=lock.target
 
 [Service]
 Type=oneshot

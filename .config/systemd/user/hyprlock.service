@@ -3,6 +3,7 @@ Description=hyprlock screenlocker on logind lock event
 OnSuccess=unlock.target
 PartOf=lock.target
 Before=lock.target
+Before=screen-off-smooth.service
 
 [Service]
 Type=exec
