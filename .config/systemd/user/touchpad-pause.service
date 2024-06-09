@@ -1,5 +1,7 @@
 [Unit]
 Description=to pause touchpad function
+RefuseManualStart=true
+RefuseManualStop=true
 PartOf=screen-off.target
 
 [Service]

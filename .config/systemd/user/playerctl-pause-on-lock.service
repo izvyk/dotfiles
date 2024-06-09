@@ -1,5 +1,7 @@
 [Unit]
 Description=to pause all players
+RefuseManualStart=true
+RefuseManualStop=true
 Before=sleep.target
 
 [Service]

@@ -1,8 +1,11 @@
 [Unit]
 Description=to update hyprlock information
+RefuseManualStart=true
+RefuseManualStop=true
 After=hyprlock.service
 
 [Service]
 Type=oneshot
+StandardOutput=null
 ExecCondition=pidof hyprlock
 ExecStart=pkill -USR2 hyprlock

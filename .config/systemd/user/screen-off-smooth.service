@@ -1,5 +1,7 @@
 [Unit]
 Description=to reduce brightness smoothly and to turn off the screen
+RefuseManualStart=true
+RefuseManualStop=true
 PartOf=sleep.target
 Before=sleep.target
 PartOf=screen-off.target

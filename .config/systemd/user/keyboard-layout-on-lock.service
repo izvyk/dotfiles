@@ -1,11 +1,14 @@
 [Unit]
 Description=to switch keybord layout to English on start and back when stopped
+RefuseManualStart=true
+RefuseManualStop=true
 PartOf=lock.target
 Before=sleep.target
 
 [Service]
 Type=oneshot
 RemainAfterExit=yes
+StandardOutput=null
 ExecCondition=sh -c 'hyprctl devices -j | jq -r \'.keyboards | map(select(.name == "at-translated-set-2-keyboard")) | .[0] | .active_keymap\' | rg -iqv ^english'
 ExecStart=hyprctl switchxkblayout at-translated-set-2-keyboard next
 ExecStop=hyprctl switchxkblayout at-translated-set-2-keyboard next

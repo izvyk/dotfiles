@@ -1,5 +1,7 @@
 [Unit]
 Description=hyprlock screenlocker
+RefuseManualStart=true
+RefuseManualStop=true
 OnSuccess=unlock.target
 PartOf=lock.target
 Before=lock.target

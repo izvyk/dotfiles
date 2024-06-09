@@ -1,5 +1,7 @@
 [Unit]
 Description=to mute audio
+RefuseManualStart=true
+RefuseManualStop=true
 PartOf=lock.target
 Before=sleep.target
 
