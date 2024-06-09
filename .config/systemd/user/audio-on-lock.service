@@ -1,12 +1,12 @@
 [Unit]
-Description=to mute audio on logind lock event
+Description=to mute audio and mic
 PartOf=lock.target
 Before=sleep.target
 
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=bash -c 'if [[ -n "$(amixer get Master | grep -o [[]on[]])" ]]; then touch /home/$USER/.cache/amixer-master-unmuted-before-lock; fi; amixer set Master mute -q; export DBUS_SESSION_BUS_ADDRESS=$(grep -z DBUS_SESSION_BUS_ADDRESS /proc/$(pidof Hyprland)/environ|cut -d= -f2-); playerctl -sa pause; if [[ -n "$(amixer get Capture | grep -o [[]on[]])" ]]; then touch /home/$USER/.cache/amixer-capture-unmuted-before-lock; fi; amixer set Capture nocap -q'
+ExecStart=bash -c 'if [[ -n "$(amixer get Master | grep -o [[]on[]])" ]]; then touch /home/$USER/.cache/amixer-master-unmuted-before-lock; amixer set Master mute -q; fi; if [[ -n "$(amixer get Capture | grep -o [[]on[]])" ]]; then touch /home/$USER/.cache/amixer-capture-unmuted-before-lock; amixer set Capture nocap -q; fi'
 ExecStop=bash -c 'if [[ -f /home/$USER/.cache/amixer-master-unmuted-before-lock ]]; then rm /home/$USER/.cache/amixer-master-unmuted-before-lock; amixer set Master unmute -q; fi; if [[ -f /home/$USER/.cache/amixer-capture-unmuted-before-lock ]]; then rm /home/$USER/.cache/amixer-capture-unmuted-before-lock; amixer set Capture cap -q; fi'
 
 [Install]

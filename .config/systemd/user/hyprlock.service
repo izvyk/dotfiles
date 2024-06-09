@@ -1,5 +1,5 @@
 [Unit]
-Description=hyprlock screenlocker on logind lock event
+Description=hyprlock screenlocker
 OnSuccess=unlock.target
 PartOf=lock.target
 Before=lock.target

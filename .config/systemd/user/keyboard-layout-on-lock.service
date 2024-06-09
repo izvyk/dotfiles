@@ -1,5 +1,5 @@
 [Unit]
-Description=switching keybord layout to English on lock and back when unlocked
+Description=to switch keybord layout to English on start and back when stopped
 PartOf=lock.target
 Before=sleep.target
 

@@ -1,5 +1,5 @@
 [Unit]
-Description=reducing brightness smoothly and turning off the screen
+Description=to reduce brightness smoothly and to turn off the screen
 PartOf=sleep.target
 Before=sleep.target
 

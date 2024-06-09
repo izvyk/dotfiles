@@ -1,0 +1,10 @@
+[Unit]
+Description=to pause all players
+Before=sleep.target
+
+[Service]
+Type=oneshot
+ExecStart=playerctl -sa pause
+
+[Install]
+WantedBy=lock.target

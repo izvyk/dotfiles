@@ -1,5 +1,5 @@
 [Unit]
-Description=hyprlock information update
+Description=to update hyprlock information
 After=hyprlock.service
 
 [Service]
