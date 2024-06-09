@@ -6,7 +6,7 @@ Before=sleep.target
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecCondition=sh -c 'amixer get Master | rg -q [on]'
+ExecCondition=sh -c 'amixer get Master | rg -q "\[on\]"'
 ExecStart=amixer set Master mute -q
 ExecStop=amixer set Master unmute -q
 

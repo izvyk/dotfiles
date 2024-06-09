@@ -5,7 +5,8 @@ Before=hyprlock-update.service
 
 [Service]
 Type=oneshot
-ExecCondition=sh -c 'ping -q -w1 -c1 weather.com >/dev/null'
+StandardOutput=null
+ExecCondition=ping -q -w1 -c1 weather.com
 ExecStart=sh -c '/home/$USER/.local/bin/weather > /home/$USER/.cache/weather'
 
 [Install]

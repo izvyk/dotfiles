@@ -1,5 +1,5 @@
 [Unit]
-Description=to wl-gammarelay-rs (to change screen temperature)
+Description=wl-gammarelay-rs (to change screen temperature)
 
 [Service]
 Type=oneshot
