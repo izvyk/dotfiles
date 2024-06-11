@@ -7,5 +7,5 @@ maxlength="$1"
 if [ "$maxlength" == "" ] || [ "${#playing}" -lt "$maxlength" ]; then
     echo "$playing";
 else
-    echo "${playing:0:$maxlength}...";
+    echo "${playing:0:$maxlength}…";
 fi
