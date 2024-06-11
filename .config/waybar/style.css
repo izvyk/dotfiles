@@ -23,6 +23,14 @@ tooltip {
     transition: color 0.3s, background-color 0.3s;
 }
 
+tooltip label {
+    color: #fbf1c7;
+}
+
+/*tooltip label {*/
+/*    margin-right: -3em;*/
+/*}*/
+
 /* #workspaces button { */
 /*     padding: 5px; */
 /* } */
