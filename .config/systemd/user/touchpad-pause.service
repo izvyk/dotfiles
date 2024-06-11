@@ -7,9 +7,8 @@ PartOf=screen-off.target
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-StandardOutput=null
-ExecStart=sh -c 'hyprctl keyword \"device[$$(hyprctl devices -j | gojq -r \'.mice .[] | select(.name | endswith(\"touchpad\")) .name\')]:enabled\" false'
-ExecStop=sh -c 'hyprctl keyword \"device[$$(hyprctl devices -j | gojq -r \'.mice .[] | select(.name | endswith(\"touchpad\")) .name\')]:enabled\" true'
+ExecStart=sh -c 'hyprctl --quiet keyword \"device[$$(hyprctl devices -j | gojq -r \'.mice .[] | select(.name | endswith(\"touchpad\")) .name\')]:enabled\" false'
+ExecStop=sh -c 'hyprctl --quiet keyword \"device[$$(hyprctl devices -j | gojq -r \'.mice .[] | select(.name | endswith(\"touchpad\")) .name\')]:enabled\" true'
 
 [Install]
 WantedBy=screen-off.target

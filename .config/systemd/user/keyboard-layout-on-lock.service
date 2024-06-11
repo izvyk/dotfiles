@@ -8,10 +8,9 @@ Before=sleep.target
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-StandardOutput=null
 ExecCondition=sh -c 'hyprctl devices -j | jq -r \'.keyboards | map(select(.name == "at-translated-set-2-keyboard")) | .[0] | .active_keymap\' | rg -iqv ^english'
-ExecStart=hyprctl switchxkblayout at-translated-set-2-keyboard next
-ExecStop=hyprctl switchxkblayout at-translated-set-2-keyboard next
+ExecStart=hyprctl --quiet switchxkblayout at-translated-set-2-keyboard next
+ExecStop=hyprctl --quiet switchxkblayout at-translated-set-2-keyboard next
 
 [Install]
 WantedBy=lock.target
