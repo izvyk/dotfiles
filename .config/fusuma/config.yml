@@ -3,9 +3,9 @@
 swipe:
   3:
     left:
-      command: 'systemctl --user is-active lock.target -q || ydotool key 56:1 106:1 106:0 56:0' # Alt + Right
+      command: 'systemctl --user is-active lock.target -q || hyprctl --quiet dispatch workspace +1' # Alt + Right
     right:
-      command: 'systemctl --user is-active lock.target -q || ydotool key 56:1 105:1 105:0 56:0' # Alt + Left
+      command: 'systemctl --user is-active lock.target -q || hyprctl --quiet dispatch workspace -1' # Alt + Left
     up:
       begin:
         command: 'systemctl --user is-active lock.target -q || amixer -q sset Master unmute'
