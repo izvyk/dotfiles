@@ -10,6 +10,7 @@ echo '
 '
 
 PS1='\u@\h \W \$ '
+# PS1="\u@\h \w -> "
 
 export EDITOR='nvim'
 
@@ -20,6 +21,20 @@ alias la='eza -la'
 alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 alias cat='bat --theme=1337'
 alias ruman='LANG=ru_RU.UTF-8 man'
+
+shopt -s autocd
+shopt -s cdable_vars
+shopt -s cdspell
+shopt -s dirspell
+shopt -s nocaseglob
+shopt -s globstar
+
+
+# run() { 
+#     clang++ $@ -o .clang-compiled-0000 &&
+#     ./.clang-compiled-0000 &&
+#     rm .clang-compiled-0000
+# }
 
 eval "$(zoxide init --hook pwd --cmd cd bash)"
 
