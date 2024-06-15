@@ -108,6 +108,8 @@
 			"paused": "▶",
 		},
 		"max-length": 30,
+        "on-click-right": "playerctl next",
+        "on-click-middle": "playerctl previous",
 		// "ignored-players": ["firefox"]
     },
 
