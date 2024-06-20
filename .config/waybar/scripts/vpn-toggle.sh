@@ -8,21 +8,24 @@ VPN_REGEX="vpn|wireguard"
 "$SCRIPT_PATH"/vpn-status-check.sh || "$SCRIPT_PATH"/vpn-check-network.sh || exit 1
 
 # List of all VPNs in the MRU order
-CONNECTIONS="$(nmcli -t -f NAME,TIMESTAMP,TYPE con show | rg -e "$VPN_REGEX" | sort -nk 2 | cut -d ':' -f 1)"
+CONNECTIONS="$(nmcli -t -f NAME,TIMESTAMP,TYPE con show | rg -e "$VPN_REGEX" | sort -nk 2 -t ':' | cut -d ':' -f 1)"
+ACTIVE="$(nmcli -t con show --active | rg -e "$VPN_REGEX")"
+ACTIVE="${ACTIVE%%:*}"
 
 # Use Rofi if such a flag provided or use the most recently used one
 if [ "$1" = "--interactive" ]; then
     ROFI_CMD="rofi -dmenu -p \"VPN\""
 
-    ACTIVE="$(nmcli -t con show --active | rg -e "$VPN_REGEX")"
-    [ "$?" = 0 ] && ROFI_CMD="$ROFI_CMD -mesg \"Active: ${ACTIVE%%:*}\""
+    [ -n "$ACTIVE" ] && ROFI_CMD="$ROFI_CMD -mesg \"Active: $ACTIVE\""
 
     CONNECTION_NAME="$(echo "$CONNECTIONS" | eval "$ROFI_CMD")"
 
     # Exit if Rofi was closed without choosing an entry
     [ -z "$CONNECTION_NAME" ] && exit
 else
-    CONNECTION_NAME="$(echo "$CONNECTIONS" | tail -n 1)"
+    [ -n "$ACTIVE" ] &&
+        CONNECTION_NAME="$ACTIVE" ||
+        CONNECTION_NAME="$(echo "$CONNECTIONS" | tail -n 1)"
 fi
 
 # Remember the status of the chosen connection
