@@ -28,6 +28,7 @@ shopt -s cdspell
 shopt -s dirspell
 shopt -s nocaseglob
 shopt -s globstar
+bind "set completion-ignore-case on"
 
 
 # run() { 
