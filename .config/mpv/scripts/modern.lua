@@ -29,7 +29,7 @@ local user_opts = {
                                 -- internal track list management (and some
                                 -- functions that depend on it)
     -- font = 'mpv-osd-symbols',    -- default osc font
-    font = 'Roboto',
+    font = 'Sans',
     seekrange = true,            -- show seekrange overlay
     seekrangealpha = 128,          -- transparency of seekranges
     seekbarkeyframes = true,    -- use keyframes when dragging the seekbar
