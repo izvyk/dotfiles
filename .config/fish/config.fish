@@ -26,5 +26,8 @@ if status is-interactive
     bind $argv \el nextd-or-forward-word    # Alt + L = next visited directory
     bind $argv \eh prevd-or-backward-word   # Alt + H = previous visited directory
 
+    umask 077
+    fish_add_path ~/.local/bin/
+
 end
 
