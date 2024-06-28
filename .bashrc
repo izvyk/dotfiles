@@ -47,3 +47,7 @@ if $(which bat >/dev/null 2>&1); then
     export MANROFFOPT='-c' # Fix escape sequences in bat
     # export MANPAGER="sh -c \"sed -e 's/\x1b\[[0-9;]*m//g' | bat -l man -p\"" # Aternative fix
 fi
+
+umask 077
+
+[[ ":$PATH:" == *":/home/$USER/.local/bin:"* ]] || PATH="${PATH:+"$PATH:"}/home/$USER/.local/bin"
