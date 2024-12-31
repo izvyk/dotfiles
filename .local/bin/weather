@@ -102,7 +102,7 @@ match moon_phase:
         moon_icon = "" # 󰽣
     case "Waning Crescent":
         moon_icon = "" # 󰽥
-    case "New Moon":
+    case "New":
         moon_icon = "" # 󰽤
     case "Waxing Crescent":
         moon_icon = "" # 󰽧
