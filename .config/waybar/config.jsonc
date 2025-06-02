@@ -3,7 +3,7 @@
     "position": "bottom",
     "exclusive": true,
     "passthrough": false,
-    "height": 35,
+    "height": 34,
     "modules-left": [
         "custom/powerprofile",
         "tray",
