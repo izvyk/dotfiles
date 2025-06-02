@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xkbConfigRegistry SYSTEM "xkb.dtd">
 <xkbConfigRegistry version="1.1">
+  <layoutList>
     <layout>
       <configItem>
         <name>us</name>
@@ -84,7 +85,7 @@
       </option>
       <option>
         <configItem>
-          <name>custom:almost_equals_on_equals</name>
+          <name>custom:almost_equal_on_equal</name>
           <description>Adds almost equals sign to the third level of key equals.</description>
         </configItem>
       </option>

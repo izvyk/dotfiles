@@ -32,7 +32,7 @@ xkb_symbols "bullet_point_on_8" {
 
 partial
 xkb_symbols "almost_equal_on_equal" {
-    key <AE12>	{[    NoSymbol,    NoSymbol,            U2248,        NoSymbol  ]}; // = + ≈
+    key <AE12>	{[    NoSymbol,    NoSymbol,            U2248,        U2260     ]}; // = + ≈ ≠
 };
 
 partial
