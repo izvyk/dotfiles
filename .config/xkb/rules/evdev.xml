@@ -107,6 +107,12 @@
           <description>Adds per mille sign to the third level of key 5.</description>
         </configItem>
       </option>
+      <option>
+        <configItem>
+          <name>custom:fn_keys</name>
+          <description>Function keys media function dublicates on third level</description>
+        </configItem>
+      </option>
     </group>
   </optionList>
 </xkbConfigRegistry>

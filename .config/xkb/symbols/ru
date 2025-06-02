@@ -16,6 +16,7 @@ xkb_symbols "izvyk" {
     include "custom(guillemets)"
     include "custom(arrows)"
     include "custom(vim_hjkl)"
+    include "custom(fn_keys)"
 
     include "eurosign(e)"
 

@@ -8,6 +8,7 @@
   custom:check_mark_on_v = +custom(check_mark_on_v)
   custom:cross_mark_on_x = +custom(cross_mark_on_x)
   custom:per_mille_on_5 = +custom(per_mille_on_5)
+  custom:fn_keys = +custom(fn_keys)
 
 // Include the system 'evdev' file
 ! include %S/evdev

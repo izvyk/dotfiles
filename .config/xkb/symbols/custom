@@ -49,3 +49,21 @@ partial
 xkb_symbols "per_mille_on_5" {
     key <AE05>	{[    NoSymbol,    NoSymbol,         permille,        NoSymbol  ]}; // 5 % ‰
 };
+
+partial
+xkb_symbols "fn_keys" {
+    key <F1>    {[    NoSymbol,    NoSymbol,    XF86AudioMute,        NoSymbol  ], type[group1]="THREE_LEVEL"};
+    key <F2>    {[    NoSymbol,    NoSymbol, XF86AudioLowerVolume,    NoSymbol  ], type[group1]="THREE_LEVEL"};
+    key <F3>    {[    NoSymbol,    NoSymbol, XF86AudioRaiseVolume,    NoSymbol  ], type[group1]="THREE_LEVEL"};
+    key <F4>    {[    NoSymbol,    NoSymbol, XF86AudioMicMute,        NoSymbol  ], type[group1]="THREE_LEVEL"};
+    key <F5>    {[    NoSymbol,    NoSymbol, XF86MonBrightnessDown,   NoSymbol  ], type[group1]="THREE_LEVEL"};
+    key <F6>    {[    NoSymbol,    NoSymbol, XF86MonBrightnessUp,     NoSymbol  ], type[group1]="THREE_LEVEL"};
+//  key <F7>    {[    NoSymbol,    NoSymbol,    XF86AudioMute,        NoSymbol  ], type[group1]="THREE_LEVEL"};
+    key <F8>    {[    NoSymbol,    NoSymbol,       XF86RFKill,        NoSymbol  ], type[group1]="THREE_LEVEL"};
+//  key <F9>    {[    NoSymbol,    NoSymbol,    XF86AudioMute,        NoSymbol  ], type[group1]="THREE_LEVEL"};
+//  key <F10>   {[    NoSymbol,    NoSymbol,    XF86AudioMute,        NoSymbol  ], type[group1]="THREE_LEVEL"};
+//  key <F11>   {[    NoSymbol,    NoSymbol,    XF86AudioMute,        NoSymbol  ], type[group1]="THREE_LEVEL"};
+//  key <F12>   {[    NoSymbol,    NoSymbol,   XF86Calculator,        NoSymbol  ], type[group1]="THREE_LEVEL"};
+//  key <F13>   {[    NoSymbol,    NoSymbol,    XF86Favorites,        NoSymbol  ], type[group1]="THREE_LEVEL"};
+//  key <F14>   {[    NoSymbol,    NoSymbol, XF86SelectiveScreenshot, NoSymbol  ], type[group1]="THREE_LEVEL"};
+};
