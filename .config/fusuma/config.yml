@@ -34,6 +34,13 @@ hold:
     begin:
       command: 'systemctl --user is-active lock.target -q || swaync-client -t -sw'
 
+pinch:
+  3:
+    out:
+      command: hyprctl dispatch overview:toggle
+    in:
+      command: hyprctl dispatch overview:toggle
+
 threshold:
   swipe: 0.3
   pinch: 0.1
