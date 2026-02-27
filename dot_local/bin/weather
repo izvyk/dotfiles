@@ -22,8 +22,9 @@ weather_icons = {
 # to get your own location_id, go to https://weather.com & search your location.
 # once you choose your location, you can see the location_id in the URL(64 chars long hex string)
 # like this: https://weather.com/en-PH/weather/today/l/bca47d1099e762a012b9a139c36f30a0b1e647f69c0c4ac28b537e7ae9c1c200
-#location_id = "f375a1521b5fb19e31b875b920448c798d73817e116d216c36e495e1676cd6b6" #Augsburg
+#location_id = "adaf6ffddd7b1048f3e96218716384fb87b7ce06115f583819dc1196e34b577c" #Augsburg
 location_id = "0bb48e91ed1b1a630abfa2e643613db545ab7b15acf460999a7734e90534ac2f" #Augsburg Goeggingen
+# https://weather.com/en-GB/weather/today/l/
 
 # get html page
 # https://weather.com/en-MT/weather/today/l/f375a1521b5fb19e31b875b920448c798d73817e116d216c36e495e1676cd6b6
@@ -41,7 +42,8 @@ status = f"{status[:16]}.." if len(status) > 17 else status
 # print(status)
 
 # status code
-status_code = html_data("#regionHeader").attr("class").split(" ")[2].split("-")[2]
+# status_code = html_data("#regionHeader").attr("class").split(" ")[2].split("-")[2]
+status_code = -1 # TODO: BROKEN
 # print(status_code)
 
 # status icon
