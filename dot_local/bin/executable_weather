@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
+# import subprocess
 from pyquery import PyQuery
+# import json
 import os
 
 # original code https://gist.github.com/Surendrajat/ff3876fd2166dd86fb71180f4e9342d7
@@ -22,9 +24,7 @@ weather_icons = {
 # to get your own location_id, go to https://weather.com & search your location.
 # once you choose your location, you can see the location_id in the URL(64 chars long hex string)
 # like this: https://weather.com/en-PH/weather/today/l/bca47d1099e762a012b9a139c36f30a0b1e647f69c0c4ac28b537e7ae9c1c200
-#location_id = "adaf6ffddd7b1048f3e96218716384fb87b7ce06115f583819dc1196e34b577c" #Augsburg
-location_id = "0bb48e91ed1b1a630abfa2e643613db545ab7b15acf460999a7734e90534ac2f" #Augsburg Goeggingen
-# https://weather.com/en-GB/weather/today/l/
+location_id = "f375a1521b5fb19e31b875b920448c798d73817e116d216c36e495e1676cd6b6" #Augsburg
 
 # get html page
 # https://weather.com/en-MT/weather/today/l/f375a1521b5fb19e31b875b920448c798d73817e116d216c36e495e1676cd6b6
@@ -42,8 +42,7 @@ status = f"{status[:16]}.." if len(status) > 17 else status
 # print(status)
 
 # status code
-# status_code = html_data("#regionHeader").attr("class").split(" ")[2].split("-")[2]
-status_code = -1 # TODO: BROKEN
+status_code = html_data("#regionHeader").attr("class").split(" ")[2].split("-")[2]
 # print(status_code)
 
 # status icon
@@ -76,7 +75,7 @@ dew_point = html_data("section[data-testid='TodaysDetailsModule'] span[data-test
 
 
 # wind speed
-wind_speed = html_data("span[data-testid='Wind']").text().split("\n")[-1]
+wind_speed = html_data("span[data-testid='Wind']").text().split("\n")[1]
 wind_text = f"  {wind_speed}"
 
 # humidity
@@ -89,29 +88,29 @@ visbility_text = f"  {visbility}"
 
 # air quality index
 air_quality_index = html_data("text[data-testid='DonutChartValue']").text()
-pressure = html_data("span[data-testid='PressureValue']").text().split("\n")[-1]
+pressure = html_data("span[data-testid='PressureValue']").text().split("\n")[1]
 
 sunrise_time = html_data("div[data-testid='SunriseValue'] p").text()
 sunset_time = html_data("div[data-testid='SunsetValue'] p").text()
 
 moon_phase = html_data("div[data-testid='wxData']").eq(7).text()
 match moon_phase:
-    case "Full":
-        moon_icon = "" # 󰽢
+    case "Full Moon":
+        moon_icon = "󰽢" # 
     case "Waning Gibbous":
-        moon_icon = "" # 󰽦
+        moon_icon = "󰽦" # 
     case "Third Quarter": #Last Quarter
-        moon_icon = "" # 󰽣
+        moon_icon = "󰽣" # 
     case "Waning Crescent":
-        moon_icon = "" # 󰽥
-    case "New":
-        moon_icon = "" # 󰽤
+        moon_icon = "󰽥" # 
+    case "New Moon":
+        moon_icon = "󰽤" # 
     case "Waxing Crescent":
-        moon_icon = "" # 󰽧
+        moon_icon = "󰽧" # 
     case "First Quarter":
-        moon_icon = "" # 󰽡
+        moon_icon = "󰽡" # 
     case "Waxing Gibbous":
-        moon_icon = "" # 󰽨
+        moon_icon = "󰽨" # 
     case _:
         moon_icon = "FIX NEEDED"
 
@@ -122,6 +121,29 @@ prediction = html_data("section[aria-label='Hourly Forecast']")(
 ).text()
 prediction = prediction.replace("Chance of Rain", "")
 prediction = f"\n\n (hourly) {prediction}" if len(prediction) > 0 else prediction
+# print(prediction)
+
+# tooltip text
+# tooltip_text = str.format(
+#     "\t\t{}\t\t\n{}\n{}\n{}\n\n{}\n{}\n{}{}",
+#     f'<span size="xx-large">{temp}</span>',
+#     f"<big> {icon}</big>",
+#     f"<b>{status}</b>",
+#     f"<small>{temp_feel_text}</small>",
+#     f"<b>{temp_min_max}</b>",
+#     f"{wind_text}\t{humidity_text}",
+#     f"{visbility_text}\tAQI {air_quality_index}",
+#     f"<i> {prediction}</i>",
+# )
+
+# # print waybar module data
+# out_data = {
+#     "text": f"{icon} {temp}",
+#     "alt": status,
+#     "tooltip": tooltip_text,
+#     "class": status_code,
+# }
+#print(json.dumps(out_data))
 
 simple_weather =f"{icon}  {status}\n" + \
                 f"  {temp} ({temp_feel_text})\n" + \
@@ -132,6 +154,11 @@ simple_weather =f"{icon}  {status}\n" + \
                 f"{humidity_text}\n" + \
                 f"  {sunrise_time}\t   {sunset_time}\n" + \
                 f"{moon_icon}  {moon_phase}\n" + \
-                f"{visbility_text}  AQI {air_quality_index}\n"
+                f"{visbility_text}  AQI {air_quality_index}"
 
-print(simple_weather, end='')
+try:
+    with open(os.path.expanduser("~/.cache/.weather_cache"), "w") as file:
+        file.write(simple_weather)
+    print(simple_weather, end='')
+except:
+    pass
