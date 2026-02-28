@@ -1,8 +1,9 @@
+[general]
+live_config_reload = true
 import = [
     "~/.config/alacritty/colors.toml",
     "~/.config/alacritty/fonts.toml"
 ]
-live_config_reload = true
 
 [cursor]
 unfocused_hollow = true
@@ -21,8 +22,8 @@ hide_when_typing = true
 [selection]
 save_to_clipboard = true
 
-[shell]
-program = "/usr/bin/fish"
+[terminal.shell]
+program = "fish"
 
 [window]
 decorations = "full"
@@ -38,3 +39,5 @@ lines = 0
 [window.padding]
 x = 0
 y = 0
+
+[terminal]
