@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 REAL_BRIGHTNESS="$(brightnessctl -m i | cut -d ',' -f 4 | head -c -2)"
 #["󰃞 ", "󰃟 ", "󰃠 "]

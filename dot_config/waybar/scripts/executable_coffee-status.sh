@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 if $(systemctl --user is-active inhibitor-lock@coffee.service -q); then
 	ICON="󰅶"
