@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 SCRIPT_PATH="$(dirname "$0")"
 

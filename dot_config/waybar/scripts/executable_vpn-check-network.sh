@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 # Source https://stackoverflow.com/a/14939373
 # Test for network conection

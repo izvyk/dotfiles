@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 CONTROL_FILE="/sys/firmware/acpi/platform_profile"
 CURRENT_MODE="$(cat $CONTROL_FILE)"

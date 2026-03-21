@@ -1,3 +1,3 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
-nmcli -t con show --active | rg -e "vpn|wireguard" -q
+nmcli -t con show --active | grep -e "vpn|wireguard" -q
