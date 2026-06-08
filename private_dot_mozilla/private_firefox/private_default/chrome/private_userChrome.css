@@ -1,0 +1,112 @@
+/*
+ * OPTIMIZED FIREFOX USERCHROME.CSS
+ * Auto-hiding nav-bar, Monospace URL, and tab tweaks
+ */
+
+:root {
+    --custom-tabbar-height: calc(2 * var(--tab-block-margin) + var(--tab-min-height));
+    --custom-bookmark-bar-height: calc(var(--custom-tabbar-height) / 1.3);
+    /* Added a smooth, reliable cubic-bezier transition for the slide effect */
+    --navbar-slide-transition: margin-top var(--inactive-window-transition, 0.2s cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+#navigator-toolbox {
+    z-index: 3 !important;
+}
+
+/* =========================================================
+   1. NAV-BAR & NOTIFICATIONS BASE (Hidden state)
+   ========================================================= */
+#nav-bar,
+#notifications-toolbar {
+    position: absolute !important;
+    width: 100%;
+    transition: var(--navbar-slide-transition) !important;
+}
+
+#nav-bar {
+    z-index: 1;
+    height: var(--custom-tabbar-height);
+    margin-top: 0;
+}
+
+#notifications-toolbar {
+    margin-top: var(--custom-tabbar-height);
+}
+
+/* =========================================================
+   2. REVEAL LOGIC (Hover / Focus / Active / Open)
+   ========================================================= */
+/* Grouped selectors for a cleaner, DRY (Don't Repeat Yourself) approach */
+:root:not([chromehidden~="extrachrome"]) #navigator-toolbox:is(:hover, :focus-within) > #nav-bar,
+:root:not([chromehidden~="extrachrome"]) #navigator-toolbox:has(.tabbrowser-tab:active) > #nav-bar,
+:root:not([chromehidden~="extrachrome"]) #navigator-toolbox:has(toolbarbutton[open], #urlbar-input-container [role=button][open]) > #nav-bar {
+    margin-top: var(--custom-tabbar-height);
+}
+
+:root:not([chromehidden~="extrachrome"]) #navigator-toolbox:is(:hover, :focus-within) > #notifications-toolbar,
+:root:not([chromehidden~="extrachrome"]) #navigator-toolbox:has(.tabbrowser-tab:active) > #notifications-toolbar,
+:root:not([chromehidden~="extrachrome"]) #navigator-toolbox:has(toolbarbutton[open], #urlbar-input-container [role=button][open]) > #notifications-toolbar {
+    margin-top: calc(2 * var(--custom-tabbar-height));
+}
+
+:root:not([chromehidden~="extrachrome"]):has(#PersonalToolbar:not([collapsed])) #navigator-toolbox:is(:hover, :focus-within) > #notifications-toolbar,
+:root:not([chromehidden~="extrachrome"]):has(#PersonalToolbar:not([collapsed])) #navigator-toolbox:has(.tabbrowser-tab:active) > #notifications-toolbar,
+:root:not([chromehidden~="extrachrome"]):has(#PersonalToolbar:not([collapsed])) #navigator-toolbox:has(toolbarbutton[open], #urlbar-input-container [role=button][open]) > #notifications-toolbar {
+    margin-top: calc(2 * var(--custom-tabbar-height) + var(--custom-bookmark-bar-height));
+}
+
+/* =========================================================
+   3. TYPOGRAPHY & AESTHETICS
+   ========================================================= */
+/* Monospaced urlbar */
+.urlbar-input-box,
+.urlbarView {
+    font-family: monospace;
+    font-size: 1.1em;
+}
+
+/* =========================================================
+   4. ANIMATIONS & TABS
+   ========================================================= */
+#navigator-toolbox :is(toolbarbutton, .tabbrowser-tab, .urlbar-page-action) {
+    transition: background-color 0.15s ease;
+}
+
+/* Hide tab close button */
+.tab-close-button { 
+    display: none !important; 
+}
+
+/* Fix tab label masking since the close button is removed */
+.tabbrowser-tab[selected="true"] .tab-label-container { 
+    --tab-label-mask-size: 1em; 
+}
+
+/* Dim unloaded/pending tabs */
+.tabbrowser-tab[pending] {
+    opacity: 0.6 !important;
+    font-style: italic;
+}
+
+/* =========================================================
+   5. FLOATING BOOKMARKS BAR
+   ========================================================= */
+/* Make the Bookmarks bar float so it doesn't push webpage content down */
+#PersonalToolbar {
+    position: absolute !important;
+    width: 100%;
+    height: var(--custom-bookmark-bar-height);
+    transition: var(--navbar-slide-transition) !important;
+    z-index: 0; /* Layered underneath the nav-bar (which is z-index: 1) */
+    margin-top: 0; /* Hidden underneath the tabs initially */
+    border-bottom: 1px black dashed !important;
+    border-top: 1px black dashed !important;
+}
+
+/* When the UI reveals, drop the bookmarks bar down far enough to clear both the tabs AND the nav-bar */
+:root:not([chromehidden~="extrachrome"]) #navigator-toolbox:is(:hover, :focus-within) > #PersonalToolbar,
+:root:not([chromehidden~="extrachrome"]) #navigator-toolbox:has(.tabbrowser-tab:active) > #PersonalToolbar,
+:root:not([chromehidden~="extrachrome"]) #navigator-toolbox:has(toolbarbutton[open], #urlbar-input-container [role=button][open]) > #PersonalToolbar {
+    margin-top: calc(2 * var(--custom-tabbar-height));
+}
