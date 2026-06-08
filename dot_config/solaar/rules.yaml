@@ -8,15 +8,16 @@
 - Rule:
   - MouseGesture: Mouse Up
   - Execute: [playerctl, play-pause, --ignore-player=GSConnect]
-- Rule:
-  - MouseGesture: Mouse Left
-  - Execute: [niri, msg, action, focus-column-or-monitor-left]
-- Rule:
-  - MouseGesture: Mouse Right
-  - Execute: [niri, msg, action, focus-column-or-monitor-right]
+# - Rule:
+#   - MouseGesture: Mouse Left
+#   - Execute: [niri, msg, action, focus-column-or-monitor-left]
+# - Rule:
+#   - MouseGesture: Mouse Right
+#   - Execute: [niri, msg, action, focus-column-or-monitor-right]
 - Rule:
   - MouseGesture: []
-  - Execute: [niri, msg, action, toggle-overview]
+  - KeyPress:
+    - [Super_L]
 - Rule:
   - MouseGesture: Mouse Right
   - KeyPress:
@@ -32,12 +33,12 @@
   - KeyPress:
     - [Super_L, L]
     - click
-- Rule:
-  - Test: [thumb_wheel_up, 14]
-  - Execute: [niri, msg, action, focus-column-or-monitor-right]
-- Rule:
-  - Test: [thumb_wheel_down, 14]
-  - Execute: [niri, msg, action, focus-column-or-monitor-left]
+# - Rule:
+#   - Test: [thumb_wheel_up, 14]
+#   - Execute: [niri, msg, action, focus-column-or-monitor-right]
+# - Rule:
+#   - Test: [thumb_wheel_down, 14]
+#   - Execute: [niri, msg, action, focus-column-or-monitor-left]
 - Rule:
   - Rule: []
 ...
