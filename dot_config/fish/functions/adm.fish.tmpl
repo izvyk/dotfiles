@@ -1,7 +1,7 @@
-function adm --wraps='doas su - -s fish' --description 'Open fish login shell as root'
+function adm --wraps='doas fish -l -C cd' --description 'Open fish login shell as root'
   {{- if eq .chezmoi.osRelease.id "nixos" }}
-    doas su - -s /run/current-system/sw/bin/fish
+    /run/wrappers/bin/doas /run/current-system/sw/bin/fish -l -C cd
   {{- else }}
-    doas su - /usr/bin/fish
+    /usr/bin/doas /usr/bin/fish -l -C cd
   {{- end }}
 end
