@@ -10,15 +10,18 @@ if status is-interactive
 ' 
     # printf '\x0a\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x0a\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\x20\u2588\u2588\x20\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\x20\u2588\u2588\x20\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\x20\u2588\u2588\x20\x0a\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x0a\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\x20\x20\x20\x20\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\x20\x20\x20\x20\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\x20\x20\x20\x20\x0a\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x0a\x0a'
     
-    fish_ssh_agent
-    set -x GPG_TTY $(tty)
+    # fish_ssh_agent
+    # set -x GPG_TTY $(tty)
+
+    
+    set -x SSH_AUTH_SOCK $XDG_RUNTIME_DIR/yubikey-agent/yubikey-agent.sock
 
     # Manpages with bat
-    if which bat >/dev/null 2>&1;
-        set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
-        set -x MANROFFOPT '-c' # Fix escape sequences in bat
-        # set -x MANPAGER "sh -c \"sed -e 's/\x1b\[[0-9;]*m//g' | bat -l man -p\"" # Aternative fix
-    end
+    # if which bat >/dev/null 2>&1;
+    #     set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
+    #     set -x MANROFFOPT '-c' # Fix escape sequences in bat
+    #     # set -x MANPAGER "sh -c \"sed -e 's/\x1b\[[0-9;]*m//g' | bat -l man -p\"" # Aternative fix
+    # end
 
     zoxide init --hook pwd --cmd cd fish | source
 
