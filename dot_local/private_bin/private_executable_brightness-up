@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+(
+  # Lock file for debouncing
+  flock -n 9 || exit 0
+  
+  # Fetch current software brightness
+  SW_BRIGHTNESS="$(busctl --user get-property rs.wl-gammarelay / rs.wl.gammarelay Brightness 2>/dev/null || echo 'd 1')"
+
+  # Check if software brightness is at its maximum (1)
+  if [[ "$SW_BRIGHTNESS" == "d 1" ]]; then
+
+      # We are out of software dimming mode. Increase hardware brightness.
+      if grep -iq "closed" /proc/acpi/button/lid/*/state 2>/dev/null; then
+          
+          # Lid CLOSED -> Increase BOTH external monitors in parallel
+          ddcutil --display 1 setvcp 10 + 5 --noverify &
+          ddcutil --display 2 setvcp 10 + 5 --noverify &
+          wait
+          
+      else
+          
+          # Lid OPEN -> Increase internal display smoothly
+          brillo -qA 2 -u 200000
+          
+      fi
+      
+  else
+      
+      # Software brightness is less than 1. Hardware is effectively at 0%.
+      # Increase software brightness instead.
+      busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d 0.01 2>/dev/null || true
+      
+  fi
+  
+) 9>/tmp/$USER-brightness-throttle.lock

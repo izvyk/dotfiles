@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+(
+  flock -n 9 || exit 0
+  
+  # Unmute the sink first
+  wpctl set-mute @DEFAULT_AUDIO_SINK@ 0
+  
+  # Increase volume by parameter $1, or default to 5%. 
+  # --limit 1.1 prevents blowing out your speakers (110% max)
+  wpctl set-volume @DEFAULT_AUDIO_SINK@ "${1:-1}"%+ --limit 1.1
+  
+  # A slightly shorter delay than brightness for a more responsive feel
+  sleep 0.025
+) 9>/tmp/$USER-volume-throttle.lock

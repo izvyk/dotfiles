@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+(
+  # Lock file for debouncing
+  flock -n 9 || exit 0
+  
+  # Fetch software brightness. If the service isn't running (GNOME), 
+  # suppress the error and pretend it returned "d 1" (100%).
+  SW_BRIGHTNESS="$(busctl --user get-property rs.wl-gammarelay / rs.wl.gammarelay Brightness 2>/dev/null || echo 'd 1')"
+
+  # If software brightness is already less than 1, hardware is at 0.
+  # Skip hardware entirely and just dim software further.
+  if [[ "$SW_BRIGHTNESS" != "d 1" ]]; then
+      # Here it shouldn't fail!
+      busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d -0.01
+      # busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d -0.01 2>/dev/null || true
+      exit 0
+  fi
+
+  # --- We are in Hardware Mode (Software is at 1.0) ---
+
+  if grep -iq "closed" /proc/acpi/button/lid/*/state 2>/dev/null; then
+      
+      # Lid CLOSED -> Decrease BOTH external monitors
+      ddcutil --display 1 setvcp 10 - 5 --noverify &
+      ddcutil --display 2 setvcp 10 - 5 --noverify &
+      wait
+      
+      # Check if Display 1 hit the hardware floor (0%)
+      # We use --terse to make parsing faster and only query one display to save time
+      HW_VAL="$(ddcutil --display 1 getvcp 10 --terse 2>/dev/null | awk '{print $4}')"
+      
+      if [[ "$HW_VAL" == "0" ]]; then
+          # Hardware is at 0, cross the threshold into software dimming
+          busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d -0.01 2>/dev/null || true
+      fi
+      
+  else
+      
+      # Lid OPEN -> Decrease internal display
+      brillo -qU 2 -u 200000
+      
+      # If internal display hits < 1%, cross the threshold into software dimming
+      if [ "$(brillo | tr -d '.')" -lt "100" ]; then
+          busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d -0.01 2>/dev/null || true
+      fi
+      
+  fi
+  
+) 9>/tmp/$USER-brightness-throttle.lock

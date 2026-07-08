@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/usr/bin/env sh
 
 #echo "$(playerctl metadata --format '{{title}} 󰎆  {{artist}}')"
 playing="$(playerctl -s metadata --format '{{title}} 󰽱  {{artist}}')"
