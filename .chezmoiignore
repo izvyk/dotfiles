@@ -1,3 +1,12 @@
 .config/yazi/flavors/**
 .config/yazi/plugins/**
 !.config/yazi/plugins/folder-rules.yazi
+
+{{- if eq .chezmoi.osRelease.id "nixos" }}
+# On NixOS fonts.fontconfig.defaultFonts in nixos-config is authoritative.
+# Keep this Ubuntu-only so ~/.config/fontconfig/fonts.conf doesn't override it.
+.config/fontconfig/**
+{{- else }}
+# conf opens a root shell in /etc/nixos — meaningless off NixOS.
+.config/fish/functions/conf.fish
+{{- end }}

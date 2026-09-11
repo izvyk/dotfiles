@@ -13,8 +13,6 @@ echo '
 PS1='\[\e[92m\]\u\[\e[0m\]@\h \[\e[92m\]\W\[\e[0m\] \\$ '
 # PS1="\u@\h \w -> "
 
-export EDITOR='nvim'
-
 # Aliases
 alias ls='eza'
 alias ll='eza -l'
