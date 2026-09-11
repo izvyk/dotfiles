@@ -1,3 +1,3 @@
-function ls --wraps='exa --git --git-ignore --group-directories-first' --description 'alias ls=exa --git --git-ignore --group-directories-first'
-  exa --git --git-ignore --group-directories-first $argv; 
+function ls --wraps='eza --git --git-ignore --group-directories-first' --description 'alias ls=eza --git --git-ignore --group-directories-first'
+  eza --git --git-ignore --group-directories-first $argv;
 end
