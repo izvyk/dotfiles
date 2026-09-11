@@ -98,5 +98,9 @@ xkb_symbols "xps" {
 
 partial
 xkb_symbols "laptop" {
+{{- if eq .chezmoi.osRelease.id "nixos" }}
     include "custom(yoga)"
+{{- else }}
+    include "custom(xps)"
+{{- end }}
 };
