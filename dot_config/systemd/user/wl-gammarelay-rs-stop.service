@@ -1,6 +1,0 @@
-[Unit]
-Description=to stop wl-gammarelay-rs (to change screen temperature)
-
-[Service]
-Type=oneshot
-ExecStart=systemctl --user stop wl-gammarelay-rs.service

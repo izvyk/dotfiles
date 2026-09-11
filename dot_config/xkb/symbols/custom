@@ -37,12 +37,12 @@ xkb_symbols "almost_equal_on_equal" {
 
 partial
 xkb_symbols "check_mark_on_v" {
-    key <AB04>	{[    NoSymbol,    NoSymbol,            U2713,        NoSymbol  ]}; // v V ✓
+    key <LatV>	{[    NoSymbol,    NoSymbol,            U2713,        NoSymbol  ]}; // v V ✓
 };
 
 partial
 xkb_symbols "cross_mark_on_x" {
-    key <AB02>	{[    NoSymbol,    NoSymbol,            U2715,        NoSymbol  ]}; // x X ✕
+    key <LatX>	{[    NoSymbol,    NoSymbol,            U2715,        NoSymbol  ]}; // x X ✕
 };
 
 partial
@@ -51,7 +51,7 @@ xkb_symbols "per_mille_on_5" {
 };
 
 partial
-xkb_symbols "fn_keys" {
+xkb_symbols "fn_keys_yoga" {
     key <F1>    {[    NoSymbol,    NoSymbol,    XF86AudioMute,        NoSymbol  ], type[group1]="THREE_LEVEL"};
     key <F2>    {[    NoSymbol,    NoSymbol, XF86AudioLowerVolume,    NoSymbol  ], type[group1]="THREE_LEVEL"};
     key <F3>    {[    NoSymbol,    NoSymbol, XF86AudioRaiseVolume,    NoSymbol  ], type[group1]="THREE_LEVEL"};
@@ -61,9 +61,42 @@ xkb_symbols "fn_keys" {
 //  key <F7>    {[    NoSymbol,    NoSymbol,    XF86AudioMute,        NoSymbol  ], type[group1]="THREE_LEVEL"};
     key <F8>    {[    NoSymbol,    NoSymbol,       XF86RFKill,        NoSymbol  ], type[group1]="THREE_LEVEL"};
 //  key <F9>    {[    NoSymbol,    NoSymbol,    XF86AudioMute,        NoSymbol  ], type[group1]="THREE_LEVEL"};
-//  key <F10>   {[    NoSymbol,    NoSymbol,    XF86AudioMute,        NoSymbol  ], type[group1]="THREE_LEVEL"};
-//  key <F11>   {[    NoSymbol,    NoSymbol,    XF86AudioMute,        NoSymbol  ], type[group1]="THREE_LEVEL"};
+//  key <F10>   {[    NoSymbol,    NoSymbol, XF86SelectiveScreenshot, NoSymbol  ], type[group1]="THREE_LEVEL"};
+//  key <F11>   {[    NoSymbol,    NoSymbol,    XF86Favorites,        NoSymbol  ], type[group1]="THREE_LEVEL"};
 //  key <F12>   {[    NoSymbol,    NoSymbol,   XF86Calculator,        NoSymbol  ], type[group1]="THREE_LEVEL"};
-//  key <F13>   {[    NoSymbol,    NoSymbol,    XF86Favorites,        NoSymbol  ], type[group1]="THREE_LEVEL"};
-//  key <F14>   {[    NoSymbol,    NoSymbol, XF86SelectiveScreenshot, NoSymbol  ], type[group1]="THREE_LEVEL"};
+};
+
+partial
+xkb_symbols "fn_keys_xps" {
+    key <F1>    {[    NoSymbol,    NoSymbol, XF86AudioMute,           NoSymbol  ], type[group1]="THREE_LEVEL"};
+    key <F2>    {[    NoSymbol,    NoSymbol, XF86AudioLowerVolume,    NoSymbol  ], type[group1]="THREE_LEVEL"};
+    key <F3>    {[    NoSymbol,    NoSymbol, XF86AudioRaiseVolume,    NoSymbol  ], type[group1]="THREE_LEVEL"};
+    key <F4>    {[    NoSymbol,    NoSymbol, XF86AudioPause,          NoSymbol  ], type[group1]="THREE_LEVEL"};
+//  key <F5>    {[    NoSymbol,    NoSymbol, XF86MonBrightnessDown,   NoSymbol  ], type[group1]="THREE_LEVEL"};
+    key <F5>    {[    NoSymbol,    NoSymbol, XF86KbdLightOnOff,       NoSymbol  ], type[group1]="THREE_LEVEL"};
+    key <F6>    {[    NoSymbol,    NoSymbol, XF86MonBrightnessDown,   NoSymbol  ], type[group1]="THREE_LEVEL"};
+    key <F7>    {[    NoSymbol,    NoSymbol, XF86MonBrightnessUp,     NoSymbol  ], type[group1]="THREE_LEVEL"};
+//  key <F7>    {[    NoSymbol,    NoSymbol, XF86AudioMute,           NoSymbol  ], type[group1]="THREE_LEVEL"};
+//  key <F8>    {[    NoSymbol,    NoSymbol, XF86RFKill,              NoSymbol  ], type[group1]="THREE_LEVEL"};
+    key <F8>    {[    NoSymbol,    NoSymbol, XF86Display,             NoSymbol  ], type[group1]="THREE_LEVEL"};
+//  key <F9>    {[    NoSymbol,    NoSymbol, XF86AudioMute,           NoSymbol  ], type[group1]="THREE_LEVEL"};
+//  key <F10>   {[    NoSymbol,    NoSymbol, XF86AudioMute,           NoSymbol  ], type[group1]="THREE_LEVEL"};
+//  key <F11>   {[    NoSymbol,    NoSymbol, XF86AudioMute,           NoSymbol  ], type[group1]="THREE_LEVEL"};
+//  key <F12>   {[    NoSymbol,    NoSymbol, XF86Calculator,          NoSymbol  ], type[group1]="THREE_LEVEL"};
+};
+
+partial
+xkb_symbols "yoga" {
+    include "custom(fn_keys_yoga)"
+};
+
+partial
+xkb_symbols "xps" {
+    include "custom(fn_keys_xps)"
+    include "level2(lsgt_switch)"
+};
+
+partial
+xkb_symbols "laptop" {
+    include "custom(yoga)"
 };

@@ -16,11 +16,14 @@ xkb_symbols "izvyk" {
     include "custom(guillemets)"
     include "custom(arrows)"
     include "custom(vim_hjkl)"
-    include "custom(fn_keys)"
+    include "custom(laptop)"
 
     include "eurosign(e)"
 
-    include "level3(ralt_latch_switch)"
+    //include "custom_level3(ralt_latch_ralt)"
+    include "level3(ralt_switch)"
+    //include "custom_level3(ralt_latch_next)"
+    //include "custom_level3(ralt_shift)"
 };
 
 // ┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┲━━━━━━━━━┓
@@ -30,12 +33,12 @@ xkb_symbols "izvyk" {
 // ┃ TAB   ┃ Й   │ Ц   │ У € │ К ₽ │ Е   │ Н   │ Г   │ Ш   │ Щ   │ З   │ Х   │ Ъ   │ /     ┃
 // ┃       ┃ й   │ ц   │ у   │ к   │ е   │ н   │ г   │ ш   │ щ   │ з   │ х   │ ъ   │ \     ┃
 // ┣━━━━━━━┻┱────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┲━━━━┷━━━━━━━┫
-// ┃ CAPS   ┃ Ф   │ Ы   │ В   │ А   │ П   │ Р   │ О   │ Л   │ Д   │ Ж   │ Э   ┃     ENTER  ┃
-// ┃        ┃ ф   │ ы   │ в   │ а   │ п   │ р   │ о   │ л   │ д   │ ж   │ э   ┃            ┃
+// ┃ CAPS   ┃ Ф   │ Ы   │ В   │ А   │ П   │ Р ← │ О ↓ │ Л ↑ │ Д → │ Ж   │ Э   ┃     ENTER  ┃
+// ┃ ESC    ┃ ф   │ ы   │ в   │ а   │ п   │ р   │ о   │ л   │ д   │ ж   │ э   ┃            ┃
 // ┣━━━━━━━━┻━━━━┱┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┲┻━━━━━━━━━━━━┫
-// ┃ SHIFT       ┃ Я   │ Ч ✕ │ С   │ М ✓ │ И   │ Т   │ Ь   │ Б « │ Ю » │ ,   ┃      SHIFT  ┃
+// ┃ LSHIFT      ┃ Я   │ Ч ✕ │ С   │ М ✓ │ И   │ Т   │ Ь   │ Б « │ Ю » │ ,   ┃     RSHIFT  ┃
 // ┃             ┃ я   │ ч   │ с   │ м   │ и   │ т   │ ь   │ б   │ ю ⇒ │ .   ┃             ┃
 // ┣━━━━━━┳━━━━━━╋━━━━━╈━━━━━╅─────┴─────┴─────┴─────┴─────╆━━━━━╈━━━━━╈━━━━━╋━━━━━━┳━━━━━━┫
-// ┃ ALT  ┃ FN   ┃ WIN ┃ CTRL┃                             ┃ ALT ┃ CTRL┃LEFT ┃ UP   ┃ RIGHT┃
-// ┃      ┃      ┃     ┃     ┃                             ┃     ┃     ┃     ┃ DOWN ┃      ┃
+// ┃ LALT ┃ FN   ┃ WIN ┃ CTRL┃                             ┃RALT ┃ CTRL┃LEFT ┃ UP   ┃ RIGHT┃
+// ┃      ┃      ┃     ┃     ┃                             ┃LVL3 ┃     ┃     ┃ DOWN ┃      ┃
 // ┗━━━━━━┻━━━━━━┻━━━━━┻━━━━━┹─────────────────────────────┺━━━━━┻━━━━━┻━━━━━┻━━━━━━┻━━━━━━┛

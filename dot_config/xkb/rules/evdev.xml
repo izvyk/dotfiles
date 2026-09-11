@@ -109,8 +109,8 @@
       </option>
       <option>
         <configItem>
-          <name>custom:fn_keys</name>
-          <description>Function keys media function dublicates on third level</description>
+          <name>custom:laptop</name>
+          <description>Collection of options combined together for the currect laptop model (edit needed)</description>
         </configItem>
       </option>
     </group>

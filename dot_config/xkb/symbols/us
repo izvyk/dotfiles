@@ -4,6 +4,11 @@ xkb_symbols "izvyk" {
     include "us(basic)"
     name[Group1]= "English (US, with German letters, AltGr, izvyk's custom layout)";
 
+    include "level3(ralt_switch)"
+    //include "custom_level3(ralt_latch_ralt)"
+    //include "custom_level3(ralt_latch_next)"
+    //include "custom_level3(ralt_switch)"
+
     key <AE03>	{[           3,  numbersign,       numerosign,         section  ]}; // 3 # № §
     key <AE11>	{[       minus,  underscore,           endash                   ]}; // - _ –
 
@@ -22,11 +27,11 @@ xkb_symbols "izvyk" {
     include "custom(guillemets)"
     include "custom(arrows)"
     include "custom(vim_hjkl)"
-    include "custom(fn_keys)"
+    include "custom(laptop)"
 
     include "eurosign(e)"
 
-    include "level3(ralt_latch_switch)"
+    //include "custom_level3(ralt_shift)"
 };
 
 // ┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┲━━━━━━━━━┓
@@ -36,12 +41,30 @@ xkb_symbols "izvyk" {
 // ┃ TAB   ┃ Q   │ W   │ E € │ R ₽ │ T   │ Y   │ U ü │ I   │ O ö │ P   │ {   │ }   │ |     ┃
 // ┃       ┃ q   │ w   │ e   │ r   │ t   │ y   │ u Ü │ i   │ o Ö │ p   │ [   │ ]   │ \     ┃
 // ┣━━━━━━━┻┱────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┲━━━━┷━━━━━━━┫
-// ┃ CAPS   ┃ A ä │ S ß │ D   │ F   │ G   │ H   │ J   │ K   │ L   │ :   │ "   ┃     ENTER  ┃
-// ┃        ┃ a Ä │ s ẞ │ d   │ f   │ g   │ h   │ j   │ k   │ l   │ ;   │ '   ┃            ┃
+// ┃ CAPS   ┃ A ä │ S ß │ D   │ F   │ G   │ H ← │ J ↓ │ K ↑ │ L → │ :   │ "   ┃     ENTER  ┃
+// ┃ ECS    ┃ a Ä │ s ẞ │ d   │ f   │ g   │ h   │ j   │ k   │ l   │ ;   │ '   ┃            ┃
 // ┣━━━━━━━━┻━━━━┱┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┲┻━━━━━━━━━━━━┫
-// ┃ SHIFT       ┃ Z   │ X ✕ │ С   │ V ✓ │ B   │ N   │ M   │ < « │ > » │ ?   ┃      SHIFT  ┃
+// ┃ LSHIFT      ┃ Z   │ X ✕ │ С   │ V ✓ │ B   │ N   │ M   │ < « │ > » │ ?   ┃     RSHIFT  ┃
 // ┃             ┃ z   │ x   │ с   │ v   │ b   │ n   │ m   │ ,   │ . ⇒ │ /   ┃             ┃
 // ┣━━━━━━┳━━━━━━╋━━━━━╈━━━━━╅─────┴─────┴─────┴─────┴─────╆━━━━━╈━━━━━╈━━━━━╋━━━━━━┳━━━━━━┫
-// ┃ ALT  ┃ FN   ┃ WIN ┃ CTRL┃                             ┃ ALT ┃ CTRL┃LEFT ┃ UP   ┃ RIGHT┃
-// ┃      ┃      ┃     ┃     ┃                             ┃     ┃     ┃     ┃ DOWN ┃      ┃
+// ┃ LALT ┃ FN   ┃ WIN ┃ CTRL┃                             ┃RALT ┃ CTRL┃LEFT ┃ UP   ┃ RIGHT┃
+// ┃      ┃      ┃     ┃     ┃                             ┃LVL3 ┃     ┃     ┃ DOWN ┃      ┃
+// ┗━━━━━━┻━━━━━━┻━━━━━┻━━━━━┹─────────────────────────────┺━━━━━┻━━━━━┻━━━━━┻━━━━━━┻━━━━━━┛
+
+// ISO version – edit the laptop config!
+// ┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┲━━━━━━━━━┓
+// │ ~   │ !   │ @   │ # № │ $   │ % ‰ │ ^   │ &   │ * • │ (   │ )   │ _ – │ + ≈ ┃   BCSP  ┃
+// │ `   │ 1   │ 2   │ 3 § │ 4   │ 5   │ 6   │ 7   │ 8   │ 9   │ 0   │ -   │ =   ┃         ┃
+// ┢━━━━━┷━┱───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┺━┳━━━━━━━┫
+// ┃ TAB   ┃ Q   │ W   │ E € │ R ₽ │ T   │ Y   │ U ü │ I   │ O ö │ P   │ {   │ }   ┃ ENTER ┃
+// ┃       ┃ q   │ w   │ e   │ r   │ t   │ y   │ u Ü │ i   │ o Ö │ p   │ [   │ ]   ┃       ┃
+// ┣━━━━━━━┻┱────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┺┓      ┃
+// ┃ CAPS   ┃ A ä │ S ß │ D   │ F   │ G   │ H ← │ J ↓ │ K ↑ │ L → │ :   │ "   │  |  ┃      ┃
+// ┃ ESC    ┃ a Ä │ s ẞ │ d   │ f   │ g   │ h   │ j   │ k   │ l   │ ;   │ '   │  \  ┃      ┃
+// ┣━━━━━━━━┻━━━━┱┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┲┷━━━━━┻━━━━━━┫
+// ┃ LSHIFT      ┃ Z   │ X ✕ │ С   │ V ✓ │ B   │ N   │ M   │ < « │ > » │ ?   ┃     RSHIFT  ┃
+// ┃             ┃ z   │ x   │ с   │ v   │ b   │ n   │ m   │ ,   │ . ⇒ │ /   ┃             ┃
+// ┣━━━━━━┳━━━━━━╋━━━━━╈━━━━━╅─────┴─────┴─────┴─────┴─────╆━━━━━╈━━━━━╈━━━━━╋━━━━━━┳━━━━━━┫
+// ┃ LALT ┃ FN   ┃ WIN ┃CTRL ┃                             ┃RALT ┃CTRL ┃LEFT ┃ UP   ┃RIGHT ┃
+// ┃      ┃      ┃     ┃     ┃                             ┃LVL3 ┃     ┃     ┃ DOWN ┃      ┃
 // ┗━━━━━━┻━━━━━━┻━━━━━┻━━━━━┹─────────────────────────────┺━━━━━┻━━━━━┻━━━━━┻━━━━━━┻━━━━━━┛

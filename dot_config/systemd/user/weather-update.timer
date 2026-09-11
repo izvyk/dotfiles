@@ -1,9 +1,0 @@
-[Unit]
-Description=timer to update cached weather
-
-[Timer]
-OnCalendar=*:0/15
-RemainAfterElapse=false
-
-[Install]
-WantedBy=timers.target

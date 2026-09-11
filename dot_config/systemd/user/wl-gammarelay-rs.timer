@@ -1,8 +1,0 @@
-[Unit]
-Description=timer to start wl-gammarelay-rs at the evening
-
-[Timer]
-OnCalendar=21:00
-
-[Install]
-WantedBy=timers.target
