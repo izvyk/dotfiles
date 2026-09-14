@@ -1,3 +1,3 @@
-function la --wraps=ls --wraps='eza --color-scale -la --git --group-directories-first --time-style iso' --description 'alias la=eza --color-scale -la --git --group-directories-first --time-style iso'
-  eza --color-scale -la --git --group-directories-first --time-style iso $argv;
+function la --wraps=ls --wraps='eza -la --git --group-directories-first' --description 'alias la=eza -la --git --group-directories-first'
+    eza -la --git --group-directories-first $argv
 end

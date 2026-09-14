@@ -1,3 +1,3 @@
-function lt --wraps='eza --color-scale -lT --git --git-ignore --group-directories-first --time-style iso' --description 'alias lt=eza --color-scale -lT --git --git-ignore --group-directories-first --time-style iso'
-  eza --color-scale -lT --git --git-ignore --group-directories-first --time-style iso $argv;
+function lt --wraps='eza -lT --git --group-directories-first' --description 'alias lt=eza -lT --git --group-directories-first'
+    eza -lT --git --group-directories-first $argv
 end
