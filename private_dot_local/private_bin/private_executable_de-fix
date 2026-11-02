@@ -1,0 +1,13 @@
+#!/bin/sh
+# Correct the German text in the clipboard in place: copy, run this (Super+G
+# on buratino), paste.
+
+text=$(wl-paste --type text --no-newline 2>/dev/null)
+[ -n "$text" ] || exit 0
+
+if ! fixed=$(printf '%s' "$text" | aichat -r de-fix 2>&1); then
+  notify-send -u critical "de-fix failed" "$fixed"
+  exit 1
+fi
+printf '%s' "$fixed" | wl-copy
+notify-send "Korrigiert" "$fixed"
