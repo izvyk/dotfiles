@@ -1,3 +1,6 @@
+# Notes for agents working on this repo, not a dotfile.
+AGENTS.md
+
 .config/yazi/flavors/
 .config/yazi/plugins/
 !.config/yazi/plugins/folder-rules.yazi
