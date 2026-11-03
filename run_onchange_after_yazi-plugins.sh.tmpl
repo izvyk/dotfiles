@@ -1,0 +1,5 @@
+#!/bin/sh
+# Install the yazi plugins pinned in package.toml, again whenever it changes.
+# package.toml: {{ include "private_dot_config/private_yazi/private_package.toml" | sha256sum }}
+command -v ya >/dev/null || exit 0
+ya pkg install || echo "yazi plugins not installed; run: ya pkg install" >&2

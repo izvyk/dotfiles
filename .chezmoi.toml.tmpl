@@ -1,0 +1,9 @@
+# chezmoi's own config, written to ~/.config/chezmoi/chezmoi.toml by `chezmoi init`.
+{{- if lookPath "delta" }}
+[diff]
+    pager = "delta"
+{{- end }}
+
+[merge]
+    command = "nvim"
+    args = ["-d", {{ printf "%q" "{{ .Destination }}" }}, {{ printf "%q" "{{ .Source }}" }}, {{ printf "%q" "{{ .Target }}" }}]

@@ -3,7 +3,6 @@ AGENTS.md
 
 .config/yazi/flavors/
 .config/yazi/plugins/
-!.config/yazi/plugins/folder-rules.yazi
 
 {{- if eq .chezmoi.osRelease.id "nixos" }}
 # On NixOS fonts.fontconfig.defaultFonts in nixos-config is authoritative.
