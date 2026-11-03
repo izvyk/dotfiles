@@ -1,5 +1,15 @@
 # chezmoi's own config, written to ~/.config/chezmoi/chezmoi.toml by `chezmoi init`.
+
+# encrypted_* files. The private key isn't in this repo: it lives in KeePassXC
+# and is copied to ~/.config/chezmoi/key.txt once per machine. Until then
+# .chezmoiignore skips the encrypted files.
+encryption = "age"
+[age]
+    useBuiltin = true
+    identity = "~/.config/chezmoi/key.txt"
+    recipient = "age1aquvd5hjcttsx2v37jcddp8kk5tpgz5ea295txpgku82v8h3a3uqdgra07"
 {{- if lookPath "delta" }}
+
 [diff]
     pager = "delta"
 {{- end }}

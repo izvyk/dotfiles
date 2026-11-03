@@ -18,3 +18,10 @@ AGENTS.md
 {{ else }}
 snap/
 {{ end }}
+
+{{ if not (stat (joinPath .chezmoi.homeDir ".config/chezmoi/key.txt")) }}
+# No age key on this machine yet (see .chezmoi.toml.tmpl): skip encrypted files.
+.ssh/config
+.ssh/allowed_signers
+.config/aichat/.env
+{{ end }}
