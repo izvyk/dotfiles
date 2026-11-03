@@ -3,6 +3,8 @@
 # monitors (DDC/CI). Below hardware 0% it continues with software dimming
 # (wl-gammarelay, sway only; on GNOME it isn't running and is skipped).
 
+export LC_ALL=C # awk prints decimals with a dot, which busctl needs
+
 case $1 in
     up)   sign=+ brillo_op=-A ;;
     down) sign=- brillo_op=-U ;;
@@ -75,6 +77,6 @@ fi
 
 # GNOME's OSD, from the pointer-monitor extension. Skipped without it.
 busctl --user call org.gnome.Shell /org/gnome/Shell/Extensions/PointerMonitor \
-    org.gnome.Shell.Extensions.PointerMonitor ShowBrightness d \
+    org.gnome.Shell.Extensions.PointerMonitor ShowOsd sd display-brightness-symbolic \
     "$(awk "BEGIN {print $level / 100}")" 2>/dev/null
 exit 0

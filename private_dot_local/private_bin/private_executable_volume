@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+# volume up|down, for the mouse thumbwheel (F14/F15). Accelerated like a touchpad:
+# turned slowly a tick is a fine step, spun fast it counts for more. The keyboard's
+# volume keys stay GNOME's own.
+
+# Percent per tick: MIN at up to SLOW ticks per second, rising to MAX at FAST.
+MIN=0.5 MAX=1.5 SLOW=15 FAST=60
+
+export LC_ALL=C # awk and $EPOCHREALTIME use a dot for decimals
+
+case $1 in
+    up)   tick=+ ;;
+    down) tick=- ;;
+    *)    echo "usage: ${0##*/} up|down" >&2; exit 2 ;;
+esac
+
+# Ticks come faster than wpctl runs, so each only notes itself down here and
+# whoever holds the lock applies all that piled up.
+dir=${XDG_RUNTIME_DIR:?}
+printf %s "$tick" >>"$dir/volume.ticks"
+exec 9>"$dir/volume.lock"
+flock -n 9 || exit 0
+
+while [[ -s $dir/volume.ticks ]]; do
+    ticks=$(<"$dir/volume.ticks")
+    : >"$dir/volume.ticks"
+
+    now=${EPOCHREALTIME/./} last=0
+    [[ -f $dir/volume.last ]] && last=$(<"$dir/volume.last")
+    printf %s "$now" >"$dir/volume.last"
+
+    ups=${ticks//-/} downs=${ticks//+/}
+    net=$(( ${#ups} - ${#downs} ))
+    (( net )) || continue
+    (( net > 0 )) && sign=+ || { sign=-; net=$(( -net )); }
+
+    step=$(awk -v net=$net -v count=${#ticks} -v us=$(( now - last )) \
+        -v min=$MIN -v max=$MAX -v slow=$SLOW -v fast=$FAST 'BEGIN {
+            speed = (count * 1000000 / us - slow) / (fast - slow)
+            speed = speed < 0 ? 0 : speed > 1 ? 1 : speed
+            printf "%.2f", net * (min + (max - min) * speed)
+        }')
+    wpctl set-volume @DEFAULT_AUDIO_SINK@ "$step%$sign" --limit 1
+
+    read -r _ level muted < <(wpctl get-volume @DEFAULT_AUDIO_SINK@)
+    [[ -n $muted ]] && wpctl set-mute @DEFAULT_AUDIO_SINK@ 0
+
+    # GNOME's OSD, from the pointer-monitor extension. Skipped without it.
+    percent=$(( 10#${level/./} ))
+    if   (( percent == 0 )); then icon=muted
+    elif (( percent < 34 )); then icon=low
+    elif (( percent < 67 )); then icon=medium
+    else icon=high
+    fi
+    busctl --user call org.gnome.Shell /org/gnome/Shell/Extensions/PointerMonitor \
+        org.gnome.Shell.Extensions.PointerMonitor ShowOsd sd \
+        "audio-volume-$icon-symbolic" "$level" 2>/dev/null
+done
+exit 0
