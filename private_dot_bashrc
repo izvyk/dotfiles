@@ -1,3 +1,6 @@
+# Interactive bash, kept close to the fish setup. Readline settings
+# (case-insensitive completion, Up/Down prefix history search) are in ~/.inputrc.
+
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
@@ -9,35 +12,38 @@ echo '
   ██  ██  ██  ██  ██  ██  ██  ██  ██
 '
 
-PS1='\[\e[92m\]\u\[\e[0m\]@\h \[\e[92m\]\W\[\e[0m\] \\$ '
+umask 077
+[[ ":$PATH:" == *":$HOME/.local/bin:"* ]] || PATH="${PATH:+$PATH:}$HOME/.local/bin"
 
+# Use yubikey-agent where it runs; elsewhere keep the session's agent.
+[[ -S $XDG_RUNTIME_DIR/yubikey-agent/yubikey-agent.sock ]] &&
+    export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/yubikey-agent/yubikey-agent.sock
+export GPG_TTY="$(tty)"
+
+# History: big, no duplicates, written after every command so other shells
+# and a crash don't lose it.
 HISTCONTROL=ignoreboth:erasedups
 HISTSIZE=10000
 HISTFILESIZE=20000
 shopt -s histappend
 
-# Aliases
-alias ls='eza'
-alias ll='eza -l'
-alias la='eza -la'
-alias ruman='LANG=ru_RU.UTF-8 man'
-
-shopt -s autocd
-shopt -s cdable_vars
-shopt -s cdspell
-shopt -s dirspell
-shopt -s nocaseglob
-shopt -s globstar
-shopt -s checkjobs
-shopt -s no_empty_cmd_completion
-bind "set completion-ignore-case on"
+shopt -s autocd cdable_vars cdspell dirspell nocaseglob globstar checkjobs no_empty_cmd_completion
 
 # Ubuntu's /etc/bash.bashrc leaves this to ~/.bashrc
 [[ -r /usr/share/bash-completion/bash_completion ]] && . /usr/share/bash-completion/bash_completion
 
-command -v zoxide >/dev/null && eval "$(zoxide init --hook pwd --cmd cd bash)"
-
-export GPG_TTY="$(tty)"
+# Same short commands as fish
+if command -v eza >/dev/null; then
+    alias ls='eza --git --group-directories-first'
+    alias ll='ls -l' la='ls -la' lt='ls -lT'
+fi
+alias lg=lazygit ii=aichat
+alias lsk='lsblk -o NAME,SIZE,MOUNTPOINTS'
+alias ruman='LANG=ru_RU.UTF-8 man'
+alias wtr='curl https://wttr.in'
+# Root shell (and /etc/nixos on NixOS): reuse the fish functions
+adm() { fish -c adm; }
+conf() { fish -c conf; }
 
 # bat is batcat on Debian/Ubuntu; the theme is in ~/.config/bat/config
 bat=$(command -v bat || command -v batcat)
@@ -48,6 +54,47 @@ if [[ -n $bat ]]; then
 fi
 unset bat
 
-umask 077
+# yazi, cd into the directory it was left in
+yy() {
+    local tmp cwd
+    tmp=$(mktemp -t yazi-cwd.XXXXXX)
+    yazi "$@" --cwd-file="$tmp"
+    cwd=$(<"$tmp")
+    [[ -n $cwd && $cwd != "$PWD" ]] && cd "$cwd"
+    rm -f -- "$tmp"
+}
 
-[[ ":$PATH:" == *":$HOME/.local/bin:"* ]] || PATH="${PATH:+$PATH:}$HOME/.local/bin"
+# nix-shell with packages, staying in bash; the prompt shows the depth
+ns()  { NIX_SHELL_DEPTH=$((${NIX_SHELL_DEPTH:-0} + 1)) command nix-shell --run "exec bash" -p "$@"; }
+nsu() { NIX_SHELL_DEPTH=$((${NIX_SHELL_DEPTH:-0} + 1)) command nix-shell -I nixpkgs=channel:nixpkgs-unstable --run "exec bash" -p "$@"; }
+
+command -v zoxide >/dev/null && eval "$(zoxide init --hook pwd --cmd cd bash)"
+command -v direnv >/dev/null && eval "$(direnv hook bash)"
+
+# Prompt like fish's: user@host ~/s/h/o/rt (branch) [󱄅 depth] [status]$
+# PS1 only references the __p_* variables, so a directory or branch named
+# `$(…)` is shown as text, never run.
+__prompt() {
+    local codes=("${PIPESTATUS[@]}") IFS dir part parts out=
+    history -a
+
+    __p_st=
+    [[ ${codes[*]} =~ [1-9] ]] && { IFS="|"; __p_st=" [${codes[*]}]"; }
+
+    # prompt_pwd: every component but the last shortened to 1 char (2 for dot dirs)
+    dir=${PWD/#"$HOME"/\~}
+    dir=${dir//[[:cntrl:]]/?}   # no escape sequences from directory names
+    IFS=/ read -ra parts <<<"$dir"
+    for part in "${parts[@]:0:${#parts[@]}-1}"; do
+        [[ $part == .* ]] && out+=${part:0:2}/ || out+=${part:0:1}/
+    done
+    __p_pwd=$out${parts[-1]}
+    [[ $PWD == / ]] && __p_pwd=/
+
+    __p_git=$(git rev-parse --abbrev-ref HEAD 2>/dev/null) &&
+        { [[ $__p_git == HEAD ]] && __p_git=$(git rev-parse --short HEAD); __p_git=" ($__p_git)"; }
+
+    __p_nix=${NIX_SHELL_DEPTH:+ [󱄅 $NIX_SHELL_DEPTH]}
+}
+PROMPT_COMMAND="__prompt${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
+PS1='\[\e[92m\]\u\[\e[0m\]@\h \[\e[32m\]${__p_pwd}\[\e[0m\]${__p_git}\[\e[33m\]${__p_nix}\[\e[31m\]${__p_st}\[\e[0m\]\$ '
