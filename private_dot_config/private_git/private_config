@@ -35,6 +35,9 @@
 [fetch]
     prune = true # Automatically deletes local refs to deleted remote branches
 
+[transfer]
+    fsckObjects = true # Reject corrupt or malformed objects on fetch and clone
+
 [rebase]
     # autoStash = true  # Automatically stashes/pops dirty worktrees during rebase
     autoSquash = true # Automatically orders `fixup!` and `squash!` commits
