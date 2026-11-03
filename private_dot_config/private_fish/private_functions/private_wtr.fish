@@ -1,4 +1,3 @@
-# Defined in - @ line 1
-function wtr --wraps='curl http://wttr.in' --description 'alias wtr=curl http://wttr.in'
-  curl http://wttr.in $argv;
+function wtr --wraps='curl https://wttr.in' --description 'alias wtr=curl https://wttr.in'
+  curl https://wttr.in $argv;
 end

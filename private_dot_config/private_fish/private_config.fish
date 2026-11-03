@@ -1,36 +1,22 @@
 if status is-interactive
-    # Commands to run in interactive sessions can go here
-
     set fish_greeting '
   ██  ██  ██  ██  ██  ██  ██  ██  ██
  ████████ ██ ████████ ██ ████████ ██
   ██  ██  ██  ██  ██  ██  ██  ██  ██
  ████████    ████████    ████████
   ██  ██  ██  ██  ██  ██  ██  ██  ██
-' 
-    # printf '\x0a\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x0a\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\x20\u2588\u2588\x20\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\x20\u2588\u2588\x20\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\x20\u2588\u2588\x20\x0a\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x0a\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\x20\x20\x20\x20\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\x20\x20\x20\x20\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\x20\x20\x20\x20\x0a\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x20\x20\u2588\u2588\x0a\x0a'
-    
-    # fish_ssh_agent
-    # set -x GPG_TTY $(tty)
+'
 
-    
-    set -x SSH_AUTH_SOCK $XDG_RUNTIME_DIR/yubikey-agent/yubikey-agent.sock
+    # Use yubikey-agent where it runs; elsewhere keep the session's agent.
+    set -l yubikey_sock $XDG_RUNTIME_DIR/yubikey-agent/yubikey-agent.sock
+    test -S $yubikey_sock; and set -gx SSH_AUTH_SOCK $yubikey_sock
 
-    # Manpages with bat
-    # if which bat >/dev/null 2>&1;
-    #     set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
-    #     set -x MANROFFOPT '-c' # Fix escape sequences in bat
-    #     # set -x MANPAGER "sh -c \"sed -e 's/\x1b\[[0-9;]*m//g' | bat -l man -p\"" # Aternative fix
-    # end
+    type -q zoxide; and zoxide init --hook pwd --cmd cd fish | source
 
-    zoxide init --hook pwd --cmd cd fish | source
-
-    bind $argv \em __fish_man_page          # Alt + M = manpage
-    bind $argv \el nextd-or-forward-word    # Alt + L = next visited directory
-    bind $argv \eh prevd-or-backward-word   # Alt + H = previous visited directory
+    bind \em __fish_man_page          # Alt + M = manpage
+    bind \el nextd-or-forward-word    # Alt + L = next visited directory
+    bind \eh prevd-or-backward-word   # Alt + H = previous visited directory
 
     umask 077
-    fish_add_path ~/.local/bin/
-
+    fish_add_path -g ~/.local/bin
 end
-

@@ -1,3 +1,9 @@
-function cat --wraps='bat --theme=1337' --description 'alias cat=bat --theme=1337'
-    bat --theme=1337 $argv
+function cat --wraps=bat --description 'bat (plain when piped), else cat'
+    if type -q bat
+        bat $argv
+    else if type -q batcat # Debian/Ubuntu name
+        batcat $argv
+    else
+        command cat $argv
+    end
 end
