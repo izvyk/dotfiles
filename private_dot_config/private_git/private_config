@@ -1,0 +1,100 @@
+[user]
+    name = Philipp Mukosey
+    email = philipp@mukosey.com
+    signingkey = ~/.ssh/id_ed25519_git_signing.pub
+
+[gpg]
+    format = ssh
+
+[gpg "ssh"]
+    # Allows `git log --show-signature` to verify commits locally
+    allowedSignersFile = ~/.ssh/allowed_signers
+
+[commit]
+    gpgsign = true
+    verbose = true # Shows the diff inside your commit message editor for context
+
+[tag]
+    gpgsign = true
+    sort = -version:refname # Sorts version tags logically (v1.10 > v1.2)
+
+[core]
+    quotepath = false
+    pager = delta
+
+[init]
+    defaultBranch = main
+
+[pull]
+    ff = only
+
+[push]
+    autoSetupRemote = true # No more `--set-upstream origin branch-name`
+    followTags = true
+
+[fetch]
+    prune = true # Automatically deletes local refs to deleted remote branches
+
+[rebase]
+    # autoStash = true  # Automatically stashes/pops dirty worktrees during rebase
+    autoSquash = true # Automatically orders `fixup!` and `squash!` commits
+
+[rerere]
+    enabled = true    # Remembers how you resolved merge conflicts so you only do it once
+    autoupdate = true # Automatically stages files resolved by rerere
+
+[branch]
+    sort = -committerdate # Lists most recently worked-on branches first in `git branch`
+
+[diff]
+    algorithm = histogram # Cleaner, more logical code diffs than the default myers algorithm
+    colorMoved = default  # Highlights moved code blocks in delta
+
+[merge]
+    conflictstyle = zdiff3 # Shows original base block alongside ours/theirs in conflicts
+
+[interactive]
+    diffFilter = delta --color-only
+
+[alias]
+    # Run `git sdiff` when you want a wide side-by-side diff view
+    sdiff = -c delta.side-by-side=true diff
+    sshow = -c delta.side-by-side=true show
+
+[delta]
+    features = gruvbox-dark
+    navigate = true      # Use n and N to jump between files/hunks
+    line-numbers = true  # Compact 2-column line numbers (works great in narrow splits)
+    hyperlinks = true    # Clickable file/line links in modern terminals (Foot, Ghostty, etc.)
+
+[delta "gruvbox-dark"]
+    # 1. Syntax Theme (inherited from bat)
+    syntax-theme = gruvbox-dark
+
+    # 2. Diff Theme (Darker emphasis backgrounds so syntax foreground stays readable)
+    minus-style = syntax "#3c1f1e"
+    minus-emph-style = syntax "#60201e"
+    plus-style = syntax "#323824"
+    plus-emph-style = syntax "#4f5a20"
+
+    # 3. Moved Code Blocks (Pairs with diff.colorMoved = default)
+    map-styles = \
+        bold purple => syntax "#422b3e", \
+        bold blue => syntax "#26393d", \
+        bold cyan => syntax "#283b33", \
+        bold yellow => syntax "#473c22"
+
+    # 4. Line Numbers (Gruvbox muted palette)
+    line-numbers-minus-style = "#cc241d"
+    line-numbers-plus-style = "#98971a"
+    line-numbers-zero-style = "#665c54"
+    line-numbers-left-style = "#504945"
+    line-numbers-right-style = "#504945"
+
+    # 5. UI Theme (Headers and Borders)
+    file-style = "#ebdbb2" bold
+    file-decoration-style = "#d79921" ul
+    hunk-header-style = file line-number syntax
+    hunk-header-file-style = "#ebdbb2"
+    hunk-header-line-number-style = "#fabd2f"
+    hunk-header-decoration-style = "#504945" box
