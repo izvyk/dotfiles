@@ -56,4 +56,4 @@
       
   fi
   
-) 9>/tmp/$USER-brightness-throttle.lock
+) 9>"${XDG_RUNTIME_DIR:?}/brightness-throttle.lock"

@@ -70,4 +70,4 @@
       busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d -0.01 2>/dev/null || true
   fi
   
-) 9>/tmp/$USER-brightness-throttle.lock
+) 9>"${XDG_RUNTIME_DIR:?}/brightness-throttle.lock"
