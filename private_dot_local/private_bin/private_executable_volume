@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# volume up|down [percent, default 1]. Unmutes first; caps at 110%.
+
+case $1 in
+    up)   sign=+ ;;
+    down) sign=- ;;
+    *)    echo "usage: ${0##*/} up|down [percent]" >&2; exit 2 ;;
+esac
+
+exec 9>"${XDG_RUNTIME_DIR:?}/volume.lock"
+flock -n 9 || exit 0
+
+wpctl set-mute @DEFAULT_AUDIO_SINK@ 0
+wpctl set-volume @DEFAULT_AUDIO_SINK@ "${2:-1}%$sign" --limit 1.1
+
+# Throttle the wheel scroll rate
+sleep 0.025

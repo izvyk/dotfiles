@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+# brightness up|down. Hardware brightness of the panel (brillo) and external
+# monitors (DDC/CI). Below hardware 0% it continues with software dimming
+# (wl-gammarelay, sway only; on GNOME it isn't running and is skipped).
+
+case $1 in
+    up)   sign=+ brillo_op=-A ;;
+    down) sign=- brillo_op=-U ;;
+    *)    echo "usage: ${0##*/} up|down" >&2; exit 2 ;;
+esac
+
+# Drop key repeats while a step is still running
+exec 9>"${XDG_RUNTIME_DIR:?}/brightness.lock"
+flock -n 9 || exit 0
+
+gamma() {
+    busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d "${sign}0.01" 2>/dev/null
+}
+
+# Software dimming active (below 1): hardware is at 0, keep adjusting software
+sw=$(busctl --user get-property rs.wl-gammarelay / rs.wl.gammarelay Brightness 2>/dev/null || echo 'd 1')
+if [[ $sw != "d 1" ]]; then
+    gamma
+    exit
+fi
+
+# Displays to adjust: the monitor under the pointer, from the pointer-monitor
+# GNOME extension (several connectors if mirrored). Without it (sway, or the
+# extension not loaded) fall back to the lid: open -> panel, closed -> externals.
+connectors=($(busctl --user call org.gnome.Shell /org/gnome/Shell/Extensions/PointerMonitor \
+    org.gnome.Shell.Extensions.PointerMonitor GetConnectors 2>/dev/null | cut -d' ' -f3- | tr -d '"'))
+lid=open
+grep -iq "closed" /proc/acpi/button/lid/*/state 2>/dev/null && lid=closed
+
+# External monitors are addressed by I2C bus, read from sysfs. That skips
+# ddcutil's display detection, and --skip-ddc-checks its per-call probing:
+# ~400ms -> ~120ms per step.
+# DP exposes its AUX bus as an i2c-N child; HDMI only has the ddc link.
+panel= buses=()
+for c in /sys/class/drm/card*-*; do
+    conn=${c##*/}; conn=${conn#card*-}
+    [[ "$(cat "$c/status" 2>/dev/null)" == connected ]] || continue
+    if (( ${#connectors[@]} )); then
+        [[ " ${connectors[*]} " == *" $conn "* ]] || continue
+    elif [[ $lid == open ]]; then
+        [[ $conn == eDP-* ]] || continue
+    else
+        [[ $conn == eDP-* ]] && continue
+    fi
+    if [[ $conn == eDP-* ]]; then panel=1; continue; fi
+    aux=("$c"/i2c-*)
+    if [[ -e ${aux[0]} ]]; then bus=${aux[0]}; else bus="$(readlink -f "$c/ddc")"; fi
+    [[ -n $bus ]] && buses+=("${bus##*i2c-}")
+done
+ddc() { ddcutil --bus "$1" --skip-ddc-checks "${@:2}"; }
+
+# Step the picked displays in parallel, the panel smoothly
+[[ -n $panel ]] && brillo -q $brillo_op 2 -u 200000 &
+for bus in "${buses[@]}"; do
+    ddc "$bus" setvcp 10 $sign 5 --noverify &
+done
+wait
+
+# Going down past the hardware floor (panel < 1%, or the first external
+# monitor at 0%; only one is queried to save time) hands over to software.
+[[ $1 == down ]] || exit 0
+if [[ -n $panel ]]; then
+    [ "$(brillo | tr -d '.')" -lt 100 ] && gamma
+elif (( ${#buses[@]} )); then
+    [[ "$(ddc "${buses[0]}" getvcp 10 --terse 2>/dev/null | awk '{print $4}')" == 0 ]] && gamma
+fi
+exit 0
