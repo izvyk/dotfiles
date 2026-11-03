@@ -1,6 +1,6 @@
 {
   "uuid": "pointer-monitor@phil",
   "name": "Pointer Monitor",
-  "description": "D-Bus method returning the connectors of the monitor under the pointer, for the brightness scripts.",
-  "shell-version": ["50", "51", "52", "53", "54"]
+  "description": "D-Bus methods for the brightness script: the connectors of the monitor under the pointer, and GNOME's brightness OSD.",
+  "shell-version": ["46", "47", "48", "49", "50", "51", "52", "53", "54"]
 }

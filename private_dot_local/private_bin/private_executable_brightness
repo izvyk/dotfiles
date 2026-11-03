@@ -36,7 +36,7 @@ grep -iq "closed" /proc/acpi/button/lid/*/state 2>/dev/null && lid=closed
 # ddcutil's display detection, and --skip-ddc-checks its per-call probing:
 # ~400ms -> ~120ms per step.
 # DP exposes its AUX bus as an i2c-N child; HDMI only has the ddc link.
-panel= buses=()
+panel= level= buses=()
 for c in /sys/class/drm/card*-*; do
     conn=${c##*/}; conn=${conn#card*-}
     [[ "$(cat "$c/status" 2>/dev/null)" == connected ]] || continue
@@ -61,12 +61,20 @@ for bus in "${buses[@]}"; do
 done
 wait
 
-# Going down past the hardware floor (panel < 1%, or the first external
-# monitor at 0%; only one is queried to save time) hands over to software.
-[[ $1 == down ]] || exit 0
+# Level in percent: the panel's, or the first external monitor's (only one is
+# queried to save time).
 if [[ -n $panel ]]; then
-    [ "$(brillo | tr -d '.')" -lt 100 ] && gamma
+    level=$(brillo)
 elif (( ${#buses[@]} )); then
-    [[ "$(ddc "${buses[0]}" getvcp 10 --terse 2>/dev/null | awk '{print $4}')" == 0 ]] && gamma
+    level=$(ddc "${buses[0]}" getvcp 10 --terse 2>/dev/null | awk '$5 {print $4 * 100 / $5}')
 fi
+[[ -n $level ]] || exit 0
+
+# Going down past the hardware floor hands over to software dimming.
+[[ $1 == down ]] && awk "BEGIN {exit !($level < 1)}" && gamma
+
+# GNOME's OSD, from the pointer-monitor extension. Skipped without it.
+busctl --user call org.gnome.Shell /org/gnome/Shell/Extensions/PointerMonitor \
+    org.gnome.Shell.Extensions.PointerMonitor ShowBrightness d \
+    "$(awk "BEGIN {print $level / 100}")" 2>/dev/null
 exit 0
