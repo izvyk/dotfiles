@@ -15,9 +15,6 @@ echo '
 umask 077
 [[ ":$PATH:" == *":$HOME/.local/bin:"* ]] || PATH="${PATH:+$PATH:}$HOME/.local/bin"
 
-# Use yubikey-agent where it runs; elsewhere keep the session's agent.
-[[ -S $XDG_RUNTIME_DIR/yubikey-agent/yubikey-agent.sock ]] &&
-    export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/yubikey-agent/yubikey-agent.sock
 export GPG_TTY="$(tty)"
 
 # History: big, no duplicates, written after every command so other shells
@@ -97,4 +94,6 @@ __prompt() {
     __p_nix=${NIX_SHELL_DEPTH:+ [󱄅 $NIX_SHELL_DEPTH]}
 }
 PROMPT_COMMAND="__prompt${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
-PS1='\[\e[92m\]\u\[\e[0m\]@\h \[\e[32m\]${__p_pwd}\[\e[0m\]${__p_git}\[\e[33m\]${__p_nix}\[\e[31m\]${__p_st}\[\e[0m\]\$ '
+(( EUID )) && __u=94 || __u=91 # the username tells bash (blue) from fish (green); red is root
+PS1="\[\e[${__u}m\]"'\u\[\e[0m\]@\h \[\e[32m\]${__p_pwd}\[\e[0m\]${__p_git}\[\e[33m\]${__p_nix}\[\e[31m\]${__p_st}\[\e[0m\]\$ '
+unset __u

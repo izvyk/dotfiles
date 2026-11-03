@@ -7,10 +7,6 @@ if status is-interactive
   ██  ██  ██  ██  ██  ██  ██  ██  ██
 '
 
-    # Use yubikey-agent where it runs; elsewhere keep the session's agent.
-    set -l yubikey_sock $XDG_RUNTIME_DIR/yubikey-agent/yubikey-agent.sock
-    test -S $yubikey_sock; and set -gx SSH_AUTH_SOCK $yubikey_sock
-
     type -q zoxide; and zoxide init --hook pwd --cmd cd fish | source
 
     bind \em __fish_man_page          # Alt + M = manpage
