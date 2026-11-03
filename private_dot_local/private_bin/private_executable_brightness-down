@@ -3,7 +3,37 @@
 (
   # Lock file for debouncing
   flock -n 9 || exit 0
-  
+
+  # Displays to adjust: the monitor under the pointer, from the pointer-monitor
+  # GNOME extension (several connectors if mirrored). Without it (sway, or the
+  # extension not loaded) fall back to the lid: open -> panel, closed -> externals.
+  connectors=($(busctl --user call org.gnome.Shell /org/gnome/Shell/Extensions/PointerMonitor \
+      org.gnome.Shell.Extensions.PointerMonitor GetConnectors 2>/dev/null | cut -d' ' -f3- | tr -d '"'))
+  lid=open
+  grep -iq "closed" /proc/acpi/button/lid/*/state 2>/dev/null && lid=closed
+
+  # External monitors are addressed by I2C bus, read from sysfs. That skips
+  # ddcutil's display detection, and --skip-ddc-checks its per-call probing:
+  # ~400ms -> ~120ms per step.
+  # DP exposes its AUX bus as an i2c-N child; HDMI only has the ddc link.
+  panel= buses=()
+  for c in /sys/class/drm/card*-*; do
+      conn=${c##*/}; conn=${conn#card*-}
+      [[ "$(cat "$c/status" 2>/dev/null)" == connected ]] || continue
+      if (( ${#connectors[@]} )); then
+          [[ " ${connectors[*]} " == *" $conn "* ]] || continue
+      elif [[ $lid == open ]]; then
+          [[ $conn == eDP-* ]] || continue
+      else
+          [[ $conn == eDP-* ]] && continue
+      fi
+      if [[ $conn == eDP-* ]]; then panel=1; continue; fi
+      aux=("$c"/i2c-*)
+      if [[ -e ${aux[0]} ]]; then bus=${aux[0]}; else bus="$(readlink -f "$c/ddc")"; fi
+      [[ -n $bus ]] && buses+=("${bus##*i2c-}")
+  done
+  ddc() { ddcutil --bus "$1" --skip-ddc-checks "${@:2}"; }
+
   # Fetch software brightness. If the service isn't running (GNOME), 
   # suppress the error and pretend it returned "d 1" (100%).
   SW_BRIGHTNESS="$(busctl --user get-property rs.wl-gammarelay / rs.wl.gammarelay Brightness 2>/dev/null || echo 'd 1')"
@@ -19,32 +49,25 @@
 
   # --- We are in Hardware Mode (Software is at 1.0) ---
 
-  if grep -iq "closed" /proc/acpi/button/lid/*/state 2>/dev/null; then
-      
-      # Lid CLOSED -> Decrease BOTH external monitors
-      ddcutil --display 1 setvcp 10 - 5 --noverify &
-      ddcutil --display 2 setvcp 10 - 5 --noverify &
-      wait
-      
-      # Check if Display 1 hit the hardware floor (0%)
-      # We use --terse to make parsing faster and only query one display to save time
-      HW_VAL="$(ddcutil --display 1 getvcp 10 --terse 2>/dev/null | awk '{print $4}')"
-      
-      if [[ "$HW_VAL" == "0" ]]; then
-          # Hardware is at 0, cross the threshold into software dimming
-          busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d -0.01 2>/dev/null || true
-      fi
-      
-  else
-      
-      # Lid OPEN -> Decrease internal display
-      brillo -qU 2 -u 200000
-      
-      # If internal display hits < 1%, cross the threshold into software dimming
-      if [ "$(brillo | tr -d '.')" -lt "100" ]; then
-          busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d -0.01 2>/dev/null || true
-      fi
-      
+  # Decrease the picked displays in parallel
+  [[ -n $panel ]] && brillo -qU 2 -u 200000 &
+  for bus in "${buses[@]}"; do
+      ddc "$bus" setvcp 10 - 5 --noverify &
+  done
+  wait
+
+  # Check if hardware hit its floor: internal display < 1%, or the first
+  # external monitor at 0% (only one is queried to save time)
+  floor=
+  if [[ -n $panel ]]; then
+      [ "$(brillo | tr -d '.')" -lt "100" ] && floor=1
+  elif (( ${#buses[@]} )); then
+      [[ "$(ddc "${buses[0]}" getvcp 10 --terse 2>/dev/null | awk '{print $4}')" == "0" ]] && floor=1
+  fi
+
+  if [[ -n $floor ]]; then
+      # Hardware is at 0, cross the threshold into software dimming
+      busctl --user -- call rs.wl-gammarelay / rs.wl.gammarelay UpdateBrightness d -0.01 2>/dev/null || true
   fi
   
 ) 9>/tmp/$USER-brightness-throttle.lock
