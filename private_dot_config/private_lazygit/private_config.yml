@@ -1,0 +1,9 @@
+# Defaults: `lazygit -c`. The editor comes from $EDITOR.
+gui:
+  nerdFontsVersion: "3" # file icons (Symbols Nerd Font fills in the glyphs)
+git:
+  # delta's theme comes from ~/.config/git/config; its line numbers open the
+  # file in $EDITOR at that line when clicked.
+  pagers:
+    - colorArg: always
+      pager: delta --paging=never --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
