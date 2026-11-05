@@ -2,12 +2,7 @@ partial alphanumeric_keys
 xkb_symbols "izvyk" {
 
     include "us(basic)"
-    name[Group1]= "English (US, with German letters, AltGr, izvyk's custom layout)";
-
-    include "level3(ralt_switch)"
-    //include "custom_level3(ralt_latch_ralt)"
-    //include "custom_level3(ralt_latch_next)"
-    //include "custom_level3(ralt_switch)"
+    name[Group1]= "English (US, izvyk)";
 
     key <AE03>	{[           3,  numbersign,       numerosign,         section  ]}; // 3 # № §
     key <AE11>	{[       minus,  underscore,           endash                   ]}; // - _ –
@@ -23,47 +18,45 @@ xkb_symbols "izvyk" {
     include "custom(check_mark_on_v)"
     include "custom(cross_mark_on_x)"
     include "custom(almost_equal_on_equal)"
-    include "custom(rouble_on_r)"
     include "custom(guillemets)"
     include "custom(arrows)"
-    include "custom(vim_hjkl)"
-    include "custom(laptop)"
+    include "level2(lsgt_switch)" // The key next to left Shift is another Shift
 
     include "eurosign(e)"
 
-    //include "custom_level3(ralt_shift)"
+    include "level3(ralt_switch)"
 };
 
 // ┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┲━━━━━━━━━┓
 // │ ~   │ !   │ @   │ # № │ $   │ % ‰ │ ^   │ &   │ * • │ (   │ )   │ _ – │ + ≈ ┃   BCSP  ┃
-// │ `   │ 1   │ 2   │ 3 § │ 4   │ 5   │ 6   │ 7   │ 8   │ 9   │ 0   │ -   │ =   ┃         ┃
+// │ `   │ 1   │ 2   │ 3 § │ 4   │ 5   │ 6   │ 7   │ 8   │ 9   │ 0   │ -   │ = ≠ ┃         ┃
 // ┢━━━━━┷━┱───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┺━┯━━━━━━━┫
-// ┃ TAB   ┃ Q   │ W   │ E € │ R ₽ │ T   │ Y   │ U ü │ I   │ O ö │ P   │ {   │ }   │ |     ┃
+// ┃ TAB   ┃ Q   │ W   │ E € │ R   │ T   │ Y   │ U ü │ I   │ O ö │ P   │ {   │ }   │ |     ┃
 // ┃       ┃ q   │ w   │ e   │ r   │ t   │ y   │ u Ü │ i   │ o Ö │ p   │ [   │ ]   │ \     ┃
 // ┣━━━━━━━┻┱────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┲━━━━┷━━━━━━━┫
-// ┃ CAPS   ┃ A ä │ S ß │ D   │ F   │ G   │ H ← │ J ↓ │ K ↑ │ L → │ :   │ "   ┃     ENTER  ┃
-// ┃ ECS    ┃ a Ä │ s ẞ │ d   │ f   │ g   │ h   │ j   │ k   │ l   │ ;   │ '   ┃            ┃
+// ┃ CAPS   ┃ A ä │ S ß │ D   │ F   │ G   │ H   │ J   │ K   │ L   │ :   │ "   ┃     ENTER  ┃
+// ┃ ESC    ┃ a Ä │ s ẞ │ d   │ f   │ g   │ h   │ j   │ k   │ l   │ ;   │ '   ┃            ┃
 // ┣━━━━━━━━┻━━━━┱┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┲┻━━━━━━━━━━━━┫
-// ┃ LSHIFT      ┃ Z   │ X ✕ │ С   │ V ✓ │ B   │ N   │ M   │ < « │ > » │ ?   ┃     RSHIFT  ┃
-// ┃             ┃ z   │ x   │ с   │ v   │ b   │ n   │ m   │ ,   │ . ⇒ │ /   ┃             ┃
+// ┃ LSHIFT      ┃ Z   │ X ✕ │ C   │ V ✓ │ B   │ N   │ M   │ < « │ > » │ ?   ┃     RSHIFT  ┃
+// ┃             ┃ z   │ x   │ c   │ v   │ b   │ n   │ m   │ ,   │ . ⇒ │ /   ┃             ┃
 // ┣━━━━━━┳━━━━━━╋━━━━━╈━━━━━╅─────┴─────┴─────┴─────┴─────╆━━━━━╈━━━━━╈━━━━━╋━━━━━━┳━━━━━━┫
 // ┃ LALT ┃ FN   ┃ WIN ┃ CTRL┃                             ┃RALT ┃ CTRL┃LEFT ┃ UP   ┃ RIGHT┃
 // ┃      ┃      ┃     ┃     ┃                             ┃LVL3 ┃     ┃     ┃ DOWN ┃      ┃
 // ┗━━━━━━┻━━━━━━┻━━━━━┻━━━━━┹─────────────────────────────┺━━━━━┻━━━━━┻━━━━━┻━━━━━━┻━━━━━━┛
 
-// ISO version – edit the laptop config!
+// ISO version
 // ┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┲━━━━━━━━━┓
 // │ ~   │ !   │ @   │ # № │ $   │ % ‰ │ ^   │ &   │ * • │ (   │ )   │ _ – │ + ≈ ┃   BCSP  ┃
-// │ `   │ 1   │ 2   │ 3 § │ 4   │ 5   │ 6   │ 7   │ 8   │ 9   │ 0   │ -   │ =   ┃         ┃
+// │ `   │ 1   │ 2   │ 3 § │ 4   │ 5   │ 6   │ 7   │ 8   │ 9   │ 0   │ -   │ = ≠ ┃         ┃
 // ┢━━━━━┷━┱───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┺━┳━━━━━━━┫
-// ┃ TAB   ┃ Q   │ W   │ E € │ R ₽ │ T   │ Y   │ U ü │ I   │ O ö │ P   │ {   │ }   ┃ ENTER ┃
+// ┃ TAB   ┃ Q   │ W   │ E € │ R   │ T   │ Y   │ U ü │ I   │ O ö │ P   │ {   │ }   ┃ ENTER ┃
 // ┃       ┃ q   │ w   │ e   │ r   │ t   │ y   │ u Ü │ i   │ o Ö │ p   │ [   │ ]   ┃       ┃
 // ┣━━━━━━━┻┱────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┺┓      ┃
-// ┃ CAPS   ┃ A ä │ S ß │ D   │ F   │ G   │ H ← │ J ↓ │ K ↑ │ L → │ :   │ "   │  |  ┃      ┃
+// ┃ CAPS   ┃ A ä │ S ß │ D   │ F   │ G   │ H   │ J   │ K   │ L   │ :   │ "   │  |  ┃      ┃
 // ┃ ESC    ┃ a Ä │ s ẞ │ d   │ f   │ g   │ h   │ j   │ k   │ l   │ ;   │ '   │  \  ┃      ┃
 // ┣━━━━━━━━┻━━━━┱┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┲┷━━━━━┻━━━━━━┫
-// ┃ LSHIFT      ┃ Z   │ X ✕ │ С   │ V ✓ │ B   │ N   │ M   │ < « │ > » │ ?   ┃     RSHIFT  ┃
-// ┃             ┃ z   │ x   │ с   │ v   │ b   │ n   │ m   │ ,   │ . ⇒ │ /   ┃             ┃
+// ┃ LSHIFT      ┃ Z   │ X ✕ │ C   │ V ✓ │ B   │ N   │ M   │ < « │ > » │ ?   ┃     RSHIFT  ┃
+// ┃             ┃ z   │ x   │ c   │ v   │ b   │ n   │ m   │ ,   │ . ⇒ │ /   ┃             ┃
 // ┣━━━━━━┳━━━━━━╋━━━━━╈━━━━━╅─────┴─────┴─────┴─────┴─────╆━━━━━╈━━━━━╈━━━━━╋━━━━━━┳━━━━━━┫
 // ┃ LALT ┃ FN   ┃ WIN ┃CTRL ┃                             ┃RALT ┃CTRL ┃LEFT ┃ UP   ┃RIGHT ┃
 // ┃      ┃      ┃     ┃     ┃                             ┃LVL3 ┃     ┃     ┃ DOWN ┃      ┃

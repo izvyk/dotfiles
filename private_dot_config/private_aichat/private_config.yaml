@@ -1,5 +1,5 @@
-# Haimaker's key goes in ~/.config/aichat/.env (HAIMAKER_API_KEY=…), which
-# chezmoi doesn't manage. A role can pin another model in its front matter
+# Haimaker's key is in ~/.config/aichat/.env (HAIMAKER_API_KEY=…), encrypted in
+# the dotfiles. A role can pin another model in its front matter
 # (`model: <client>:<model>`); `-m` picks one per call.
 model: haimaker:meta/muse-spark-1.3-contributor
 clients:

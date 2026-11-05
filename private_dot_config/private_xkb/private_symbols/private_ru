@@ -2,7 +2,7 @@ partial alphanumeric_keys
 xkb_symbols "izvyk" {
 
     include "ru(winkeys)"
-    name[Group1]= "Russian (AltGr, izvyk's custom layout)";
+    name[Group1]= "Russian (izvyk)";
 
     key <AE03>	{[           3,  numerosign,       numbersign,         section  ]}; // 3 № # §
     key <AE11>	{[       minus,  underscore,           emdash                   ]}; // - _ —
@@ -12,28 +12,23 @@ xkb_symbols "izvyk" {
     include "custom(check_mark_on_v)"
     include "custom(cross_mark_on_x)"
     include "custom(almost_equal_on_equal)"
-    include "custom(rouble_on_r)"
     include "custom(guillemets)"
     include "custom(arrows)"
-    include "custom(vim_hjkl)"
-    include "custom(laptop)"
+    include "level2(lsgt_switch)" // The key next to left Shift is another Shift
 
     include "eurosign(e)"
 
-    //include "custom_level3(ralt_latch_ralt)"
     include "level3(ralt_switch)"
-    //include "custom_level3(ralt_latch_next)"
-    //include "custom_level3(ralt_shift)"
 };
 
 // ┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┲━━━━━━━━━┓
 // │ Ё   │ !   │ "   │ № # │ ;   │ % ‰ │ :   │ ?   │ * • │ (   │ )   │ _ — │ + ≈ ┃   BCSP  ┃
-// │ ё   │ 1   │ 2   │ 3 § │ 4   │ 5   │ 6   │ 7   │ 8   │ 9   │ 0   │ -   │ =   ┃         ┃
+// │ ё   │ 1   │ 2   │ 3 § │ 4   │ 5   │ 6   │ 7   │ 8   │ 9   │ 0   │ -   │ = ≠ ┃         ┃
 // ┢━━━━━┷━┱───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┴─┬───┺━┯━━━━━━━┫
-// ┃ TAB   ┃ Й   │ Ц   │ У € │ К ₽ │ Е   │ Н   │ Г   │ Ш   │ Щ   │ З   │ Х   │ Ъ   │ /     ┃
+// ┃ TAB   ┃ Й   │ Ц   │ У € │ К   │ Е   │ Н   │ Г   │ Ш   │ Щ   │ З   │ Х   │ Ъ   │ /     ┃
 // ┃       ┃ й   │ ц   │ у   │ к   │ е   │ н   │ г   │ ш   │ щ   │ з   │ х   │ ъ   │ \     ┃
 // ┣━━━━━━━┻┱────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┬────┴┲━━━━┷━━━━━━━┫
-// ┃ CAPS   ┃ Ф   │ Ы   │ В   │ А   │ П   │ Р ← │ О ↓ │ Л ↑ │ Д → │ Ж   │ Э   ┃     ENTER  ┃
+// ┃ CAPS   ┃ Ф   │ Ы   │ В   │ А   │ П   │ Р   │ О   │ Л   │ Д   │ Ж   │ Э   ┃     ENTER  ┃
 // ┃ ESC    ┃ ф   │ ы   │ в   │ а   │ п   │ р   │ о   │ л   │ д   │ ж   │ э   ┃            ┃
 // ┣━━━━━━━━┻━━━━┱┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┬┴────┲┻━━━━━━━━━━━━┫
 // ┃ LSHIFT      ┃ Я   │ Ч ✕ │ С   │ М ✓ │ И   │ Т   │ Ь   │ Б « │ Ю » │ ,   ┃     RSHIFT  ┃

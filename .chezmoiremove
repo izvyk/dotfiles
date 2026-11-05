@@ -1,0 +1,5 @@
+# No longer managed; chezmoi leaves such files behind otherwise. Safe to delete
+# this file once both machines have applied it.
+.config/xkb/rules/evdev
+.config/xkb/symbols/custom_level3
+.config/xkb/symbols/laptop

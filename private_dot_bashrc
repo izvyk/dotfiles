@@ -13,7 +13,10 @@ echo '
 '
 
 umask 077
-[[ ":$PATH:" == *":$HOME/.local/bin:"* ]] || PATH="${PATH:+$PATH:}$HOME/.local/bin"
+for dir in ~/.local/bin ~/go/bin; do
+    [[ -d $dir && ":$PATH:" != *":$dir:"* ]] && PATH="${PATH:+$PATH:}$dir"
+done
+unset dir
 
 export GPG_TTY="$(tty)"
 
@@ -29,18 +32,29 @@ shopt -s autocd cdable_vars cdspell dirspell nocaseglob globstar checkjobs no_em
 # Ubuntu's /etc/bash.bashrc leaves this to ~/.bashrc
 [[ -r /usr/share/bash-completion/bash_completion ]] && . /usr/share/bash-completion/bash_completion
 
+# Colours: LS_COLORS (readline's colored-stats reads it too) and grep.
+# lesspipe lets less open archives and the like.
+command -v dircolors >/dev/null && eval "$(dircolors -b)"
+command -v lesspipe >/dev/null && eval "$(SHELL=/bin/sh lesspipe)"
+alias grep='grep --color=auto' egrep='grep -E --color=auto' fgrep='grep -F --color=auto'
+
 # Same short commands as fish
 if command -v eza >/dev/null; then
     alias ls='eza --git --group-directories-first'
-    alias ll='ls -l' la='ls -la' lt='ls -lT'
+    alias ll='ls -l' la='ls -la' lt='ls -lT' l='ls -F'
+else
+    alias ls='ls --color=auto'
+    alias ll='ls -alF' la='ls -A' l='ls -CF'
 fi
 alias lg=lazygit ii=aichat
 alias lsk='lsblk -o NAME,SIZE,MOUNTPOINTS'
 alias ruman='LANG=ru_RU.UTF-8 man'
 alias wtr='curl https://wttr.in'
+# Desktop notification when a long command ends: sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 # Root shell (and /etc/nixos on NixOS): reuse the fish functions
 adm() { fish -c adm; }
-conf() { fish -c conf; }
+[[ -e ~/.config/fish/functions/conf.fish ]] && conf() { fish -c conf; }
 
 # bat is batcat on Debian/Ubuntu; the theme is in ~/.config/bat/config
 bat=$(command -v bat || command -v batcat)

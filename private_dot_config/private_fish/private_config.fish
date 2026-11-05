@@ -14,5 +14,5 @@ if status is-interactive
     bind \eh prevd-or-backward-word   # Alt + H = previous visited directory
 
     umask 077
-    fish_add_path -g ~/.local/bin
+    fish_add_path -g ~/.local/bin ~/go/bin
 end

@@ -1,1 +1,52 @@
-.direnv
+# Clutter from my own tools, which no project should have to list. A project's
+# build output (bin/, build/, dist/) belongs in its own .gitignore: ignored here,
+# it would silently hide real directories, like Go's build/ or a committed bin/.
+
+# OS
+.DS_Store
+Thumbs.db
+._*
+.Trash-*
+.directory
+.fuse_hidden*
+.nfs*
+
+# Editors
+*~
+*.swp
+*.swo
+.netrwhist
+Session.vim
+.vscode/
+.idea/
+.zed/
+
+# Claude Code, per-user files
+.claude/settings.local.json
+CLAUDE.local.md
+
+# Secrets, a safety net (.envrc and .env.example stay visible)
+.env
+.env.local
+
+# Go
+__debug_bin*
+*.prof
+*.pprof
+coverage.out
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+
+# Nix, direnv
+result
+result-*
+.direnv/

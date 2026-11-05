@@ -1,7 +1,12 @@
 [user]
     name = Philipp Mukosey
+{{- if eq .chezmoi.hostname "malvina" }}
+    email = philipp.mukosey@x-cellent.com
+    signingkey = ~/.ssh/id_ed25519_sk_git_sign.pub
+{{- else }}
     email = philipp@mukosey.com
     signingkey = ~/.ssh/id_ed25519_git_signing.pub
+{{- end }}
 
 [gpg]
     format = ssh
