@@ -1,13 +1,14 @@
-// Key tables and the retype plan. No gnome-shell imports, so plain gjs can
+// Key tables and the conversion. No gnome-shell imports, so plain gjs can
 // load it (with mutter's typelibs on GI_TYPELIB_PATH) for testing.
 import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
 
 Gio._promisify(Gio.Subprocess.prototype, 'communicate_utf8_async');
 
-// Map from a character to the key that types it in one layout: an evdev
-// keycode, plus whether Shift is held (level 2). Levels 3–4 (AltGr) are left
-// out: in a wrong-layout word they are almost never what was meant.
+// One layout's keys, both ways: chars maps a character to the key that types
+// it ({code: evdev keycode, shift}), keys maps "code/shift" back to the
+// character. Levels 3–4 (AltGr) are left out: in a wrong-layout word they
+// are almost never what was meant.
 export async function keyTable(xkbId) {
     const [layout, variant] = xkbId.split('+');
     const argv = ['xkbcli', 'compile-keymap', '--layout', layout];
@@ -37,12 +38,15 @@ export function parseKeymap(text) {
 
     // Lowest keycode wins, so the main block beats the keypad.
     keys.sort((a, b) => a[0] - b[0]);
-    const table = new Map();
+    const table = {chars: new Map(), keys: new Map()};
     for (const [code, names] of keys) {
         names.slice(0, 2).forEach((name, level) => {
             const char = keysymChar(name);
-            if (char && !table.has(char))
-                table.set(char, {code: code - 8, shift: level === 1});
+            const key = {code: code - 8, shift: level === 1};
+            if (char && !table.chars.has(char))
+                table.chars.set(char, key);
+            if (char)
+                table.keys.set(`${key.code}/${key.shift}`, char);
         });
     }
     return table;
@@ -64,25 +68,33 @@ function keysymChar(name) {
     return cp >= 0x20 && cp !== 0x7f ? String.fromCodePoint(cp) : null;
 }
 
-// The layout the text was typed in is the one with the most characters found
-// only there; on a tie, the current one. The target is the next layout.
-// Characters the source lacks but the target has are kept as they are.
-export function plan(text, tables, current) {
-    const only = i => [...text].filter(c =>
-        tables[i].has(c) && tables.every((t, j) => j === i || !t.has(c))).length;
-    let from = current;
-    tables.forEach((_, i) => {
-        if (only(i) > only(from))
-            from = i;
+// Retype every word in the other layout. Each word's own layout is the one
+// with the most characters found only there, so "ghbdtn тшч" becomes
+// "привет nix". A word with no such character ("...", "?", "123") takes the
+// previous word's layout, or the current one. A character the word's layout
+// lacks is kept as it is. Returns the new text and the layout index the last
+// word went to (null when there were no words).
+export function convert(text, tables, current) {
+    const only = (word, i) => [...word].filter(c => tables[i].chars.has(c) &&
+        tables.every((t, j) => j === i || !t.chars.has(c))).length;
+    let source = current;
+    let target = null;
+    const out = text.split(/(\s+)/).map(word => {
+        if (!word || /^\s+$/.test(word))
+            return word;
+        let best = 0;
+        tables.forEach((_, i) => {
+            const n = only(word, i);
+            if (n > best) {
+                best = n;
+                source = i;
+            }
+        });
+        target = (source + 1) % tables.length;
+        return [...word].map(c => {
+            const key = tables[source].chars.get(c);
+            return (key && tables[target].keys.get(`${key.code}/${key.shift}`)) ?? c;
+        }).join('');
     });
-    const to = (from + 1) % tables.length;
-
-    const keys = [];
-    for (const c of text) {
-        const key = tables[from].get(c) ?? tables[to].get(c);
-        if (!key)
-            return {from, to, keys: null, missing: c};
-        keys.push(key);
-    }
-    return {from, to, keys};
+    return {text: out.join(''), target};
 }

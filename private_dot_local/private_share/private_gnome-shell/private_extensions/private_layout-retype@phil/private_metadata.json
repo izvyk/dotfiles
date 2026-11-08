@@ -1,6 +1,6 @@
 {
   "uuid": "layout-retype@phil",
   "name": "Layout Retype",
-  "description": "Super+R retypes the selected text in the other keyboard layout, using the keymaps' own keys (needs xkbcli from libxkbcommon).",
+  "description": "AltGr+R (F22 from keyd) retypes the word before the cursor or the selection in the other keyboard layout; AltGr+Shift+R (F23) the line. Needs xkbcli from libxkbcommon.",
   "shell-version": ["46", "47", "48", "49", "50", "51", "52", "53", "54"]
 }
