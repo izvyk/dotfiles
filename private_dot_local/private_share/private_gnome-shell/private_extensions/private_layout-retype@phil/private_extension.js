@@ -1,6 +1,6 @@
 // Retype text in the other keyboard layout, Punto Switcher style:
-//   AltGr+R        the word before the cursor, or the selection
-//   AltGr+Shift+R  the whole line before the cursor
+//   AltGr+Space        the word before the cursor, or the selection
+//   AltGr+Shift+Space  the whole line before the cursor
 // (keyd in nixos-config turns these into F22 and F23, which are grabbed here.)
 // With the cursor at a line start, both take the line after it.
 // Each word goes from its own layout to the other ("ghbdtn тшч" → "привет
