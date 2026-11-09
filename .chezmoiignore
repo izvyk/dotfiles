@@ -25,3 +25,8 @@ snap/
 .ssh/allowed_signers
 .config/aichat/.env
 {{ end }}
+
+{{ if eq .chezmoi.hostname "malvina" }}
+# The Yeelight light bar is on buratino's desk.
+.local/share/gnome-shell/extensions/wall-light@phil/
+{{ end }}
