@@ -1,0 +1,6 @@
+{
+  "uuid": "wall-light@phil",
+  "name": "Wall Light",
+  "description": "The Yeelight Screen Light Bar Pro's rear light follows the top half of the Dell monitor. Quick Settings toggle.",
+  "shell-version": ["50", "51", "52", "53", "54"]
+}
