@@ -1,8 +1,12 @@
-// Wall light: the rear RGB light of the Yeelight Screen Light Bar Pro on the
-// Dell follows the screen. The top half of that monitor is split into left
-// and right; each half's average colour goes to the bar's segment on that
-// side, 30 times a second. Toggle in Quick Settings (off after login; kept
-// across the lock screen).
+// Light bar: a Quick Settings tile for the Yeelight Screen Light Bar Pro on
+// the Dell. The tile turns "wall light" on: the rear RGB light follows the
+// top half of that monitor, split into left and right, one colour per side
+// of the bar, 30 times a second (off after login; kept across the lock
+// screen). Its menu has the rear brightness and the front (desk) light:
+// on/off, brightness and colour temperature. The tile is hidden while the
+// lamp doesn't answer (away from home), checked after network changes. The
+// check talks to the lamp: a DNS lookup can be answered from the cache of
+// the previous network.
 //
 // Capture: the stage paints that area at about 1/20 size into a texture, as
 // GNOME's own screenshot keybinding does, so there's no ScreenCast portal and
@@ -13,11 +17,18 @@
 //     udp_sess_new -> {"method":"udp_sess_token","params":{"token":...}},
 //     then set_segment_rgb [left, right] with that token, no rate limit
 //     (music mode doesn't exist on this model);
-//   * power and brightness go over the TCP API on 55443, ~60 commands/minute;
+//   * everything else goes over the TCP API on 55443, ~60 commands/minute;
+//     front light: set_power, set_bright, set_ct_abx (2700-6500 K); rear:
+//     bg_set_power, bg_set_bright;
+//   * for about a second after every colour frame the lamp answers "ok" to
+//     TCP commands but ignores them (front light included), so the stream is
+//     held for POWER_LOCK_MS before each batch of commands;
+//   * brightness and temperature are ignored (with "ok") while that light
+//     is off, so desk sliders switch the desk light on, and a wall brightness
+//     set while the wall light is off waits for it to come on;
 //   * a segment colour carries hue and saturation only (0x010000 is full
-//     red). Brightness is the global bg_bright, which the lamp ignores for
-//     about a second after every frame, so it's set once before streaming,
-//     and a dark side is switched off instead of dimmed.
+//     red); brightness is the rear light's own bg_bright, so a dark side is
+//     switched off instead of dimmed.
 // Both directions are started from here, so no firewall port is needed.
 import Clutter from 'gi://Clutter';
 import GLib from 'gi://GLib';
@@ -25,9 +36,12 @@ import GObject from 'gi://GObject';
 import Gio from 'gi://Gio';
 import Mtk from 'gi://Mtk';
 import Shell from 'gi://Shell';
+import St from 'gi://St';
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
-import {QuickToggle, SystemIndicator} from 'resource:///org/gnome/shell/ui/quickSettings.js';
+import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
+import {QuickMenuToggle, SystemIndicator} from 'resource:///org/gnome/shell/ui/quickSettings.js';
+import {Slider} from 'resource:///org/gnome/shell/ui/slider.js';
 
 // DHCP name from the router (derived from the MAC, so it survives a lamp
 // reset); resolved again for every new UDP session.
@@ -35,7 +49,8 @@ const LAMP_HOST = 'yeelink-light-lamp15_miapD41B.lan';
 const TCP_PORT = 55443;
 const UDP_PORT = 55444;
 const MONITOR_PRODUCT = 'DELL S2725QC'; // the monitor the bar sits on
-const BRIGHTNESS = 70; // rear light, 1-100, fixed while streaming
+const CT_MIN = 2700; // front light colour temperature range, K
+const CT_MAX = 6500;
 const FPS = 30;
 const CAPTURE_WIDTH = 128; // pixels across the captured strip
 const SMOOTHING_S = 0.12; // time constant of the colour fade
@@ -45,14 +60,20 @@ const WAKE = 0.06; // ...and above which it lights again
 const KEEPALIVE_S = 5;
 const SESSION_TIMEOUT_S = 16; // no reply for this long (keepalives are answered): new session
 const SESSION_RETRY_S = 2;
-const POWER_LOCK_MS = 1300; // the lamp ignores power commands ~1 s after a frame
+const POWER_LOCK_MS = 1300; // the lamp ignores TCP commands ~1 s after a frame
+const COMMAND_GAP_MS = 250; // between TCP commands, so a slider drag stays under the quota
+const NETWORK_SETTLE_MS = 2000;
+// At home the lamp answers in well under a second; away, the DNS lookup
+// through Tailscale takes 10-15 s to fail.
+const CHECK_TIMEOUT_MS = 4000;
+const ICON = 'display-brightness-symbolic';
 const DEBUG = false;
 
 Gio._promisify(Gio.SocketClient.prototype, 'connect_to_host_async');
 Gio._promisify(Gio.OutputStream.prototype, 'write_bytes_async');
 Gio._promisify(Gio.DataInputStream.prototype, 'read_line_async');
-Gio._promisify(Shell.Screenshot, 'composite_to_stream');
 Gio._promisify(Gio.Resolver.prototype, 'lookup_by_name_async');
+Gio._promisify(Shell.Screenshot, 'composite_to_stream');
 
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
@@ -62,10 +83,21 @@ function debug(message) {
         console.log(`wall-light: ${message}`);
 }
 
-// One command over TCP; resolves with the reply line.
-async function tcpCall(method, params) {
+function sleep(ms) {
+    return new Promise(resolve => GLib.timeout_add(GLib.PRIORITY_DEFAULT, Math.max(0, ms), () => {
+        resolve();
+        return GLib.SOURCE_REMOVE;
+    }));
+}
+
+function nowMs() {
+    return GLib.get_monotonic_time() / 1000;
+}
+
+// One command over TCP; resolves with the reply's result array.
+async function tcpCall(method, params, cancellable = null) {
     const client = new Gio.SocketClient({timeout: 3});
-    const conn = await client.connect_to_host_async(LAMP_HOST, TCP_PORT, null);
+    const conn = await client.connect_to_host_async(LAMP_HOST, TCP_PORT, cancellable);
     try {
         const request = JSON.stringify({id: 1, method, params});
         await conn.get_output_stream().write_bytes_async(
@@ -75,13 +107,14 @@ async function tcpCall(method, params) {
             const [line] = await input.read_line_async(GLib.PRIORITY_DEFAULT, null);
             if (line === null)
                 throw new Error(`${method}: connection closed`);
-            const reply = decoder.decode(line).trim();
-            if (reply.startsWith('{"id"')) {
-                debug(`tcp ${method} -> ${reply}`);
-                if (reply.includes('"error"'))
-                    throw new Error(`${method}: ${reply}`);
-                return reply;
-            }
+            const text = decoder.decode(line).trim();
+            if (!text.startsWith('{"id"'))
+                continue;
+            debug(`tcp ${method} ${JSON.stringify(params)} -> ${text}`);
+            const reply = JSON.parse(text);
+            if (reply.error)
+                throw new Error(`${method}: ${reply.error.message}`);
+            return reply.result;
         }
     } finally {
         conn.close(null);
@@ -192,8 +225,7 @@ class Session {
     }
 }
 
-// Average colour of the left and right half of a pixbuf, as linear-ish
-// 0-255 RGB triples.
+// Average colour of the left and right half of a pixbuf, as 0-255 RGB triples.
 function halves(pixbuf) {
     const width = pixbuf.get_width();
     const height = pixbuf.get_height();
@@ -238,22 +270,104 @@ function findMonitor() {
     return Main.layoutManager.monitors[index] ?? null;
 }
 
-const WallLightToggle = GObject.registerClass(
-class WallLightToggle extends QuickToggle {
-    _init() {
+// Brightness 1-100 <-> slider 0-1.
+const toBright = value => Math.round(1 + value * 99);
+const fromBright = bright => (bright - 1) / 99;
+const toCt = value => Math.round((CT_MIN + value * (CT_MAX - CT_MIN)) / 100) * 100;
+const fromCt = ct => (ct - CT_MIN) / (CT_MAX - CT_MIN);
+
+// A label row and a slider row, as GNOME's own brightness menu does.
+// onChange gets the value only for user changes, not for set().
+function addSlider(menu, label, onChange) {
+    menu.addMenuItem(new PopupMenu.PopupMenuItem(label, {reactive: false}));
+    const slider = new Slider(0);
+    slider.accessible_name = label;
+    const item = new PopupMenu.PopupBaseMenuItem({reactive: false});
+    item.add_child(new St.Bin({
+        style_class: 'slider-bin',
+        child: slider,
+        reactive: true,
+        can_focus: true,
+        x_expand: true,
+        y_align: Clutter.ActorAlign.CENTER,
+    }));
+    menu.addMenuItem(item);
+    let updating = false;
+    slider.connect('notify::value', () => {
+        if (!updating)
+            onChange(slider.value);
+    });
+    return {
+        set(value) {
+            updating = true;
+            slider.value = Math.min(1, Math.max(0, value));
+            updating = false;
+        },
+    };
+}
+
+const LightBarToggle = GObject.registerClass(
+class LightBarToggle extends QuickMenuToggle {
+    _init(extension) {
         super._init({
             title: 'Wall Light',
-            iconName: 'display-brightness-symbolic',
+            iconName: ICON,
             toggleMode: true,
+            menuButtonAccessibleName: 'Open light bar menu',
         });
+        this.menu.setHeader(ICON, 'Light Bar');
+
+        this._rearBright = addSlider(this.menu, 'Wall brightness',
+            v => extension.setRearBrightness(toBright(v)));
+
+        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        this._deskSwitch = new PopupMenu.PopupSwitchMenuItem('Desk light', false);
+        this._deskSwitch.connect('toggled', (_item, on) =>
+            extension.command('set_power', [on ? 'on' : 'off', 'smooth', 300]));
+        this.menu.addMenuItem(this._deskSwitch);
+        // Moving a desk slider switches the desk light on.
+        const deskOn = () => {
+            if (!this._deskSwitch.state) {
+                this._deskSwitch.setToggleState(true);
+                extension.command('set_power', ['on', 'smooth', 300]);
+            }
+        };
+        this._deskBright = addSlider(this.menu, 'Desk brightness', v => {
+            deskOn();
+            extension.command('set_bright', [toBright(v), 'smooth', 200]);
+        });
+        this._deskCt = addSlider(this.menu, 'Desk temperature', v => {
+            deskOn();
+            extension.command('set_ct_abx', [toCt(v), 'smooth', 200]);
+        });
+
+        this.menu.connect('open-state-changed', (_menu, open) => {
+            if (open)
+                this._refresh(extension);
+        });
+    }
+
+    async _refresh(extension) {
+        try {
+            const [mainPower, bright, ct, bgBright] =
+                await tcpCall('get_prop', ['main_power', 'bright', 'ct', 'bg_bright']);
+            this._deskSwitch.setToggleState(mainPower === 'on');
+            this._deskBright.set(fromBright(Number(bright)));
+            this._deskCt.set(fromCt(Number(ct)));
+            this._rearBright.set(fromBright(extension.pendingRearBrightness ?? Number(bgBright)));
+            this.menu.setHeader(ICON, 'Light Bar');
+        } catch (e) {
+            debug(`refresh: ${e.message}`);
+            this.menu.setHeader(ICON, 'Light Bar', 'Not responding');
+        }
     }
 });
 
-const WallLightIndicator = GObject.registerClass(
-class WallLightIndicator extends SystemIndicator {
-    _init() {
+const LightBarIndicator = GObject.registerClass(
+class LightBarIndicator extends SystemIndicator {
+    _init(extension) {
         super._init();
-        this.toggle = new WallLightToggle();
+        this.toggle = new LightBarToggle(extension);
         this.quickSettingsItems.push(this.toggle);
     }
 });
@@ -263,34 +377,143 @@ export default class WallLightExtension extends Extension {
         // This object lives until logout, so _wanted survives the lock screen
         // (which disables extensions).
         this._wanted ??= false;
+        this._available = false;
+        this._checkedOnce = false;
         this._running = false;
-        this._generation = 0;
-        this._indicator = new WallLightIndicator();
-        this._indicator.toggle.checked = this._wanted;
-        this._indicator.toggle.connect('notify::checked', toggle => {
+        this._generation ??= 0;
+        // The command queue may still be sending the rear light off from
+        // before the lock screen; keep it.
+        this._pending ??= new Map();
+        this._flushing ??= null;
+        this._hold ??= false;
+        this._lastFrameMs ??= -Infinity;
+
+        this._indicator = new LightBarIndicator(this);
+        this._toggle = this._indicator.toggle;
+        this._toggle.visible = false;
+        this._toggle.checked = this._wanted;
+        this._toggle.connect('notify::checked', toggle => {
             this._wanted = toggle.checked;
             this._sync();
         });
         Main.panel.statusArea.quickSettings.addExternalIndicator(this._indicator);
+
         this._monitorsChangedId = Main.layoutManager.connect('monitors-changed', () => this._sync());
-        this._sync();
+        this._networkChangedId = Gio.NetworkMonitor.get_default().connect('network-changed', () => {
+            if (this._networkTimer)
+                GLib.source_remove(this._networkTimer);
+            debug('network changed');
+            this._networkTimer = GLib.timeout_add(GLib.PRIORITY_DEFAULT, NETWORK_SETTLE_MS, () => {
+                this._networkTimer = 0;
+                this._checkLamp();
+                return GLib.SOURCE_REMOVE;
+            });
+        });
+        this._checkLamp();
     }
 
     disable() {
         Main.layoutManager.disconnect(this._monitorsChangedId);
-        this._stop();
+        Gio.NetworkMonitor.get_default().disconnect(this._networkChangedId);
+        if (this._networkTimer) {
+            GLib.source_remove(this._networkTimer);
+            this._networkTimer = 0;
+        }
+        this._stop(); // queues the rear light off; the queue finishes on its own
         this._indicator.quickSettingsItems.forEach(item => item.destroy());
         this._indicator.destroy();
         this._indicator = null;
+        this._toggle = null;
+    }
+
+    // Shows the tile only while the lamp answers (at home).
+    async _checkLamp() {
+        // A failing lookup can take 15 s; a change during it gets its own
+        // check afterwards.
+        if (this._checking) {
+            this._recheck = true;
+            return;
+        }
+        this._checking = true;
+        let available = false;
+        const cancellable = new Gio.Cancellable();
+        const timeout = GLib.timeout_add(GLib.PRIORITY_DEFAULT, CHECK_TIMEOUT_MS, () => {
+            cancellable.cancel();
+            return GLib.SOURCE_REMOVE;
+        });
+        try {
+            await tcpCall('get_prop', ['power'], cancellable);
+            available = true;
+        } catch (e) {
+            debug(`check: ${e.message}`);
+        } finally {
+            if (!cancellable.is_cancelled())
+                GLib.source_remove(timeout);
+            this._checking = false;
+        }
+        if (this._recheck) {
+            this._recheck = false;
+            this._checkLamp();
+            return;
+        }
+        if (!this._toggle || available === this._available && this._checkedOnce)
+            return;
+        this._checkedOnce = true;
+        debug(`lamp ${available ? 'found' : 'not found'}`);
+        this._available = available;
+        this._toggle.visible = available;
+        if (!available)
+            this._toggle.menu.close();
+        this._sync();
     }
 
     _sync() {
         const monitor = findMonitor();
-        this._indicator.toggle.subtitle = monitor ? null : 'Monitor not connected';
-        if (this._wanted && monitor)
+        this._toggle.subtitle = monitor ? null : 'Monitor not connected';
+        if (this._wanted && monitor && this._available)
             this._start(monitor).catch(e => console.error(`wall-light: ${e.message}`));
         else
             this._stop();
+    }
+
+    // Queues a TCP command; a newer one with the same method replaces it
+    // (slider drags). While frames stream, they're held long enough for the
+    // lamp to listen again.
+    command(method, params) {
+        this._pending.delete(method);
+        this._pending.set(method, params);
+        this._flushing ??= this._flush().finally(() => {
+            this._flushing = null;
+        });
+        return this._flushing;
+    }
+
+    setRearBrightness(bright) {
+        if (this._running) {
+            this.command('bg_set_bright', [bright, 'smooth', 200]);
+        } else {
+            this.pendingRearBrightness = bright;
+        }
+    }
+
+    async _flush() {
+        try {
+            while (this._pending.size) {
+                this._hold = true;
+                await sleep(this._lastFrameMs + POWER_LOCK_MS - nowMs());
+                const [method, params] = this._pending.entries().next().value;
+                this._pending.delete(method);
+                try {
+                    await tcpCall(method, params);
+                } catch (e) {
+                    console.warn(`wall-light: ${e.message}`);
+                }
+                if (this._pending.size)
+                    await sleep(COMMAND_GAP_MS);
+            }
+        } finally {
+            this._hold = false;
+        }
     }
 
     async _start(monitor) {
@@ -299,18 +522,13 @@ export default class WallLightExtension extends Extension {
             return;
         this._running = true;
         const generation = ++this._generation;
-        if (this._offTimer) {
-            GLib.source_remove(this._offTimer);
-            this._offTimer = 0;
-        }
 
-        // Brightness has to land before the first frame, or the lamp drops it.
-        try {
-            await tcpCall('bg_set_power', ['on', 'smooth', 300]);
-            await tcpCall('bg_set_bright', [BRIGHTNESS, 'sudden', 0]);
-        } catch (e) {
-            console.warn(`wall-light: ${e.message}`); // stream anyway; the lamp may be on already
+        const ready = this.command('bg_set_power', ['on', 'smooth', 300]);
+        if (this.pendingRearBrightness) {
+            this.command('bg_set_bright', [this.pendingRearBrightness, 'sudden', 0]);
+            this.pendingRearBrightness = null;
         }
+        await ready;
         if (generation !== this._generation)
             return;
 
@@ -334,15 +552,12 @@ export default class WallLightExtension extends Extension {
         }
         this._session?.close();
         this._session = null;
-        this._offTimer = GLib.timeout_add(GLib.PRIORITY_DEFAULT, POWER_LOCK_MS, () => {
-            this._offTimer = 0;
-            tcpCall('bg_set_power', ['off', 'smooth', 500])
-                .catch(e => console.warn(`wall-light: ${e.message}`));
-            return GLib.SOURCE_REMOVE;
-        });
+        this.command('bg_set_power', ['off', 'smooth', 500]);
     }
 
     _tick() {
+        if (this._hold)
+            return;
         const now = GLib.get_monotonic_time() / 1e6;
         if (!this._session.poll(now) || this._busy)
             return;
@@ -365,7 +580,7 @@ export default class WallLightExtension extends Extension {
         Shell.Screenshot.composite_to_stream(content.get_texture(), 0, 0, -1, -1, 1,
             null, 0, 0, 1, Gio.MemoryOutputStream.new_resizable())
             .then(pixbuf => {
-                if (session === this._session)
+                if (session === this._session && !this._hold)
                     this._send(halves(pixbuf), now);
             })
             .catch(e => debug(`capture: ${e.message}`))
@@ -387,6 +602,7 @@ export default class WallLightExtension extends Extension {
             return side.dark ? 0 : lampColor(side.rgb);
         });
         this._session.frame(colors[0], colors[1]);
+        this._lastFrameMs = nowMs();
         debug(`frame ${colors.map(c => c.toString(16).padStart(6, '0')).join(' ')}`);
     }
 }
