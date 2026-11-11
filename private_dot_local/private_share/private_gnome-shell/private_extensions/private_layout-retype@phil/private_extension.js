@@ -38,11 +38,18 @@ const HELD = Clutter.ModifierType.SHIFT_MASK | Clutter.ModifierType.CONTROL_MASK
     Clutter.ModifierType.SUPER_MASK | Clutter.ModifierType.HYPER_MASK |
     Clutter.ModifierType.META_MASK;
 const {PASSWORD, PIN, TERMINAL} = Clutter.InputContentPurpose;
-// Apps whose field text in mutter goes stale: they send it only on
-// input-method events. Deleting by stale
+// Apps whose field text in mutter goes stale or isn't really the text:
+// Zed sends it only on input-method events, and Ghostty and foot are
+// terminals that don't declare the terminal purpose. Deleting by those
 // offsets would hit the wrong characters, so these get the selection
 // fallback. Matched against the window's app id (desktop file name).
-const STALE_TEXT_APPS = new Set(['dev.zed.Zed']);
+const STALE_TEXT_APPS = new Set([
+    'dev.zed.Zed',
+    'com.mitchellh.ghostty',
+    'org.codeberg.dnkl.foot',
+    'org.codeberg.dnkl.footclient',
+    'org.codeberg.dnkl.foot-server',
+]);
 
 export default class LayoutRetypeExtension extends Extension {
     enable() {

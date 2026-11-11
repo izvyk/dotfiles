@@ -13,8 +13,8 @@ case $(gsettings get $schema sources) in
     action=stop title="Keyboard: default" body="German; $services off" ;;
   *)
     gsettings set $schema sources "[('xkb', 'us+izvyk'), ('xkb', 'ru+izvyk')]"
-    gsettings set $schema xkb-options "['caps:escape']"
-    action=start title="Keyboard: custom" body="US/RU izvyk, Caps is Escape; $services on" ;;
+    gsettings set $schema xkb-options "['caps:escape', 'fkeys:basic_13-24']"
+    action=start title="Keyboard: custom" body="US/RU izvyk, Caps is Escape, F13-F24 plain; $services on" ;;
 esac
 
 for s in $services; do
