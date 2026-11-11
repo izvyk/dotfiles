@@ -10,6 +10,7 @@ mouse-hide-while-typing = true
 right-click-action = copy-or-paste
 clipboard-paste-protection = true
 
-# ssh-terminfo installs ghostty's terminfo on hosts you ssh into (falling back
-# to xterm-256color via ssh-env), so tmux, vim, htop etc. work there.
-shell-integration-features = no-cursor,ssh-env,ssh-terminfo
+# ssh-env sends TERM=xterm-256color over ssh, so tmux, vim, htop etc. work on
+# hosts without ghostty's terminfo. No ssh-terminfo: it tic's into ~/.terminfo
+# on every new host, and fails on git hosts and hosts with RemoteCommand.
+shell-integration-features = no-cursor,ssh-env
