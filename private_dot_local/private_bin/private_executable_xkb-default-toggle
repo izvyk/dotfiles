@@ -1,0 +1,24 @@
+#!/bin/sh
+# Toggle between my keyboard (izvyk layouts, Caps as Escape, remapping services)
+# and stock German. Bound to Super+Delete in GNOME. Each service needs a
+# NOPASSWD sudoers rule for "systemctl start|stop <name>.service".
+
+schema=org.gnome.desktop.input-sources
+services="keyd logid"
+
+case $(gsettings get $schema sources) in
+  *izvyk*)
+    gsettings set $schema sources "[('xkb', 'de')]"
+    gsettings reset $schema xkb-options
+    action=stop title="Keyboard: default" body="German; $services off" ;;
+  *)
+    gsettings set $schema sources "[('xkb', 'us+izvyk'), ('xkb', 'ru+izvyk')]"
+    gsettings set $schema xkb-options "['caps:escape']"
+    action=start title="Keyboard: custom" body="US/RU izvyk, Caps is Escape; $services on" ;;
+esac
+
+for s in $services; do
+  sudo systemctl $action "$s.service"
+done
+
+notify-send -e -i input-keyboard-symbolic "$title" "$body"
