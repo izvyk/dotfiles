@@ -1,0 +1,8 @@
+// Backport of fkeys:basic_13-24 (xkeyboard-config 2.43) for Ubuntu 24.04's 2.41,
+// where F21-F23 are the touchpad toggle/on/off keys. keyd sends F22 and F23 on
+// AltGr+Space and AltGr+Shift+Space for the layout-retype extension, and GNOME
+// would otherwise switch the touchpad off. Drop once xkb-data is >= 2.43.
+! include %S/evdev
+
+! option = symbols
+  fkeys:basic_13-24 = +fkeys(basic_13-24)

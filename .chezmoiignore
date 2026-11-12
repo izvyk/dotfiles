@@ -17,6 +17,9 @@ AGENTS.md
 .mozilla/
 {{ else }}
 snap/
+# xkb-data < 2.43 backport (see rules/evdev); NixOS has it natively.
+.config/xkb/rules/evdev
+.config/xkb/symbols/fkeys
 {{ end }}
 
 {{ if not (stat (joinPath .chezmoi.homeDir ".config/chezmoi/key.txt")) }}
