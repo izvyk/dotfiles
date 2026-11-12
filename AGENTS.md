@@ -10,6 +10,8 @@ Shared by two machines. KISS.
 - Gate machine-only files in `.chezmoiignore`, don't template empty files.
 - Delete dead config outright. `.archive/` keeps the few retired files that were
   never committed; chezmoi doesn't deploy it.
+- No one-off cleanup in the repo: no `.chezmoiremove`, no run_once migration
+  scripts. Delete stale targets by hand on each machine.
 - `private_` prefixes for strict permissions.
 - Never `chezmoi apply` without reviewing dry-run first.
 - This repo is public. Anything private goes in an `encrypted_` file; `~/.ssh/config`
