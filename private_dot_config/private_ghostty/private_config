@@ -1,5 +1,8 @@
 # All options: `ghostty +show-config --default --docs`
 font-family = Monospace
+# Ghostty uses its built-in Noto emoji on Linux unless a font-family has emoji.
+# Not installed on malvina; Ghostty skips it there.
+font-family = Apple Emoji
 font-size = 14
 theme = Gruvbox Dark
 maximize = true
