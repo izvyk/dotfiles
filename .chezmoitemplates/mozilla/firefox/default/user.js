@@ -80,8 +80,7 @@ user_pref("browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features", 
 
 user_pref("browser.newtabpage.activity-stream.feeds.topsites", false);
 user_pref("browser.newtabpage.activity-stream.showSponsoredTopSites", false);
-// "Recent activity" section (off by default): recent downloads and visited pages
-user_pref("browser.newtabpage.activity-stream.feeds.section.highlights", true);
-user_pref("browser.newtabpage.activity-stream.section.highlights.includeDownloads", true);
-user_pref("browser.newtabpage.activity-stream.section.highlights.includeVisited", true);
+// No "Recent activity" section (the default; explicit so an earlier true
+// doesn't stick in prefs.js)
+user_pref("browser.newtabpage.activity-stream.feeds.section.highlights", false);
 user_pref("browser.bookmarks.showMobileBookmarks", false);
