@@ -34,6 +34,19 @@
     margin-top: var(--custom-tabbar-height);
 }
 
+/* The floating bars overlap the tabs/page, so they must be opaque. Themes can
+   use a translucent toolbar color (the built-in Nova private-window theme uses
+   rgba(0,0,0,.2)), so paint it over the opaque frame color, the same way
+   Firefox's own findbar does. No-op for themes with an opaque toolbar color. */
+:root[lwtheme] :is(#nav-bar, #notifications-toolbar, #PersonalToolbar) {
+    background-color: var(--lwt-accent-color) !important;
+    background-image: image(var(--toolbar-background-color)) !important;
+}
+
+:root[lwtheme] :is(#nav-bar, #notifications-toolbar, #PersonalToolbar):-moz-window-inactive {
+    background-color: var(--lwt-accent-color-inactive, var(--lwt-accent-color)) !important;
+}
+
 /* =========================================================
    2. REVEAL LOGIC (Hover / Focus / Active / Open)
    ========================================================= */
