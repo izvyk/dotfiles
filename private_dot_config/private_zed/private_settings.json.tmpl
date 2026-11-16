@@ -32,12 +32,12 @@
     "scss": true,
     "toml": true,
   },
-  // Extensions may run programs but not download them: their prebuilt
-  // binaries don't run on NixOS. Language servers come from the project's
-  // shell.nix (loaded via direnv) or the system instead.
-  "granted_extension_capabilities": [
-    { "kind": "process:exec", "command": "*", "args": ["**"] },
-  ],
+  // No extension may run commands, download files or install npm packages
+  // (Zed grants all three by default). Their prebuilt binaries don't run on
+  // NixOS anyway: language servers come from the project's shell.nix (via
+  // direnv) or the system. Zed still starts the language server an extension
+  // names; this list doesn't limit that.
+  "granted_extension_capabilities": [],
   "ui_font_size": 16,
   "agent_ui_font_size": 16.0,
   "buffer_font_family": "Iosevka Curly",
