@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "theme": "light",
+  "permissions": {
+    "ask": [
+      "Bash(git push)",
+      "Bash(git push *)"
+    ],
+    "deny": [
+      "Read(~/.config/chezmoi/key.txt)",
+      "Read(~/.config/aichat/.env)",
+      "Read(~/.claude/.credentials.json)",
+      "Read(~/.ssh/oldkeys/**)",
+      "Read(~/.gnupg/**)"
+    ]
+  },
+  "sandbox": {
+    "enabled": true,
+    "failIfUnavailable": true,
+    "autoAllowBashIfSandboxed": true,
+    "excludedCommands": [
+      "docker *",
+      "git commit *",
+      "git push",
+      "git push *",
+      "git pull",
+      "git pull *",
+      "git fetch",
+      "git fetch *"
+    ],
+    "filesystem": {
+      "allowWrite": [
+        "~/.cache",
+        "~/.cargo",
+        "~/.npm",
+        "~/go"
+      ]
+    },
+    "credentials": {
+      "files": [
+        { "path": "~/.config/chezmoi/key.txt", "mode": "deny" },
+        { "path": "~/.config/aichat/.env", "mode": "deny" },
+        { "path": "~/.claude/.credentials.json", "mode": "deny" },
+        { "path": "~/.ssh/oldkeys", "mode": "deny" },
+        { "path": "~/.gnupg", "mode": "deny" }
+      ],
+      "envVars": [
+        { "name": "ANTHROPIC_API_KEY", "mode": "deny" }
+      ]
+    },
+    "network": {
+      "allowedDomains": [
+        "github.com",
+        "*.github.com",
+        "*.githubusercontent.com",
+        "registry.npmjs.org",
+        "pypi.org",
+        "files.pythonhosted.org",
+        "proxy.golang.org",
+        "sum.golang.org",
+        "crates.io",
+        "*.crates.io",
+        "cache.nixos.org"
+      ]
+    }
+  }
+}
