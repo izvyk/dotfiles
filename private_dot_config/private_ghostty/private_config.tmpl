@@ -30,6 +30,13 @@ palette = 14={{ .ansi.bright_cyan }}
 palette = 15={{ .ansi.bright_white }}
 {{- end }}
 maximize = true
+# One process for all windows, however Ghostty was started (~16 MB per extra
+# window instead of a new ~120 MB process). It still quits with the last window.
+gtk-single-instance = true
+# No tabs: tmux does that. Without the bar a tab would be invisible, so
+# Ctrl+Shift+T doesn't open one either.
+window-show-tab-bar = never
+keybind = ctrl+shift+t=unbind
 cursor-style = bar
 cursor-style-blink = false
 custom-shader = ~/.config/ghostty/shaders/cursor_smear.glsl

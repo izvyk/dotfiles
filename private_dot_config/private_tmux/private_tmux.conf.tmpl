@@ -2,13 +2,13 @@
 # settings worth having from tmux-sensible, tmux-yank and the gruvbox theme are
 # inline, so nothing is cloned from GitHub at startup.
 
-# Terminal: truecolor in ghostty/foot (and xterm-256color, which ghostty sets
-# over ssh), clipboard for foot (xterm* has it by default). Copying in copy mode
+# Terminal: truecolor in ghostty (and xterm-256color, which ghostty sets over
+# ssh); clipboard is on by default for xterm*. Copying in copy mode
 # or with the mouse goes to the system clipboard via OSC 52, over ssh as well.
 # Programs inside tmux can't set the clipboard or pass escape sequences through
 # to the terminal (set-clipboard external, allow-passthrough off: the defaults).
 set -g default-terminal "tmux-256color"
-set -as terminal-features ",xterm-ghostty:RGB,xterm-256color:RGB,foot*:RGB:clipboard"
+set -as terminal-features ",xterm-ghostty:RGB,xterm-256color:RGB"
 set -s escape-time 10     # Esc reaches vim at once, not after 500ms
 set -g focus-events on
 set -g history-limit 50000
