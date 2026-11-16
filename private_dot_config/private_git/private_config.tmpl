@@ -74,6 +74,10 @@
     navigate = true      # Use n and N to jump between files/hunks
     line-numbers = true  # Compact 2-column line numbers (works great in narrow splits)
     hyperlinks = true    # Clickable file/line links in modern terminals (Foot, Ghostty, etc.)
+    # Prose with one paragraph per line (LaTeX, Markdown) is longer than the
+    # default of 512, and delta then cuts the line with a "→". Not 0 (no limit):
+    # delta's within-line diff is quadratic, so minified files would stall or crash it.
+    max-line-length = 5000
 
 [delta "gruvbox-dark"]
     # 1. Syntax Theme (inherited from bat)
