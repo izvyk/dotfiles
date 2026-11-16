@@ -76,6 +76,14 @@ user_pref("browser.discovery.enabled", false);
 user_pref("browser.newtabpage.activity-stream.asrouter.userprefs.cfr.addons", false);
 user_pref("browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features", false);
 
+// No built-in VPN ("IP Protection"). A Nimbus rollout or an in-browser
+// message can switch it on behind our back; user.js turns it off again on the
+// next start. optedOut also hides the toolbar button.
+user_pref("browser.ipProtection.enabled", false);
+user_pref("browser.ipProtection.optedOut", true);
+user_pref("browser.ipProtection.blockIPProtectionCallouts", true);
+user_pref("browser.vpn_promo.enabled", false);             // Mozilla VPN ads
+
 // --- New tab page ----------------------------------------------------------------
 
 user_pref("browser.newtabpage.activity-stream.feeds.topsites", false);
