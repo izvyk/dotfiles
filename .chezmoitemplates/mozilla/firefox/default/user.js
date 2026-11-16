@@ -23,6 +23,9 @@ user_pref("browser.tabs.warnOnClose", true);           // confirm closing a wind
 user_pref("browser.tabs.inTitlebar", 1);               // tabs in the titlebar, no system titlebar
 user_pref("browser.toolbars.bookmarks.visibility", "never");
 user_pref("sidebar.visibility", "hide-on-close");
+// Sidebar holds only the AI chatbot (Ctrl+Alt+X), with Claude as provider.
+user_pref("sidebar.main.tools", "aichat");
+user_pref("browser.ml.chat.provider", "https://claude.ai/new");
 user_pref("findbar.highlightAll", true);
 user_pref("accessibility.typeaheadfind.flashBar", 0);  // don't flash the find bar
 user_pref("full-screen-api.warning.timeout", 0);       // no "site is now fullscreen" notice
