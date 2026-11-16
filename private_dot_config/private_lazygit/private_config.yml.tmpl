@@ -4,13 +4,20 @@ gui:
 git:
   # delta's theme comes from ~/.config/git/config; its line numbers open the
   # file in $EDITOR at that line when clicked.
+  # `|` switches between the two: unified, and side by side. Side by side,
+  # delta wraps long lines itself, as often as needed rather than its default
+  # of twice. For the full window width: `0` focuses the diff, then `+` twice.
 {{- if eq .chezmoi.hostname "malvina" }}
   # malvina's lazygit is 0.56; git.pagers became git.diffRenderers in 0.64.
   pagers:
     - colorArg: always
       pager: delta --paging=never --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
+    - colorArg: always
+      pager: delta --paging=never --side-by-side --wrap-max-lines=unlimited --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
 {{- else }}
   diffRenderers:
     - colorArg: always
       command: delta --paging=never --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
+    - colorArg: always
+      command: delta --paging=never --side-by-side --wrap-max-lines=unlimited --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
 {{- end }}
