@@ -1,0 +1,30 @@
+[pyprland]
+plugins = [
+    "expose",
+    "scratchpads",
+    "layout_center"
+]
+
+[scratchpads.term]
+animation = "fromTop"
+command = "foot --override=app-id=testterm"
+class = "testterm"
+size = "75% 60%"
+max_size = "1920px 100%"
+margin = 50
+
+[scratchpads.volume]
+animation = "fromRight"
+command = "pavucontrol"
+class = "pavucontrol"
+size = "40% 90%"
+unfocus = "hide"
+lazy = true
+
+[scratchpads.cassette]
+animation = "fromTop"
+command = "flatpak run io.github.Rirusha.Cassette"
+class = "io.github.Rirusha.Cassette"
+size = "40% 90%"
+#unfocus = "hide"
+#lazy = true
