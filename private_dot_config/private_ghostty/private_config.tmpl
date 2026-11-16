@@ -1,0 +1,43 @@
+# All options: `ghostty +show-config --default --docs`
+font-family = Monospace
+# Ghostty uses its built-in Noto emoji on Linux unless a font-family has emoji.
+# Not installed on malvina; Ghostty skips it there.
+font-family = Apple Emoji
+font-size = 14
+# Colours from the shared theme (.chezmoidata/theme.toml)
+{{- with .theme }}
+background = {{ .ui.bg }}
+foreground = {{ .ui.fg }}
+cursor-color = {{ .ui.fg }}
+cursor-text = {{ .ui.bg }}
+selection-background = {{ .ui.bg3 }}
+selection-foreground = {{ .ui.fg }}
+palette = 0={{ .ansi.black }}
+palette = 1={{ .ansi.red }}
+palette = 2={{ .ansi.green }}
+palette = 3={{ .ansi.yellow }}
+palette = 4={{ .ansi.blue }}
+palette = 5={{ .ansi.magenta }}
+palette = 6={{ .ansi.cyan }}
+palette = 7={{ .ansi.white }}
+palette = 8={{ .ansi.bright_black }}
+palette = 9={{ .ansi.bright_red }}
+palette = 10={{ .ansi.bright_green }}
+palette = 11={{ .ansi.bright_yellow }}
+palette = 12={{ .ansi.bright_blue }}
+palette = 13={{ .ansi.bright_magenta }}
+palette = 14={{ .ansi.bright_cyan }}
+palette = 15={{ .ansi.bright_white }}
+{{- end }}
+maximize = true
+cursor-style = bar
+cursor-style-blink = false
+custom-shader = ~/.config/ghostty/shaders/cursor_smear.glsl
+mouse-hide-while-typing = true
+right-click-action = copy-or-paste
+clipboard-paste-protection = true
+
+# ssh-env sends TERM=xterm-256color over ssh, so tmux, vim, htop etc. work on
+# hosts without ghostty's terminfo. No ssh-terminfo: it tic's into ~/.terminfo
+# on every new host, and fails on git hosts and hosts with RemoteCommand.
+shell-integration-features = no-cursor,ssh-env

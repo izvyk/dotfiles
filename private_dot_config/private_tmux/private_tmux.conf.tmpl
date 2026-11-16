@@ -53,17 +53,19 @@ bind -T copy-mode-vi v send -X begin-selection
 bind -T copy-mode-vi C-v send -X rectangle-toggle
 bind -T copy-mode-vi y send -X copy-selection-and-cancel
 
-# Gruvbox dark, transparent status bar
-set -g status-style "bg=default,fg=#a89984"
-set -g status-left "#[bg=#a89984,fg=#282828,bold] #S #[default] "
+# Colours from the shared theme (.chezmoidata/theme.toml), transparent status bar
+{{- with .theme.ui }}
+set -g status-style "bg=default,fg={{ .fg_dim }}"
+set -g status-left "#[bg={{ .fg_dim }},fg={{ .bg }},bold] #S #[default] "
 set -g status-left-length 30
-set -g status-right "#[fg=#7c6f64]#h  #[fg=#a89984]%d.%m.%Y %H:%M "
+set -g status-right "#[fg={{ .bg4 }}]#h  #[fg={{ .fg_dim }}]%d.%m.%Y %H:%M "
 setw -g window-status-format " #I:#W "
-setw -g window-status-current-format "#[bg=#504945,fg=#fabd2f,bold] #I:#W#{?window_zoomed_flag, (zoom),} "
-set -g pane-border-style "fg=#504945"
-set -g pane-active-border-style "fg=#fabd2f"
-set -g message-style "bg=#fabd2f,fg=#282828"
-set -g mode-style "bg=#504945,fg=#ebdbb2"
+setw -g window-status-current-format "#[bg={{ .bg2 }},fg={{ .accent }},bold] #I:#W#{?window_zoomed_flag, (zoom),} "
+set -g pane-border-style "fg={{ .bg2 }}"
+set -g pane-active-border-style "fg={{ .accent }}"
+set -g message-style "bg={{ .accent }},fg={{ .bg }}"
+set -g mode-style "bg={{ .bg2 }},fg={{ .fg }}"
+{{- end }}
 
 # Right-click menus stay open after a click (by default they close on release
 # unless you drag onto an item). Rewrites tmux's own menu bindings with -O.

@@ -1,0 +1,55 @@
+# The one colour theme. App configs take every colour from here, so switching
+# theme means changing only this file. Values are "#rrggbb".
+# Currently: Gruvbox Dark (https://github.com/morhetz/gruvbox).
+
+[theme]
+# Syntax highlighting for bat and delta: a bat theme (`bat --list-themes`).
+syntax = "gruvbox-dark"
+
+[theme.ui]
+bg_hard = "#1d2021" # darker than bg: window backdrops
+bg = "#282828"
+bg1 = "#3c3836"     # surfaces, from bg to fg
+bg2 = "#504945"
+bg3 = "#665c54"
+bg4 = "#7c6f64"
+fg_dim = "#a89984"
+fg = "#ebdbb2"
+accent = "#fabd2f"  # selection, active borders
+mark = "#8ec07c"    # marked items
+
+# Terminal palette, ANSI 0-15.
+[theme.ansi]
+black = "#282828"
+red = "#cc241d"
+green = "#98971a"
+yellow = "#d79921"
+blue = "#458588"
+magenta = "#b16286"
+cyan = "#689d6a"
+white = "#a89984"
+bright_black = "#928374"
+bright_red = "#fb4934"
+bright_green = "#b8bb26"
+bright_yellow = "#fabd2f"
+bright_blue = "#83a598"
+bright_magenta = "#d3869b"
+bright_cyan = "#8ec07c"
+bright_white = "#ebdbb2"
+
+# Extra hues for gradients (btop).
+[theme.extra]
+orange = "#d65d0e"
+bright_orange = "#fe8019"
+
+# Diff backgrounds for delta: dark tints, so syntax colours stay readable.
+[theme.diff]
+minus = "#3c1f1e"
+minus_emph = "#60201e"
+plus = "#323824"
+plus_emph = "#4f5a20"
+# Moved blocks (git diff.colorMoved)
+moved_magenta = "#422b3e"
+moved_blue = "#26393d"
+moved_cyan = "#283b33"
+moved_yellow = "#473c22"

@@ -70,7 +70,6 @@
     sshow = -c delta.side-by-side=true show
 
 [delta]
-    features = gruvbox-dark
     navigate = true      # Use n and N to jump between files/hunks
     line-numbers = true  # Compact 2-column line numbers (works great in narrow splits)
     hyperlinks = true    # Clickable file/line links in modern terminals (Foot, Ghostty, etc.)
@@ -79,34 +78,34 @@
     # delta's within-line diff is quadratic, so minified files would stall or crash it.
     max-line-length = 5000
 
-[delta "gruvbox-dark"]
-    # 1. Syntax Theme (inherited from bat)
-    syntax-theme = gruvbox-dark
+    # Colours from the shared theme (.chezmoidata/theme.toml)
+{{- with .theme }}
+    syntax-theme = {{ .syntax }}
 
-    # 2. Diff Theme (Darker emphasis backgrounds so syntax foreground stays readable)
-    minus-style = syntax "#3c1f1e"
-    minus-emph-style = syntax "#60201e"
-    plus-style = syntax "#323824"
-    plus-emph-style = syntax "#4f5a20"
+    # Diff backgrounds: dark tints, so the syntax colours stay readable
+    minus-style = syntax "{{ .diff.minus }}"
+    minus-emph-style = syntax "{{ .diff.minus_emph }}"
+    plus-style = syntax "{{ .diff.plus }}"
+    plus-emph-style = syntax "{{ .diff.plus_emph }}"
 
-    # 3. Moved Code Blocks (Pairs with diff.colorMoved = default)
+    # Moved code blocks (pairs with diff.colorMoved = default)
     map-styles = \
-        bold purple => syntax "#422b3e", \
-        bold blue => syntax "#26393d", \
-        bold cyan => syntax "#283b33", \
-        bold yellow => syntax "#473c22"
+        bold purple => syntax "{{ .diff.moved_magenta }}", \
+        bold blue => syntax "{{ .diff.moved_blue }}", \
+        bold cyan => syntax "{{ .diff.moved_cyan }}", \
+        bold yellow => syntax "{{ .diff.moved_yellow }}"
 
-    # 4. Line Numbers (Gruvbox muted palette)
-    line-numbers-minus-style = "#cc241d"
-    line-numbers-plus-style = "#98971a"
-    line-numbers-zero-style = "#665c54"
-    line-numbers-left-style = "#504945"
-    line-numbers-right-style = "#504945"
+    line-numbers-minus-style = "{{ .ansi.red }}"
+    line-numbers-plus-style = "{{ .ansi.green }}"
+    line-numbers-zero-style = "{{ .ui.bg3 }}"
+    line-numbers-left-style = "{{ .ui.bg2 }}"
+    line-numbers-right-style = "{{ .ui.bg2 }}"
 
-    # 5. UI Theme (Headers and Borders)
-    file-style = "#ebdbb2" bold
-    file-decoration-style = "#d79921" ul
+    # Headers and borders
+    file-style = "{{ .ui.fg }}" bold
+    file-decoration-style = "{{ .ansi.yellow }}" ul
     hunk-header-style = file line-number syntax
-    hunk-header-file-style = "#ebdbb2"
-    hunk-header-line-number-style = "#fabd2f"
-    hunk-header-decoration-style = "#504945" box
+    hunk-header-file-style = "{{ .ui.fg }}"
+    hunk-header-line-number-style = "{{ .ui.accent }}"
+    hunk-header-decoration-style = "{{ .ui.bg2 }}" box
+{{- end }}

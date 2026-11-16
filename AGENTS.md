@@ -6,7 +6,10 @@ Shared by two machines. KISS.
 - OS differences: `.chezmoi.osRelease.id`. Machine differences (git identity, ssh
   hosts): `.chezmoi.hostname`, testing for malvina, with buratino as the else.
 - NixOS-specific belongs in nixos-config; chezmoi stays portable.
-- Same value in both is fine; don't add conditionals to avoid harmless duplicates.
+- A value that's the same on both machines is fine; don't add machine conditionals
+  to avoid it. Across files, stay DRY: shared values go in `.chezmoidata/`.
+- Colours come only from `.chezmoidata/theme.toml`; app configs are templates that
+  read it, never hex literals. Switching theme = editing that one file.
 - Gate machine-only files in `.chezmoiignore`, don't template empty files.
 - Delete dead config outright. `.archive/` keeps the few retired files that were
   never committed; chezmoi doesn't deploy it.
