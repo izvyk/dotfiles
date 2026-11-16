@@ -1,11 +1,18 @@
 if status is-interactive
-    set fish_greeting '
+    # Greeting in top-level and ns shells, where it separates them in the
+    # scrollback. Not in yazi's ! shell or in Zed's terminal.
+    set fish_greeting
+    if set -q NIX_SHELL_DEPTH; or begin
+            not set -q YAZI_LEVEL; and not set -q ZED_TERM
+        end
+        set fish_greeting '
   ██  ██  ██  ██  ██  ██  ██  ██  ██
  ████████ ██ ████████ ██ ████████ ██
   ██  ██  ██  ██  ██  ██  ██  ██  ██
  ████████    ████████    ████████
   ██  ██  ██  ██  ██  ██  ██  ██  ██
 '
+    end
 
     # fish's default theme uses the terminal's named colours, so it follows the
     # shared theme. Only change: commands in blue.

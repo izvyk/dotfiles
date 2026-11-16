@@ -32,11 +32,17 @@ function fish_prompt --description 'Write out the prompt with ns (nix-shell wrap
         set nix_info (set_color $fish_color_host_remote)" [󱄅 $NIX_SHELL_DEPTH]"(set_color normal)
     end
 
+    # Shell started from yazi (!): exit goes back to it.
+    set -l yazi_info ""
+    if set -q YAZI_LEVEL
+        set yazi_info (set_color $fish_color_host_remote)" [󰇥 yazi]"(set_color normal)
+    end
+
     set -l status_sep ""
-    if test -n "$prompt_status"; and test -z "$nix_info"
+    if test -n "$prompt_status"; and test -z "$nix_info$yazi_info"
         set status_sep " "
     end
 
-    echo -n -s (prompt_login)' ' (set_color $color_cwd) (prompt_pwd) $normal (fish_vcs_prompt) $normal $nix_info $status_sep $prompt_status $suffix " "
+    echo -n -s (prompt_login)' ' (set_color $color_cwd) (prompt_pwd) $normal (fish_vcs_prompt) $normal $nix_info $yazi_info $status_sep $prompt_status $suffix " "
     # echo -n -s (prompt_login)' ' (set_color $color_cwd) (prompt_pwd) $normal (fish_vcs_prompt) $normal " "$prompt_status $suffix " " # This is the original
 end
