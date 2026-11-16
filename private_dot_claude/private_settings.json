@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "theme": "light",
+  "theme": "dark-ansi",
   "permissions": {
     "ask": [
       "Bash(git push)",
@@ -11,7 +11,12 @@
       "Read(~/.config/aichat/.env)",
       "Read(~/.claude/.credentials.json)",
       "Read(~/.ssh/oldkeys/**)",
-      "Read(~/.gnupg/**)"
+      "Read(~/.gnupg/**)",
+      "Read(~/.mozilla/**)",
+      "Read(~/snap/firefox/common/.mozilla/**)",
+      "Read(~/.config/google-chrome/**)",
+      "Read(~/.config/chromium/**)",
+      "Read(~/.local/share/keyrings/**)"
     ]
   },
   "sandbox": {
@@ -41,8 +46,13 @@
         { "path": "~/.config/chezmoi/key.txt", "mode": "deny" },
         { "path": "~/.config/aichat/.env", "mode": "deny" },
         { "path": "~/.claude/.credentials.json", "mode": "deny" },
-        { "path": "~/.ssh/oldkeys", "mode": "deny" },
-        { "path": "~/.gnupg", "mode": "deny" }
+        { "path": "~/.ssh", "mode": "deny" },
+        { "path": "~/.gnupg", "mode": "deny" },
+        { "path": "~/.mozilla", "mode": "deny" },
+        { "path": "~/snap/firefox/common/.mozilla", "mode": "deny" },
+        { "path": "~/.config/google-chrome", "mode": "deny" },
+        { "path": "~/.config/chromium", "mode": "deny" },
+        { "path": "~/.local/share/keyrings", "mode": "deny" }
       ],
       "envVars": [
         { "name": "ANTHROPIC_API_KEY", "mode": "deny" }
@@ -61,6 +71,18 @@
         "crates.io",
         "*.crates.io",
         "cache.nixos.org"
+      ],
+      "deniedDomains": [
+        "10.0.0.0/8",
+        "172.16.0.0/12",
+        "192.168.0.0/16",
+        "100.64.0.0/10",
+        "*.ts.net",
+        "*.local",
+        "*.lan",
+        "*.home.arpa",
+        "*.localdomain",
+        "*.internal"
       ]
     }
   }
