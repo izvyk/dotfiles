@@ -18,6 +18,9 @@ Shared by two machines. KISS.
 - `private_` prefixes for strict permissions.
 - Never `chezmoi apply` without reviewing dry-run first.
 - This repo is public. Anything private goes in an `encrypted_` file; `~/.ssh/config`
-  is an encrypted template, change it with `chezmoi edit ~/.ssh/config`.
+  is an encrypted template, change it with `chezmoi edit ~/.ssh/config`. A single
+  secret inside an otherwise public config goes in `.secrets/<name>.age`
+  (`chezmoi encrypt`), read with `include ".secrets/<name>.age" | decrypt`, and
+  is skipped when `~/.config/chezmoi/key.txt` is missing.
 - ssh: FIDO keys on the YubiKey, named per host in `~/.ssh/config`, and the session's
   default agent.

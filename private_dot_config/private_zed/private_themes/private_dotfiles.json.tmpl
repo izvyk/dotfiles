@@ -1,0 +1,137 @@
+{{- /*
+  Zed theme from the shared palette (.chezmoidata/theme.toml).
+  Schema: https://zed.dev/schema/themes/v0.2.0.json. Syntax colours follow
+  classic gruvbox roles (keywords red, strings green, functions green bold,
+  types yellow, operators and builtins orange, constants purple), by ANSI
+  name, so they still make sense with another palette. Text colours use the
+  bright variants, which are the readable ones on a dark background.
+*/ -}}
+{{- with .theme -}}
+{{- $fg := .ui.fg }}{{ $dim := .ui.fg_dim }}{{ $faint := .ui.bg4 }}{{ $accent := .ui.accent -}}
+{{- $red := .ansi.bright_red }}{{ $green := .ansi.bright_green }}{{ $yellow := .ansi.bright_yellow -}}
+{{- $blue := .ansi.bright_blue }}{{ $magenta := .ansi.bright_magenta }}{{ $cyan := .ansi.bright_cyan -}}
+{{- $orange := .extra.bright_orange }}{{ $gray := .ansi.bright_black -}}
+{
+  "$schema": "https://zed.dev/schema/themes/v0.2.0.json",
+  "name": "Dotfiles",
+  "author": "chezmoi",
+  "themes": [
+    {
+      "name": "Dotfiles",
+      "appearance": "dark",
+      "style": {
+        "background": "{{ .ui.bg_hard }}",
+        "border": "{{ .ui.bg2 }}",
+        "border.variant": "{{ .ui.bg1 }}",
+        "border.focused": "{{ $accent }}",
+        "border.selected": "{{ $accent }}",
+        "border.transparent": "#00000000",
+        "border.disabled": "{{ .ui.bg1 }}",
+        "elevated_surface.background": "{{ .ui.bg1 }}",
+        "surface.background": "{{ .ui.bg_hard }}",
+        "element.background": "{{ .ui.bg1 }}",
+        "element.hover": "{{ .ui.bg2 }}",
+        "element.active": "{{ .ui.bg3 }}",
+        "element.selected": "{{ .ui.bg2 }}",
+        "element.disabled": "{{ .ui.bg1 }}",
+        "drop_target.background": "{{ $accent }}33",
+        "ghost_element.background": "#00000000",
+        "ghost_element.hover": "{{ .ui.bg1 }}",
+        "ghost_element.active": "{{ .ui.bg2 }}",
+        "ghost_element.selected": "{{ .ui.bg2 }}",
+        "ghost_element.disabled": "#00000000",
+        "text": "{{ $fg }}",
+        "text.muted": "{{ $dim }}",
+        "text.placeholder": "{{ $faint }}",
+        "text.disabled": "{{ $faint }}",
+        "text.accent": "{{ $accent }}",
+        "icon": "{{ $fg }}",
+        "icon.muted": "{{ $dim }}",
+        "icon.disabled": "{{ $faint }}",
+        "icon.placeholder": "{{ $dim }}",
+        "icon.accent": "{{ $accent }}",
+        "status_bar.background": "{{ .ui.bg_hard }}",
+        "title_bar.background": "{{ .ui.bg_hard }}",
+        "title_bar.inactive_background": "{{ .ui.bg_hard }}",
+        "toolbar.background": "{{ .ui.bg }}",
+        "tab_bar.background": "{{ .ui.bg_hard }}",
+        "tab.inactive_background": "{{ .ui.bg_hard }}",
+        "tab.active_background": "{{ .ui.bg }}",
+        "search.match_background": "{{ $accent }}40",
+        "panel.background": "{{ .ui.bg_hard }}",
+        "panel.focused_border": "{{ $accent }}",
+        "pane.focused_border": "{{ .ui.bg3 }}",
+        "scrollbar.thumb.background": "{{ $dim }}40",
+        "scrollbar.thumb.hover_background": "{{ $dim }}80",
+        "scrollbar.thumb.border": "#00000000",
+        "scrollbar.track.background": "#00000000",
+        "scrollbar.track.border": "#00000000",
+        "editor.foreground": "{{ $fg }}",
+        "editor.background": "{{ .ui.bg }}",
+        "editor.gutter.background": "{{ .ui.bg }}",
+        "editor.subheader.background": "{{ .ui.bg_hard }}",
+        "editor.active_line.background": "{{ .ui.bg1 }}",
+        "editor.highlighted_line.background": "{{ .ui.bg1 }}",
+        "editor.line_number": "{{ $faint }}",
+        "editor.active_line_number": "{{ $yellow }}",
+        "editor.invisible": "{{ .ui.bg3 }}",
+        "editor.wrap_guide": "{{ .ui.bg1 }}",
+        "editor.active_wrap_guide": "{{ .ui.bg2 }}",
+        "editor.indent_guide": "{{ .ui.bg1 }}",
+        "editor.indent_guide_active": "{{ .ui.bg3 }}",
+        "editor.document_highlight.read_background": "{{ $accent }}26",
+        "editor.document_highlight.write_background": "{{ $accent }}40",
+        "editor.document_highlight.bracket_background": "{{ .ui.bg2 }}",
+        "terminal.background": "{{ .ui.bg }}",
+        "terminal.foreground": "{{ $fg }}",
+        "terminal.bright_foreground": "{{ $fg }}",
+        "terminal.dim_foreground": "{{ $dim }}",
+{{- range $name := list "black" "red" "green" "yellow" "blue" "magenta" "cyan" "white" }}
+        "terminal.ansi.{{ $name }}": "{{ index $.theme.ansi $name }}",
+        "terminal.ansi.bright_{{ $name }}": "{{ index $.theme.ansi (print "bright_" $name) }}",
+{{- end }}
+        "link_text.hover": "{{ $yellow }}",
+{{- /* Status colours: text, faint background, border. */}}
+{{- range $s := list (list "conflict" $yellow) (list "created" $green) (list "deleted" $red) (list "error" $red) (list "hidden" $dim) (list "hint" $dim) (list "ignored" $faint) (list "info" $blue) (list "modified" $yellow) (list "predictive" $faint) (list "renamed" $cyan) (list "success" $green) (list "unreachable" $dim) (list "warning" $orange) }}
+        "{{ index $s 0 }}": "{{ index $s 1 }}",
+        "{{ index $s 0 }}.background": "{{ index $s 1 }}1a",
+        "{{ index $s 0 }}.border": "{{ index $s 1 }}",
+{{- end }}
+        "players": [
+          { "cursor": "{{ $fg }}", "background": "{{ $accent }}", "selection": "{{ .ui.bg3 }}cc" },
+{{- range $c := list $blue $magenta $cyan $orange }}
+          { "cursor": "{{ $c }}", "background": "{{ $c }}", "selection": "{{ $c }}3d" },
+{{- end }}
+          { "cursor": "{{ $green }}", "background": "{{ $green }}", "selection": "{{ $green }}3d" }
+        ],
+        "accents": ["{{ $blue }}", "{{ $magenta }}", "{{ $cyan }}", "{{ $yellow }}", "{{ $green }}", "{{ $orange }}", "{{ $red }}"],
+        "syntax": {
+{{- range $s := list
+  (list "attribute" $yellow) (list "boolean" $magenta) (list "constant" $magenta)
+  (list "constructor" $orange) (list "embedded" $fg) (list "enum" $yellow)
+  (list "keyword" $red) (list "label" $red)
+  (list "link_text" $blue) (list "link_uri" $cyan) (list "number" $magenta)
+  (list "operator" $orange) (list "preproc" $cyan) (list "primary" $fg)
+  (list "property" $blue) (list "punctuation" $dim) (list "punctuation.bracket" $dim)
+  (list "punctuation.delimiter" $orange) (list "punctuation.list_marker" $orange)
+  (list "punctuation.special" $orange) (list "string" $green)
+  (list "string.escape" $orange) (list "string.regex" $orange)
+  (list "string.special" $orange) (list "string.special.symbol" $yellow)
+  (list "tag" $cyan) (list "text.literal" $green) (list "type" $yellow)
+  (list "variable" $fg) (list "variable.special" $orange) (list "variant" $magenta) }}
+          "{{ index $s 0 }}": { "color": "{{ index $s 1 }}" },
+{{- end }}
+          "function": { "color": "{{ $green }}", "font_weight": 700 },
+          "comment": { "color": "{{ $gray }}", "font_style": "italic" },
+          "comment.doc": { "color": "{{ $gray }}", "font_style": "italic" },
+          "emphasis": { "color": "{{ $yellow }}", "font_style": "italic" },
+          "emphasis.strong": { "color": "{{ $orange }}", "font_weight": 700 },
+          "hint": { "color": "{{ $dim }}", "font_style": "italic" },
+          "predictive": { "color": "{{ $faint }}", "font_style": "italic" },
+          "title": { "color": "{{ $yellow }}", "font_weight": 700 }
+        }
+      }
+    }
+  ]
+}
+{{- end }}
