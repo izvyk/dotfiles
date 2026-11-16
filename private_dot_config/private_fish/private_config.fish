@@ -7,6 +7,10 @@ if status is-interactive
   ██  ██  ██  ██  ██  ██  ██  ██  ██
 '
 
+    # fish's default theme uses the terminal's named colours, so it follows the
+    # shared theme. Only change: commands in blue.
+    set -g fish_color_command blue
+
     type -q zoxide; and zoxide init --hook pwd --cmd cd fish | source
 
     bind \em __fish_man_page          # Alt + M = manpage
