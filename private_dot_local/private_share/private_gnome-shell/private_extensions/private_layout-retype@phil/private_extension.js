@@ -2,7 +2,8 @@
 //   AltGr+Space        the word before the cursor, or the selection
 //   AltGr+Shift+Space  the whole line before the cursor
 // (keyd in nixos-config turns these into F22 and F23, which are grabbed here.)
-// With the cursor at a line start, both take the line after it.
+// With the cursor at the very start of a field, both take all of its text:
+// that is how Firefox reports Ctrl+A. At a later line start, the line after it.
 // Each word goes from its own layout to the other ("ghbdtn тшч" → "привет
 // nix"); pressing again flips it back. Afterwards the layout is switched to
 // the last word's new one.
@@ -125,8 +126,13 @@ export default class LayoutRetypeExtension extends Extension {
         if (im.currentFocus && im.contentPurpose !== TERMINAL && !im.hasPreedit() &&
             !STALE_TEXT_APPS.has(appId))
             target = await this._replaceInField(im, line, tables, current);
-        if (target === undefined)
+        let via = 'field text';
+        if (target === undefined) {
+            via = 'primary selection';
             target = await this._typeSelection(tables, current, sources, ism);
+        }
+        if (target === null)
+            console.log(`layout-retype: nothing to convert in ${appId ?? 'unknown app'} (${via})`);
         if (target !== null && this._keyboard)
             await this._activate(sources[target]);
     }
@@ -175,11 +181,14 @@ export default class LayoutRetypeExtension extends Extension {
             }
         }
 
-        // Cursor at a line start (Firefox puts it there on Ctrl+A, without
-        // touching the primary selection): take the line after it.
+        // Cursor at the very start: take all the text, as if it were selected.
+        // Ctrl+A in Firefox looks like this: the whole text, cursor 0, no
+        // selection bound, primary selection untouched. (Firefox sends only
+        // the paragraph around the cursor, so with nothing selected this is
+        // just that paragraph.) At a later line start, take the line after it.
         if (cursor === 0 || chars[cursor - 1] === '\n') {
             let end = cursor;
-            while (end < chars.length && chars[end] !== '\n')
+            while (end < chars.length && (cursor === 0 || chars[end] !== '\n'))
                 end++;
             if (end - cursor > MAX_LENGTH)
                 throw new Error(`Longer than ${MAX_LENGTH} characters`);
