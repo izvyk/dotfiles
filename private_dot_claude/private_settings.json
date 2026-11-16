@@ -2,21 +2,47 @@
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "theme": "dark-ansi",
   "permissions": {
+    "disableBypassPermissionsMode": "disable",
     "ask": [
       "Bash(git push)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(docker *)"
     ],
     "deny": [
+      "Bash(git *--upload-pack*)",
+      "Bash(git *--receive-pack*)",
+      "Bash(git *--exec*)",
+      "Read(**/.env)",
       "Read(~/.config/chezmoi/key.txt)",
       "Read(~/.config/aichat/.env)",
       "Read(~/.claude/.credentials.json)",
       "Read(~/.ssh/oldkeys/**)",
       "Read(~/.gnupg/**)",
+      "Read(~/.local/share/keyrings/**)",
+      "Read(~/.pki/nssdb/**)",
+      "Read(~/Documents/Passwords.kdbx)",
+      "Read(~/.local/share/fish/fish_history)",
+      "Read(~/.bash_history)",
+      "Read(~/.kube/**)",
+      "Read(~/.metalctl/**)",
+      "Read(~/.metal-stack/**)",
+      "Read(~/.metal-stack.old/**)",
+      "Read(~/.metal-stack-cloud/**)",
+      "Read(~/.android/adbkey)",
+      "Read(~/.config/gsconnect/private.pem)",
+      "Read(~/.config/yamusic-tui/config.yaml)",
+      "Read(~/.config/evolution/**)",
+      "Read(~/.local/share/evolution/**)",
       "Read(~/.mozilla/**)",
       "Read(~/snap/firefox/common/.mozilla/**)",
       "Read(~/.config/google-chrome/**)",
       "Read(~/.config/chromium/**)",
-      "Read(~/.local/share/keyrings/**)"
+      "Read(~/.config/BraveSoftware/**)",
+      "Read(~/.config/microsoft-edge-beta/**)",
+      "Read(~/.config/microsoft-edge-dev/**)",
+      "Read(~/.config/net.imput.helium/**)",
+      "Read(~/.gemini/antigravity-browser-profile/**)",
+      "Read(~/snap/keepersecurity/**)"
     ]
   },
   "sandbox": {
@@ -35,10 +61,21 @@
     ],
     "filesystem": {
       "allowWrite": [
-        "~/.cache",
-        "~/.cargo",
-        "~/.npm",
-        "~/go"
+        "~/.cache/go-build",
+        "~/.cache/golangci-lint",
+        "~/.cache/staticcheck",
+        "~/.cache/pip",
+        "~/.cache/node-gyp",
+        "~/go/pkg/mod",
+        "~/.npm/_cacache",
+        "~/.cargo/registry"
+      ],
+      "denyWrite": [
+        "~/.config/chezmoi/chezmoi.toml",
+        "~/.local/share/chezmoi/.git/config",
+        "~/.local/share/chezmoi/.git/hooks",
+        "~/Projects/personal/nixos-config/.git/config",
+        "~/Projects/personal/nixos-config/.git/hooks"
       ]
     },
     "credentials": {
@@ -46,16 +83,42 @@
         { "path": "~/.config/chezmoi/key.txt", "mode": "deny" },
         { "path": "~/.config/aichat/.env", "mode": "deny" },
         { "path": "~/.claude/.credentials.json", "mode": "deny" },
+        { "path": "~/.claude/projects", "mode": "deny" },
         { "path": "~/.ssh", "mode": "deny" },
         { "path": "~/.gnupg", "mode": "deny" },
+        { "path": "~/.local/share/keyrings", "mode": "deny" },
+        { "path": "~/.pki/nssdb", "mode": "deny" },
+        { "path": "~/Documents/Passwords.kdbx", "mode": "deny" },
+        { "path": "~/.local/share/fish/fish_history", "mode": "deny" },
+        { "path": "~/.bash_history", "mode": "deny" },
+        { "path": "~/.kube", "mode": "deny" },
+        { "path": "~/.metalctl", "mode": "deny" },
+        { "path": "~/.metal-stack", "mode": "deny" },
+        { "path": "~/.metal-stack.old", "mode": "deny" },
+        { "path": "~/.metal-stack-cloud", "mode": "deny" },
+        { "path": "~/.android/adbkey", "mode": "deny" },
+        { "path": "~/.config/gsconnect/private.pem", "mode": "deny" },
+        { "path": "~/.config/yamusic-tui/config.yaml", "mode": "deny" },
+        { "path": "~/.config/evolution", "mode": "deny" },
+        { "path": "~/.local/share/evolution", "mode": "deny" },
+        { "path": "~/.local/share/zed/threads", "mode": "deny" },
+        { "path": "~/.local/share/zed/conversations", "mode": "deny" },
         { "path": "~/.mozilla", "mode": "deny" },
         { "path": "~/snap/firefox/common/.mozilla", "mode": "deny" },
         { "path": "~/.config/google-chrome", "mode": "deny" },
         { "path": "~/.config/chromium", "mode": "deny" },
-        { "path": "~/.local/share/keyrings", "mode": "deny" }
+        { "path": "~/.config/BraveSoftware", "mode": "deny" },
+        { "path": "~/.config/microsoft-edge-beta", "mode": "deny" },
+        { "path": "~/.config/microsoft-edge-dev", "mode": "deny" },
+        { "path": "~/.config/net.imput.helium", "mode": "deny" },
+        { "path": "~/.gemini/antigravity-browser-profile", "mode": "deny" },
+        { "path": "~/snap/keepersecurity", "mode": "deny" }
       ],
       "envVars": [
-        { "name": "ANTHROPIC_API_KEY", "mode": "deny" }
+        { "name": "ANTHROPIC_API_KEY", "mode": "deny" },
+        { "name": "CLAUDE_CODE_MESSAGING_TOKEN", "mode": "deny" },
+        { "name": "GITHUB_TOKEN", "mode": "deny" },
+        { "name": "GH_TOKEN", "mode": "deny" }
       ]
     },
     "network": {
@@ -77,6 +140,7 @@
         "172.16.0.0/12",
         "192.168.0.0/16",
         "100.64.0.0/10",
+        "169.254.0.0/16",
         "*.ts.net",
         "*.local",
         "*.lan",

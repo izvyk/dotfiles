@@ -25,5 +25,7 @@ if status is-interactive
     bind \eh prevd-or-backward-word   # Alt + H = previous visited directory
 
     umask 077
-    fish_add_path -g ~/.local/bin ~/go/bin
+    # Appended to $PATH itself (fish_user_paths always go first), and moved
+    # there if inherited: user-writable dirs mustn't shadow system binaries.
+    fish_add_path -P -a -m ~/.local/bin ~/go/bin
 end
