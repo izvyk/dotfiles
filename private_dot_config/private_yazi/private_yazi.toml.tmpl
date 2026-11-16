@@ -1,0 +1,29 @@
+#:schema https://yazi-rs.github.io/schemas/yazi.json
+# Only changes from the defaults: `yazi --debug` shows the config dir,
+# https://yazi-rs.github.io/docs/configuration/yazi has the rest.
+# Colours: yazi's default theme uses the terminal's named colours, so it
+# already follows the shared theme.
+
+[mgr]
+sort_by = "natural" # 2.md before 10.md
+linemode = "size"
+
+[preview]
+# Ghostty and foot draw images fast enough to need no delay.
+image_delay = 0
+# Sharper images, also when toggle-pane maximizes the preview (T).
+max_width = 1000
+max_height = 1000
+
+[plugin]
+# git.yazi: git status signs in the file list.
+prepend_fetchers = [
+	{ url = "*", run = "git", group = "git" },
+	{ url = "*/", run = "git", group = "git" },
+]
+# gvfs mounts (phones, SMB, SFTP) are remote, and preloading would download
+# every file in the folder. The hovered file still gets a preview.
+# Yazi can't expand $XDG_RUNTIME_DIR in globs, so the uid is filled in here.
+prepend_preloaders = [
+	{ url = "/run/user/{{ output "id" "-u" | trim }}/gvfs/**", run = "noop" },
+]

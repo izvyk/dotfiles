@@ -1,0 +1,41 @@
+#:schema https://yazi-rs.github.io/schemas/keymap.json
+# Added on top of the defaults. In yazi, ~ (or F1) lists every key; type to filter.
+#
+# Cheat sheet (defaults + the bindings below)
+#   h j k l       up/out, down, up, into dir or open file   gg / G  top / bottom
+#   Space         select (v: visual mode, Ctrl+a: all)      Esc     clear selection
+#   y x p         copy, cut, paste (P: overwrite)           d / D   trash / delete
+#   a r           create (end with / for a dir), rename     .       hidden files
+#   /  f  s  S    find next, filter, search names (fd), contents (rg)
+#   z  Z          jump with fzf, zoxide                     g Space type a path
+#   gh gc gd gr   go home, ~/.config, ~/Downloads, git root
+#   tt 1-9  [ ]   new tab, go to tab N, prev/next tab
+#   o O  Enter    open, open with..., open                  Tab     file info
+#   ,m ,s ,n      sort by mtime, size, natural (,M etc. reverse)
+#   T  !  cm  w   max preview, shell here, chmod, tasks
+#   M m/u/U       mount, unmount, eject (phones, SMB, ...)  gm      go to a device
+#   q / Q         quit (cd's the shell there with yy) / quit without cd
+
+[mgr]
+prepend_keymap = [
+	# https://yazi-rs.github.io/docs/tips
+	{ on = "!", run = 'shell "$SHELL" --block', desc = "Open $SHELL here" },
+	{ on = [ "g", "r" ], run = 'shell -- ya emit cd "$(git rev-parse --show-toplevel)"', desc = "Go to the git repository root" },
+
+	# Plugins, see package.toml
+	{ on = "l", run = "plugin smart-enter", desc = "Enter the directory, or open the file" },
+	{ on = "<Right>", run = "plugin smart-enter", desc = "Enter the directory, or open the file" },
+	{ on = "T", run = "plugin toggle-pane max-preview", desc = "Maximize or restore the preview" },
+	{ on = [ "c", "m" ], run = "plugin chmod", desc = "Chmod selected files" },
+
+	# gvfs: phones (MTP), cameras, SMB, SFTP, ... via GNOME's gio.
+	{ on = [ "M", "m" ], run = "plugin gvfs -- select-then-mount --jump", desc = "Mount a device and jump to it" },
+	{ on = [ "M", "u" ], run = "plugin gvfs -- select-then-unmount", desc = "Unmount a device" },
+	{ on = [ "M", "U" ], run = "plugin gvfs -- select-then-unmount --eject", desc = "Eject a device" },
+	{ on = [ "M", "R" ], run = "plugin gvfs -- remount-current-cwd-device", desc = "Remount the device under cwd" },
+	{ on = [ "M", "a" ], run = "plugin gvfs -- add-mount", desc = "Add a gvfs mount URI" },
+	{ on = [ "M", "e" ], run = "plugin gvfs -- edit-mount", desc = "Edit a gvfs mount URI" },
+	{ on = [ "M", "r" ], run = "plugin gvfs -- remove-mount", desc = "Remove a gvfs mount URI" },
+	{ on = [ "g", "m" ], run = "plugin gvfs -- jump-to-device --automount", desc = "Go to a device, mounting it if needed" },
+	{ on = [ "`", "`" ], run = "plugin gvfs -- jump-back-prev-cwd", desc = "Back to where you were before jumping to a device" },
+]
