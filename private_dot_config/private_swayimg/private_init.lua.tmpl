@@ -500,21 +500,23 @@ set_text(viewer, viewer_text(nil))
 viewer.on_image_change(function()
   set_text(viewer, viewer_text(viewer.get_image()))
 end)
-viewer.set_window_background(theme.bg_hard)                    -- window background
+viewer.set_window_background("extend")                         -- blurred copy of the image fills the window
 viewer.set_image_chessboard(16, theme.bg, theme.bg1)           -- transparency grid
 
--- Scroll: Ctrl/Alt + wheel zooms at the pointer, plain wheel pans the image.
--- One wheel notch = 1.0 (negative = up), hi-res wheels send fractions.
+-- Scroll, like in a browser: Ctrl + scroll zooms at the pointer, plain scroll
+-- pans, Shift + wheel pans sideways. The image only moves where it is larger
+-- than the window (autopos).
+-- One wheel notch = 1.0 (negative = up), touchpads send fractions.
 viewer.on_scroll(function(mods, horizontal, vertical)
-  if mods == "Ctrl" or mods == "Alt" then
-    if vertical ~= 0 then
-      local mouse = swayimg.get_mouse_pos()
-      viewer.set_abs_scale(viewer.scale * 1.1 ^ -vertical, mouse.x, mouse.y)
-    end
+  if mods == "Ctrl" then
+    local mouse = swayimg.get_mouse_pos()
+    viewer.set_abs_scale(viewer.scale * 1.1 ^ -vertical, mouse.x, mouse.y)
   else
+    if mods == "Shift" then horizontal, vertical = vertical, horizontal end
+    -- Scrolling down moves the image up, like the Down key.
     local pos = viewer.get_position()
-    viewer.set_abs_position(pos.x + math.floor(horizontal * 50),
-                            pos.y + math.floor(vertical * 50))
+    viewer.set_abs_position(pos.x - math.floor(horizontal * 50 + 0.5),
+                            pos.y - math.floor(vertical * 50 + 0.5))
   end
 end)
 
@@ -564,11 +566,14 @@ bind(viewer, "Shift+Prior", step_frame(-1))
 bind(viewer, "Shift+Next", step_frame(1))
 add_help(viewer, { "Shift+Prior", "Shift+Next" }, "previous / next frame")
 
--- Scale and position ("+" is Shift+equal on the main keyboard)
-bind(viewer, { "equal", "Shift+plus", "KP_Add" }, zoom(1.1))
-bind(viewer, { "minus", "KP_Subtract" }, zoom(1 / 1.1))
-add_help(viewer, { "equal", "Shift+plus", "minus" }, "zoom in / out")
-bind(viewer, { "0", "BackSpace" }, function() viewer.reset() end, "reset zoom")
+-- Scale and position ("+" is Shift+equal on the main keyboard). The zoom
+-- keys also work with Ctrl held, like in a browser.
+bind(viewer, { "equal", "Shift+plus", "KP_Add",
+               "Ctrl+equal", "Ctrl+Shift+plus", "Ctrl+KP_Add" }, zoom(1.1))
+bind(viewer, { "minus", "KP_Subtract", "Ctrl+minus", "Ctrl+KP_Subtract" }, zoom(1 / 1.1))
+add_help(viewer, { "equal", "Shift+plus", "minus", "Ctrl+wheel" }, "zoom in / out")
+bind(viewer, { "0", "BackSpace", "Ctrl+0" }, function() viewer.reset() end)
+add_help(viewer, { "0", "BackSpace" }, "reset zoom")
 bind(viewer, "w", fix_scale("width"))
 bind(viewer, "Shift+w", fix_scale("height"))
 bind(viewer, "z", fix_scale("fit"))
@@ -576,7 +581,7 @@ bind(viewer, "Shift+z", fix_scale("fill"))
 add_help(viewer, { "w", "Shift+w", "z", "Shift+z" }, "fit width / height / window / fill")
 bind(viewer, "Up", pan(0, 0.1))
 bind(viewer, "Down", pan(0, -0.1))
-add_help(viewer, { "Up", "Down" }, "scroll up / down")
+add_help(viewer, { "Up", "Down", "wheel" }, "scroll up / down")
 
 -- Transform
 bind(viewer, "bracketleft", function() viewer.rotate(270) end)
@@ -710,8 +715,9 @@ bind(gallery, { "Shift+k", "Prior" }, gsel("pgup"))
 add_help(gallery, { "Shift+j", "Shift+k", "Next", "Prior" }, "page down / up")
 
 -- Thumbnails, window and modes
-bind(gallery, { "equal", "Shift+plus", "KP_Add" }, thumb_zoom(0.1))
-bind(gallery, { "minus", "KP_Subtract" }, thumb_zoom(-0.1))
+bind(gallery, { "equal", "Shift+plus", "KP_Add",
+                "Ctrl+equal", "Ctrl+Shift+plus", "Ctrl+KP_Add" }, thumb_zoom(0.1))
+bind(gallery, { "minus", "KP_Subtract", "Ctrl+minus", "Ctrl+KP_Subtract" }, thumb_zoom(-0.1))
 add_help(gallery, { "equal", "Shift+plus", "minus" }, "bigger / smaller thumbnails")
 bind(gallery, { "f", "F11" }, toggle_fullscreen, "fullscreen")
 bind(gallery, { "i", "t" }, toggle_text, "image info")
