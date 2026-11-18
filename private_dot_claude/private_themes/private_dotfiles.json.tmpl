@@ -1,0 +1,19 @@
+{{- /*
+  Claude Code theme, selected as "custom:dotfiles" in settings.json.
+  dark-ansi uses the terminal's 16 colours, so it follows the shared theme
+  (.chezmoidata/theme.toml). It paints the backgrounds below in ANSI bright
+  black, which is a mid grey in this palette: the text on it is unreadable.
+  Tokens: https://code.claude.com/docs/en/terminal-config#create-a-custom-theme
+*/ -}}
+{{- with .theme.ui -}}
+{
+  "name": "Dotfiles",
+  "base": "dark-ansi",
+  "overrides": {
+    "userMessageBackground": "{{ .bg1 }}",
+    "userMessageBackgroundHover": "{{ .bg2 }}",
+    "memoryBackgroundColor": "{{ .bg1 }}",
+    "composerSidebarBackground": "{{ .bg_hard }}"
+  }
+}
+{{- end }}

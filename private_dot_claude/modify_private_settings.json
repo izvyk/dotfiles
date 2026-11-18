@@ -1,0 +1,17 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- /*
+  Claude Code settings: the shared ones from
+  .chezmoitemplates/claude/settings.json, plus the model and its effort level
+  from the existing file. Those are picked per machine in Claude Code
+  (/model), which writes them here, so they are never stored in the repo.
+
+  Claude Code rewrites this file as JSON with a 2-space indent; toPrettyJson
+  writes the same, with the keys sorted.
+*/ -}}
+{{- $settings := includeTemplate "claude/settings.json" . | fromJson -}}
+{{- $current := dict -}}
+{{- if .chezmoi.stdin | trim }}{{ $current = .chezmoi.stdin | fromJson }}{{ end -}}
+{{- range $key := list "model" "modelSettings" -}}
+{{-   if hasKey $current $key }}{{ $_ := set $settings $key (get $current $key) }}{{ end -}}
+{{- end -}}
+{{ $settings | toPrettyJson -}}
