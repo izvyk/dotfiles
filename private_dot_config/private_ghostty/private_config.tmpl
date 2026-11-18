@@ -41,6 +41,9 @@ cursor-style = bar
 cursor-style-blink = false
 custom-shader = ~/.config/ghostty/shaders/cursor_smear.glsl
 mouse-hide-while-typing = true
+# 3 lines per wheel notch, and a touchpad to match. Ghostty multiplies scroll
+# deltas by GTK's integer scale (2 on HiDPI) and touchpad deltas by another 10.
+mouse-scroll-multiplier = precision:0.15,discrete:1.5
 right-click-action = copy-or-paste
 clipboard-paste-protection = true
 
