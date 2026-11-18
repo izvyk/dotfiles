@@ -1,13 +1,20 @@
+{{- /* chezmoi:modify-template */ -}}
 // Zed settings. All options: `zed: open default settings` in the command palette.
 // Zed also writes here (model pickers, theme selector, ...): review those with
 // `chezmoi diff` and copy what you keep into the chezmoi template.
 {{- /*
   $buratino: the machines differ in fonts, extensions, line numbers and AI
-  defaults. $key: encrypted values need the age key (see .chezmoiignore).
+  defaults. Encrypted values need the age key (see .chezmoiignore).
+  $sandbox: the hosts allowed in the agent's sandbox prompts are Zed's own
+  list, copied from the existing file and never stored here.
 */}}
 {{- $buratino := ne .chezmoi.hostname "malvina" }}
 {{- $key := stat (joinPath .chezmoi.homeDir ".config/chezmoi/key.txt") }}
 {{- $n8n := and $buratino $key }}
+{{- $dgx := and (not $buratino) $key }}
+{{- $current := dict }}
+{{- if .chezmoi.stdin | trim }}{{ $current = .chezmoi.stdin | fromJsonc }}{{ end }}
+{{- $sandbox := dig "agent" "sandbox_permissions" "" $current }}
 {
   // Appearance
   "theme": {
@@ -79,9 +86,6 @@
   "relative_line_numbers": "enabled",
 {{- else }}
   "relative_line_numbers": "disabled",
-  "vim": {
-    "toggle_relative_line_numbers": false,
-  },
 {{- end }}
   "gutter": {
     "line_numbers": true,
@@ -215,9 +219,9 @@
       "enabled": true,
       "threshold": -15000,
     },
-    "sandbox_permissions": {
-      "network_hosts": ["www.eudi.dev"],
-    },
+{{- end }}
+{{- if $sandbox }}
+    "sandbox_permissions": {{ $sandbox | toJson }},
 {{- end }}
     "model_parameters": [],
     "use_modifier_to_send": true,
@@ -475,8 +479,9 @@
           },
         ],
       },
-{{- if $key }}
-      // The company's DGX Spark. Its URL is in .secrets/dgx-spark-url.age.
+{{- if $dgx }}
+      // The company's DGX Spark, on the work laptop only. Its URL is in
+      // .secrets/dgx-spark-url.age.
       "DGX-Spark": {
         "api_url": "{{ include ".secrets/dgx-spark-url.age" | decrypt | trim }}",
         "available_models": [
