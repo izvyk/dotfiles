@@ -33,17 +33,14 @@ bind -N "New window in the current directory" c new-window -c "#{pane_current_pa
 bind -N "Split top/bottom in the current directory" '"' split-window -v -c "#{pane_current_path}"
 bind -N "Split left/right in the current directory" % split-window -h -c "#{pane_current_path}"
 
-# Pane navigation: prefix + hjkl, or Alt + arrows without the prefix.
+# Pane navigation: prefix + hjkl. No Alt + arrows: fish uses them (previous/
+# next directory or word, history search for the token).
 # prefix ? lists all bindings (these with their notes), prefix / describes a key.
 bind -N "Select the pane to the left" h select-pane -L
 bind -N "Select the pane below" j select-pane -D
 bind -N "Select the pane above" k select-pane -U
 bind -N "Select the pane to the right (last window moved to Tab)" l select-pane -R
 bind -N "Last window" Tab last-window
-bind -n M-Left select-pane -L
-bind -n M-Right select-pane -R
-bind -n M-Up select-pane -U
-bind -n M-Down select-pane -D
 
 bind -N "Reload tmux.conf" r source-file ~/.config/tmux/tmux.conf \; display "tmux.conf reloaded"
 
