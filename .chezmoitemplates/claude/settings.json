@@ -61,7 +61,15 @@
       "git pull",
       "git pull *",
       "git fetch",
-      "git fetch *"
+      "git fetch *",
+      "nix *",
+      "nix-build",
+      "nix-build *",
+      "nix-shell",
+      "nix-shell *",
+      "nix-instantiate *",
+      "nix-store *",
+      "nixos-rebuild *"
     ],
     "filesystem": {
       "allowWrite": [
@@ -77,9 +85,7 @@
       "denyWrite": [
         "~/.config/chezmoi/chezmoi.toml",
         "~/.local/share/chezmoi/.git/config",
-        "~/.local/share/chezmoi/.git/hooks",
-        "~/Projects/personal/nixos-config/.git/config",
-        "~/Projects/personal/nixos-config/.git/hooks"
+        "~/.local/share/chezmoi/.git/hooks"
       ]
     },
     "credentials": {
