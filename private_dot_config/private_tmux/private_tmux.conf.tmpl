@@ -8,7 +8,10 @@
 # Programs inside tmux can't set the clipboard or pass escape sequences through
 # to the terminal (set-clipboard external, allow-passthrough off: the defaults).
 set -g default-terminal "tmux-256color"
-set -as terminal-features ",xterm-ghostty:RGB,xterm-256color:RGB"
+set -as terminal-features ",xterm-ghostty:RGB:extkeys,xterm-256color:RGB:extkeys"
+# Modified keys (Shift+Enter, Ctrl+Enter) reach programs that ask for them, like
+# Claude Code; without this they all arrive as plain Enter.
+set -s extended-keys on
 set -s escape-time 10     # Esc reaches vim at once, not after 500ms
 set -g focus-events on
 set -g history-limit 50000
