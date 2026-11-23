@@ -64,6 +64,21 @@ set -g message-style "bg={{ .accent }},fg={{ .bg }}"
 set -g mode-style "bg={{ .bg2 }},fg={{ .fg }}"
 {{- end }}
 
+# Right-click in a pane copies or pastes, like Ghostty's right-click-action
+# outside tmux: copies the copy-mode selection if there is one, else pastes the
+# clipboard (bracketed, so a shell doesn't run pasted lines). Programs that use
+# the mouse (vim, htop) still get the click. The pane menu is on Alt+right-click
+# (tmux's own binding); the status bar keeps its right-click menus.
+bind -n MouseDown3Pane {
+  if -F -t= "#{mouse_any_flag}" { select-pane -t= ; send -M } {
+    if -F -t= "#{selection_present}" { send -X -t= copy-selection-and-cancel } {
+      select-pane -t=
+      if -F -t= "#{pane_in_mode}" { send -X -t= cancel }
+      run -b -t= 'wl-paste -n -t text | tmux load-buffer -b clipboard - && tmux paste-buffer -p -d -b clipboard -t "#{pane_id}"'
+    }
+  }
+}
+
 # Right-click menus stay open after a click (by default they close on release
 # unless you drag onto an item). Rewrites tmux's own menu bindings with -O.
 run 'f="${XDG_RUNTIME_DIR:?}/tmux-menus.conf"; tmux list-keys -T root | sed -n "s/display-menu -T/display-menu -O -T/p" > "$f" && tmux source-file "$f"'
