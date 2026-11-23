@@ -49,6 +49,8 @@ setw -g mode-keys vi
 bind -T copy-mode-vi v send -X begin-selection
 bind -T copy-mode-vi C-v send -X rectangle-toggle
 bind -T copy-mode-vi y send -X copy-selection-and-cancel
+# Esc clears the selection, or leaves copy mode when nothing is selected
+bind -T copy-mode-vi Escape if -F "#{selection_present}" { send -X clear-selection } { send -X cancel }
 
 # Selecting with the mouse (drag, double-click a word, triple-click a line)
 # doesn't copy: y or right-click copies, q leaves without copying.
