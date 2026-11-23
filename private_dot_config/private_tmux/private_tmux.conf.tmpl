@@ -50,6 +50,20 @@ bind -T copy-mode-vi v send -X begin-selection
 bind -T copy-mode-vi C-v send -X rectangle-toggle
 bind -T copy-mode-vi y send -X copy-selection-and-cancel
 
+# Selecting with the mouse (drag, double-click a word, triple-click a line)
+# doesn't copy: y or right-click copies, q leaves without copying.
+unbind -T copy-mode-vi MouseDragEnd1Pane
+bind -T copy-mode-vi DoubleClick1Pane { select-pane ; send -X select-word }
+bind -T copy-mode-vi TripleClick1Pane { select-pane ; send -X select-line }
+bind -n DoubleClick1Pane {
+  select-pane -t=
+  if -F "#{||:#{pane_in_mode},#{mouse_any_flag}}" { send -M } { copy-mode -H ; send -X select-word }
+}
+bind -n TripleClick1Pane {
+  select-pane -t=
+  if -F "#{||:#{pane_in_mode},#{mouse_any_flag}}" { send -M } { copy-mode -H ; send -X select-line }
+}
+
 # Colours from the shared theme (.chezmoidata/theme.toml), transparent status bar
 {{- with .theme.ui }}
 set -g status-style "bg=default,fg={{ .fg_dim }}"
