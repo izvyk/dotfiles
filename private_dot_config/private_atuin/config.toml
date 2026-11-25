@@ -1,0 +1,21 @@
+# Everything not set here is atuin's default.
+
+# Own sync server on tortila (nixos-config: hosts/tortila, svc:atuin),
+# reachable over the tailnet only. Records are end-to-end encrypted with
+# the key in ~/.local/share/atuin/key.
+sync_address = "https://atuin.shorthair-inconnu.ts.net"
+# Updates come from nixpkgs.
+update_check = false
+# Up arrow stays fish's own prefix search through this session's history;
+# atuin's full search is on Ctrl-R.
+bind_up_arrow = false
+
+[daemon]
+# Needed for thread capture; started by the first atuin call that wants it.
+enabled = true
+autostart = true
+
+[threads]
+# Record coding agents' sessions (Claude Code reads its transcripts from
+# ~/.claude/projects) and sync them with the history.
+capture = true

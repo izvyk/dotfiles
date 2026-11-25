@@ -11,6 +11,19 @@
     "CLAUDE_CODE_TMUX_TRUECOLOR": "1",
     "DISABLE_AUTOUPDATER": "1"
   },
+  {{- if ne .chezmoi.hostname "malvina" }}
+  "hooks": {
+    "PreToolUse": [
+      { "matcher": "^Bash$", "hooks": [{ "type": "command", "command": "atuin hook claude-code" }] }
+    ],
+    "PostToolUse": [
+      { "matcher": "^Bash$", "hooks": [{ "type": "command", "command": "atuin hook claude-code" }] }
+    ],
+    "PostToolUseFailure": [
+      { "matcher": "^Bash$", "hooks": [{ "type": "command", "command": "atuin hook claude-code" }] }
+    ]
+  },
+  {{- end }}
   "permissions": {
     "disableBypassPermissionsMode": "disable",
     "ask": [
@@ -33,6 +46,7 @@
       "Read(~/Documents/Passwords.kdbx)",
       "Read(//mnt/masterdata/Docs/.KeePass/**)",
       "Read(~/.local/share/fish/fish_history)",
+      "Read(~/.local/share/atuin/**)",
       "Read(~/.bash_history)",
       "Read(~/.kube/**)",
       "Read(~/.metalctl/**)",
@@ -108,6 +122,7 @@
         { "path": "~/Documents/Passwords.kdbx", "mode": "deny" },
         { "path": "/mnt/masterdata/Docs/.KeePass", "mode": "deny" },
         { "path": "~/.local/share/fish/fish_history", "mode": "deny" },
+        { "path": "~/.local/share/atuin", "mode": "deny" },
         { "path": "~/.bash_history", "mode": "deny" },
         { "path": "~/.kube", "mode": "deny" },
         { "path": "~/.metalctl", "mode": "deny" },

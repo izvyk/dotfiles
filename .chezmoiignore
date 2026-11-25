@@ -34,6 +34,9 @@ snap/
 {{ if eq .chezmoi.hostname "malvina" }}
 # The Yeelight light bar is on buratino's desk.
 .local/share/gnome-shell/extensions/wall-light@phil/
+# Work laptop: its history and agent sessions stay off tortila.
+.config/atuin/
+.config/fish/conf.d/atuin.fish
 {{ else }}
 # Only malvina has to be handed over with a stock German keyboard.
 .local/bin/xkb-default-toggle
