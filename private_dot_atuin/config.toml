@@ -2,7 +2,7 @@
 
 # Own sync server on tortila (nixos-config: hosts/tortila, svc:atuin),
 # reachable over the tailnet only. Records are end-to-end encrypted with
-# the key in ~/.local/share/atuin/key.
+# the key in ~/.atuin/data/key.
 sync_address = "https://atuin.shorthair-inconnu.ts.net"
 # Updates come from nixpkgs.
 update_check = false
