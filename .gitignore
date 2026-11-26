@@ -1,0 +1,3 @@
+# Mount-point stubs that the Claude Code sandbox creates in its working dirs
+/.claude/
+/.mcp.json
