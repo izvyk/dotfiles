@@ -64,8 +64,9 @@ export default class LayoutRetypeExtension extends Extension {
                 console.error(`layout-retype: could not grab ${accelerator}`);
                 continue;
             }
+            // OVERVIEW: the overview's search entry.
             Main.wm.allowKeybinding(Meta.external_binding_name_for_action(action),
-                Shell.ActionMode.NORMAL);
+                Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW);
             this._actions.set(action, line);
         }
         this._accelId = global.display.connect('accelerator-activated', (_d, action) => {
@@ -113,6 +114,19 @@ export default class LayoutRetypeExtension extends Extension {
             throw new Error('Needs at least two keyboard layouts');
         const tables = await Promise.all(sources.map(s => this._table(s.id)));
         const current = Math.max(0, sources.indexOf(ism.currentSource));
+
+        // gnome-shell's own entries (overview search): edit the text directly.
+        const shellText = global.stage.get_key_focus();
+        if (shellText instanceof Clutter.Text) {
+            const purpose = shellText.get_input_purpose();
+            if (shellText.get_password_char() !== 0 || purpose === PASSWORD || purpose === PIN)
+                return;
+            const target = await this._replaceInField(this._shellField(shellText),
+                line, tables, current);
+            if (target !== null && target !== undefined)
+                await this._activate(sources[target]);
+            return;
+        }
 
         const im = Main.inputMethod;
         if (im.contentPurpose === PASSWORD || im.contentPurpose === PIN)
@@ -211,6 +225,34 @@ export default class LayoutRetypeExtension extends Extension {
         im.delete_surrounding(start - cursor, cursor - start);
         im.commit(result.text);
         return result.target;
+    }
+
+    // A Clutter.Text behind the same three calls _replaceInField makes on the
+    // input method. Positions count characters; -1 means the end.
+    _shellField(text) {
+        const pos = p => p < 0 ? [...text.get_text()].length : p;
+        const place = p => {
+            text.set_cursor_position(p);
+            text.set_selection_bound(p);
+        };
+        return {
+            getSurroundingText: () => [text.get_text(),
+                pos(text.get_cursor_position()), pos(text.get_selection_bound())],
+            delete_surrounding: (offset, count) => {
+                const start = pos(text.get_cursor_position()) + offset;
+                text.delete_text(start, start + count);
+                place(start);
+            },
+            commit: str => {
+                const cursor = pos(text.get_cursor_position());
+                const anchor = pos(text.get_selection_bound());
+                const start = Math.min(cursor, anchor);
+                if (cursor !== anchor)
+                    text.delete_text(start, Math.max(cursor, anchor));
+                text.insert_text(str, start);
+                place(start + [...str].length);
+            },
+        };
     }
 
     _primary() {
