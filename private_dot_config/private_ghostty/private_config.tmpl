@@ -49,8 +49,10 @@ mouse-hide-while-typing = true
 # deltas by GTK's integer scale (2 on HiDPI) and touchpad deltas by another 10.
 mouse-scroll-multiplier = precision:0.15,discrete:1.5
 right-click-action = copy-or-paste
-# Ctrl+Enter sends in Claude Code instead of toggling fullscreen (still in the
-# command palette)
+# Shift+Enter is a new line, as in messengers: sent as Alt+Enter, which passes
+# through tmux and ssh as is and is a new line in fish and Claude Code. Ctrl+Enter
+# is plain Enter instead of toggling fullscreen (still in the command palette).
+keybind = shift+enter=text:\x1b\r
 keybind = ctrl+enter=unbind
 clipboard-paste-protection = true
 
